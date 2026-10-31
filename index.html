@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <title>pewpew</title>
+    <meta name="description" content="pewpew" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="pewpew">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000">
+    <style>
+        @import "/assets/styles/app.css";
+    </style>
+</head>
+
+<body class="touch-none overflow-hidden fixed left-0 block top-0 w-full h-full">
+    <canvas id="canvas"
+        class="overflow-hidden fixed left-0 block top-0 z-1 [image-rendering:pixelated] [clip-path:inset(50%_0)] transition-[clip-path] duration-1500 delay-500"></canvas>
+    <div id="ui"></div>
+    <div id="loading"
+        class="fixed top-0 left-0 w-full h-full z-1000 flex items-center justify-center uppercase pointer-events-none text-white">
+        Loading...
+    </div>
+    <script>
+        if (window.navigator.standalone) {
+            document.documentElement.classList.add("standalone")
+        }
+    </script>
+    <script type="module" src="/src/root.tsx"></script>
+</body>
+
+</html>

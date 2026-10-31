@@ -1,0 +1,391 @@
+{
+    "terrain": [
+        [
+            {
+                "type": "slope_outer_corner",
+                "rotation": 3
+            },
+            {
+                "type": "slope",
+                "rotation": 3
+            },
+            {
+                "type": "slope_outer_corner",
+                "rotation": 2
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            }
+        ],
+        [
+            {
+                "type": "slope",
+                "rotation": 0
+            },
+            {
+                "type": "tall",
+                "rotation": 0
+            },
+            {
+                "type": "slope_inner_corner",
+                "rotation": 2
+            },
+            {
+                "type": "slope",
+                "rotation": 3
+            },
+            {
+                "type": "slope",
+                "rotation": 3
+            },
+            {
+                "type": "slope",
+                "rotation": 3
+            }
+        ],
+        [
+            {
+                "type": "slope",
+                "rotation": 0
+            },
+            {
+                "type": "tall",
+                "rotation": 0
+            },
+            {
+                "type": "tall",
+                "rotation": 1
+            },
+            {
+                "type": "tall",
+                "rotation": 1
+            },
+            {
+                "type": "tall",
+                "rotation": 0
+            },
+            {
+                "type": "tall",
+                "rotation": 0
+            }
+        ],
+        [
+            {
+                "type": "slope",
+                "rotation": 0
+            },
+            {
+                "type": "tall",
+                "rotation": 1
+            },
+            {
+                "type": "tall",
+                "rotation": 2
+            },
+            {
+                "type": "tall",
+                "rotation": 0
+            },
+            {
+                "type": "tall",
+                "rotation": 0
+            },
+            {
+                "type": "tall",
+                "rotation": 0
+            }
+        ],
+        [
+            {
+                "type": "slope",
+                "rotation": 0
+            },
+            {
+                "type": "tall",
+                "rotation": 3
+            },
+            {
+                "type": "tall",
+                "rotation": 2
+            },
+            {
+                "type": "tall",
+                "rotation": 0
+            },
+            {
+                "type": "tall",
+                "rotation": 0
+            },
+            {
+                "type": "tall",
+                "rotation": 0
+            }
+        ],
+        [
+            {
+                "type": "slope",
+                "rotation": 0
+            },
+            {
+                "type": "tall",
+                "rotation": 0
+            },
+            {
+                "type": "tall",
+                "rotation": 2
+            },
+            {
+                "type": "tall",
+                "rotation": 0
+            },
+            {
+                "type": "tall",
+                "rotation": 0
+            },
+            {
+                "type": "tall",
+                "rotation": 1
+            }
+        ],
+        [
+            {
+                "type": "slope_outer_corner",
+                "rotation": 0
+            },
+            {
+                "type": "slope",
+                "rotation": 1
+            },
+            {
+                "type": "slope",
+                "rotation": 1
+            },
+            {
+                "type": "slope",
+                "rotation": 1
+            },
+            {
+                "type": "slope",
+                "rotation": 1
+            },
+            {
+                "type": "slope",
+                "rotation": 1
+            }
+        ]
+    ],
+    "placements": [
+        {
+            "id": "518e1e46-d8fb-40c0-b244-9b1e4a11be83",
+            "type": "basemodule_B",
+            "position": [
+                3.75,
+                1,
+                8.75
+            ],
+            "rotation": 3.141592653589793
+        },
+        {
+            "id": "9889d407-b73e-4bd8-9680-7191be6fed59",
+            "type": "basemodule_B",
+            "position": [
+                4,
+                1,
+                5.25
+            ],
+            "rotation": 0
+        },
+        {
+            "id": "5476b750-fb91-4521-9c17-f206c61394e9",
+            "type": "basemodule_C",
+            "position": [
+                -3.75,
+                1,
+                3
+            ],
+            "rotation": 0
+        },
+        {
+            "id": "dc20b499-0f5b-4ec2-8cf8-64ea4241be05",
+            "type": "basemodule_D",
+            "position": [
+                -4,
+                1,
+                5.75
+            ],
+            "rotation": 0
+        },
+        {
+            "id": "eaef1c9e-5d55-4d64-9f89-4940e76e97df",
+            "type": "water_storage",
+            "position": [
+                -2.5,
+                1,
+                9.25
+            ],
+            "rotation": 0
+        },
+        {
+            "id": "b6cf948a-d5c2-4f42-8b92-cfbf10a61594",
+            "type": "water_storage",
+            "position": [
+                3.75,
+                2,
+                8.75
+            ],
+            "rotation": 0
+        },
+        {
+            "id": "b7171b37-eb48-4e7f-8daa-9dbc9da11391",
+            "type": "tunnel_straight_B",
+            "position": [
+                3.75,
+                1,
+                6.75
+            ],
+            "rotation": 1.5707963267948966
+        },
+        {
+            "id": "3cfc876e-51ad-4752-8ccc-5db9fc1318fa",
+            "type": "space_farm_large_sprinkler",
+            "position": [
+                2.25,
+                1,
+                7
+            ],
+            "rotation": 0
+        },
+        {
+            "id": "ae37e2c9-e923-40da-9ccc-526313c2f745",
+            "type": "sprinkler",
+            "position": [
+                2.5,
+                1,
+                7.25
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "rocks_B",
+            "id": "ea67c169-be81-4a26-9576-241c603332bd",
+            "position": [
+                5,
+                0.04154806116669363,
+                2.5
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "rocks_B",
+            "id": "d6fb094d-e6e7-497d-86da-69fcca4de55c",
+            "position": [
+                3.25,
+                0,
+                1.75
+            ],
+            "rotation": 2.356194490192345
+        },
+        {
+            "type": "rocks_A",
+            "id": "aa4328eb-2f84-4c08-ac61-daa553fe7b5c",
+            "position": [
+                0.75,
+                1,
+                5.5
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "rock_B",
+            "id": "c78b79eb-afa6-4ad9-a724-9db8df0ad2f3",
+            "position": [
+                2,
+                1,
+                9.5
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "tree",
+            "variant": "Tree_Type5_02_Model",
+            "id": "a2e220d9-2423-4bee-8827-3c5909771c36",
+            "position": [
+                -3.25,
+                1,
+                10.5
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "tree",
+            "variant": "Tree_Type5_03_Model",
+            "id": "d522e2fa-3125-4fa9-b385-14e52fc6f207",
+            "position": [
+                4.25,
+                3.4020829903063704e-15,
+                1
+            ],
+            "rotation": 3.141592653589793
+        },
+        {
+            "type": "tree",
+            "variant": "Tree_Type5_04_Model",
+            "id": "7cd7fd0c-9906-4094-9b7d-0b5d111cb984",
+            "position": [
+                1.75,
+                1,
+                4.5
+            ],
+            "rotation": 0.7853981633974483
+        },
+        {
+            "type": "turret",
+            "id": "3466b11d-baff-4295-8f7d-f650f8130760",
+            "position": [
+                3.75,
+                3,
+                8.25
+            ],
+            "rotation": 1.5707963267948966
+        },
+        {
+            "type": "turret",
+            "id": "60770f91-23da-4764-871c-db28f4cae764",
+            "position": [
+                -2.75,
+                2,
+                9
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "cargo_A_stacked",
+            "id": "502ce27f-b679-4c75-9bb7-cf3ae3fe2e0c",
+            "position": [
+                -0.75,
+                1,
+                6.5
+            ],
+            "rotation": 3.9269908169872414
+        },
+        {
+            "type": "cargo_A_stacked",
+            "id": "85a3391e-2a9d-4fd6-8afa-5e7d82554545",
+            "position": [
+                -1,
+                1,
+                8
+            ],
+            "rotation": 0
+        }
+    ]
+}

@@ -1,0 +1,5 @@
+@import "tailwindcss/theme" layer(theme);
+@import "tailwindcss/utilities" layer(utilities);
+
+/* map json save reloads entire app without this */
+@source not "../maps";
