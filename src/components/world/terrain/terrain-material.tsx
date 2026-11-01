@@ -1,8 +1,9 @@
 import { ThreeElements } from "@react-three/fiber"
 import { Color, Vector2 } from "three"
 import { useShader } from "@src/hooks/use-shader"
-import { cellsize, w } from "@lib/terrain"
-import { lightsHead, makeLightsUniform, useLights } from "@lib/helpers/lights"
+import { cellsize, w } from "@lib/world/terrain"
+import { useLights } from "@components/effects/lights/lights"
+import { lightsChunk, makeLightsUniform } from "@components/effects/lights/light-shader"
 import dithering from "@shaders/dither.glsl"
 import noise from "@shaders/noise.glsl"
 import utils from "@shaders/utils.glsl"
@@ -11,10 +12,10 @@ import easings from "@shaders/easings.glsl"
 // raw srgb values since the pick happens after the colorspace conversion
 const palette = ["#666", "#ccc", "#eee", "#fff"].map(i => new Color(i).convertLinearToSRGB())
 
-type GroundMaterialProps = Omit<ThreeElements["meshPhongMaterial"], "onBeforeCompile" | "customProgramCacheKey">
+type TerrainMaterialProps = Omit<ThreeElements["meshPhongMaterial"], "onBeforeCompile" | "customProgramCacheKey">
 
-// used by the editor meshes and the instanced world ground, works with and without instancing
-export default function GroundMaterial(props: GroundMaterialProps) {
+// used by the editor meshes and the instanced world terrain, works with and without instancing
+export default function TerrainMaterial(props: TerrainMaterialProps) {
     const {
         uniforms,
         onBeforeCompile,
@@ -61,7 +62,7 @@ export default function GroundMaterial(props: GroundMaterialProps) {
                 ${noise}
                 ${utils}
                 ${easings}
-                ${lightsHead}
+                ${lightsChunk}
             `,
             main: /* glsl */`
                 vec2 cell = (vGridPosition.xz - uGridOffset) / uCellSize;

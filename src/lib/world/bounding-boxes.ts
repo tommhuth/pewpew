@@ -1,5 +1,5 @@
 import { ModelType } from "@components/model"
-import { TreeType } from "@components/world/entities/tree/tree-model"
+import { TreeType } from "@components/entities/tree/tree-model"
 import { EntityType } from "@src/types/entity"
 import { Tuple3 } from "@src/types/global"
 
@@ -38,6 +38,7 @@ export const boundingBoxes: Partial<Record<BoundingBoxKey, [min: Tuple3, max: Tu
     [ModelType.DRILL_STRUCTURE]: [[-.88, 0, -.88], [.88, 2, .88]],
     [ModelType.DROPSHIP_PACKED]: [[-1.12, 0, -1.2], [1.12, 2.23, 1.1]],
     [ModelType.DROPSHIP]: [[-.75, 0, -1], [.75, .95, 1.1]],
+    [ModelType.ECO_MODULE]: [[-1, 0, -1], [1, 2, 1]],
     [ModelType.LANDER_A]: [[-.67, 0, -.67], [.7, 1.19, .75]],
     [ModelType.LANDER_B]: [[-.67, 0, -.67], [.7, 1.1, .75]],
     [ModelType.LANDER_BASE]: [[-.67, 0, -.67], [.67, .5, .67]],
@@ -110,5 +111,40 @@ export function getBoundingBox(key: BoundingBoxKey): BoundingBox | undefined {
         max,
         size: [max[0] - min[0], max[1] - min[1], max[2] - min[2]],
         center: [(min[0] + max[0]) / 2, (min[1] + max[1]) / 2, (min[2] + max[2]) / 2],
+    }
+}
+
+export interface CollisionBox {
+    // box center from the model origin
+    offset: Tuple3
+    size: Tuple3
+}
+
+// bounding box turned by the nearest quarter turn of rotation, collisions are never rotated
+// so anything in between keeps the 90 deg box instead of growing to fit
+export function getCollisionBox(key: BoundingBoxKey, rotation: number): CollisionBox {
+    const box = getBoundingBox(key)
+
+    if (!box) {
+        throw new Error(`No bounding box for ${key}`)
+    }
+
+    const { size, center } = box
+    const snapped = Math.round(rotation / (Math.PI / 2)) * Math.PI / 2
+    // exact 0 or ±1
+    const cos = Math.round(Math.cos(snapped))
+    const sin = Math.round(Math.sin(snapped))
+
+    return {
+        offset: [
+            center[0] * cos + center[2] * sin,
+            center[1],
+            center[2] * cos - center[0] * sin,
+        ],
+        size: [
+            size[0] * Math.abs(cos) + size[2] * Math.abs(sin),
+            size[1],
+            size[0] * Math.abs(sin) + size[2] * Math.abs(cos),
+        ],
     }
 }

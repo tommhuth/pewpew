@@ -3,9 +3,9 @@ import { useGLTF } from "@react-three/drei"
 import { ThreeElements, useFrame } from "@react-three/fiber"
 import { Mesh } from "three"
 import { damp } from "three/src/math/MathUtils.js"
-import { spacebits } from "@lib/materials"
+import { spacebits } from "@components/world/spacebits-material"
 import { ndelta } from "@lib/helpers/utils"
-import treesModel from "@assets/models/trees1.glb"
+import treesModel from "@assets/models/trees.glb"
 import random from "@huth/random"
 
 export enum TreeType {

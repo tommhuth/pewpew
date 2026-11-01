@@ -3,12 +3,12 @@ import { useGLTF } from "@react-three/drei"
 import { ThreeElements, useFrame } from "@react-three/fiber"
 import { Group, Mesh, Vector3 } from "three"
 import { damp } from "three/src/math/MathUtils.js"
-import { spacebits } from "@lib/materials"
+import { spacebits } from "@components/world/spacebits-material"
 import { ndelta } from "@lib/helpers/utils"
 import { Tuple3 } from "@src/types/global"
 import { useGravity } from "@src/hooks/use-gravity"
 import Muzzle, { MuzzleRef } from "./muzzle"
-import turretModel from "@assets/models/turret2.glb"
+import turretModel from "@assets/models/turret.glb"
 
 // one mesh of 2 primitives in the glb, 1 is the body and 2 the barrel
 type TurretNodes = Record<"turret2_1" | "turret2_2", Mesh>
@@ -19,9 +19,6 @@ export type TurretRef = {
     // live, moves while falling
     position: Vector3 | undefined
 }
-
-// sits on y 0, square so rotation doesnt matter, barrel sticks out along +x past it
-export const turretSize: Tuple3 = [1.2, .85, 1.2]
 
 // in the barrel, a bit back from the tip
 const muzzlePosition: Tuple3 = [1.78, .5, 0]

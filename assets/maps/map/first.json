@@ -386,6 +386,26 @@
                 8
             ],
             "rotation": 0
+        },
+        {
+            "type": "eco_module",
+            "id": "1ff8943d-1a5d-4cd5-b148-fe208b2a31da",
+            "position": [
+                0.75,
+                -2.6819227496971456e-16,
+                1.25
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "dome",
+            "id": "92f98f2b-d36c-4b3c-bc8b-ab4a963cf154",
+            "position": [
+                -3.75,
+                2,
+                3
+            ],
+            "rotation": 0
         }
     ]
 }

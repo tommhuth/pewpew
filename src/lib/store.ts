@@ -4,7 +4,7 @@ import { DepthTexture, Object3D, Vector3 } from "three"
 import { WorldPart } from "@src/types/world"
 import { Entity } from "@src/types/entity"
 import { PLAYER_SPEED, WORLD_CENTER_X } from "./const"
-import { getNextWorldPart } from "./world"
+import { getNextWorldPart } from "./world/world"
 import { SpatialHashGrid3D } from "./helpers/spatial-hash-grid-3d"
 
 export const State = {

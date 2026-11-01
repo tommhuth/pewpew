@@ -1,9 +1,8 @@
 import { Ref, useImperativeHandle, useMemo, useRef } from "react"
 import { ThreeElements, useFrame } from "@react-three/fiber"
-import { InstancedMesh, SphereGeometry } from "three"
+import { InstancedMesh, MeshLambertMaterial, SphereGeometry } from "three"
 import { damp } from "three/src/math/MathUtils.js"
 import random from "@huth/random"
-import { muzzle } from "@lib/materials"
 import { ndelta, setMatrixAt } from "@lib/helpers/utils"
 import { Tuple3 } from "@src/types/global"
 
@@ -22,6 +21,11 @@ type MuzzleProps = {
 } & Omit<ThreeElements["instancedMesh"], "ref" | "args">
 
 const geometry = new SphereGeometry(1, 6, 6)
+const material = new MeshLambertMaterial({
+    color: "#d9f3ff",
+    emissive: "#fff",
+    emissiveIntensity: .35,
+})
 const count = 8
 
 // smoke puffs drifting out along +x
@@ -75,7 +79,7 @@ export default function Muzzle({ ref, decay = 0, ...rest }: MuzzleProps) {
         <instancedMesh
             castShadow
             receiveShadow
-            args={[geometry, muzzle, count]}
+            args={[geometry, material, count]}
             ref={instanceRef}
             {...rest}
         />

@@ -2,10 +2,10 @@ import { Html } from "@react-three/drei"
 import { Fragment, useEffect, useRef } from "react"
 import { Tuple3 } from "@src/types/global"
 import Model, { modelGroups, ModelType } from "@components/model"
-import TurretModel from "@components/world/entities/turret/turret-model"
-import TreeModel, { TreeType, treeVariants } from "@components/world/entities/tree/tree-model"
+import TurretModel from "@components/entities/turret/turret-model"
+import TreeModel, { TreeType, treeVariants } from "@components/entities/tree/tree-model"
 import { EntityType } from "@src/types/entity"
-import { BoundingBoxKey, getBoundingBox } from "@lib/bounding-boxes"
+import { BoundingBoxKey, getBoundingBox } from "@lib/world/bounding-boxes"
 import {
     addPlacement,
     defaultTreeKind,
@@ -145,7 +145,7 @@ function SelectionBox({ placement, visible }: { placement: EditorPlacement, visi
         >
             <mesh position={box.center}>
                 <boxGeometry args={box.size} />
-                <meshBasicMaterial wireframe color={"#ff0"} />
+                <meshBasicMaterial wireframe color={"#ff0"} toneMapped={false} />
             </mesh>
         </group>
     )

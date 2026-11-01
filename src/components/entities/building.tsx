@@ -3,9 +3,9 @@ import { useFrame } from "@react-three/fiber"
 import { BufferGeometry, Mesh } from "three"
 import Model, { ModelType } from "@components/model"
 import Hitbox from "@components/hitbox"
-import { createExplosion } from "@components/explosions/explosions"
-import { createParticles, CreateParticlesParams } from "@components/explosions/particle-mesh"
-import { createDecal } from "@components/explosions/decal-mesh"
+import { createExplosion } from "@components/effects/explosions"
+import { createParticles, CreateParticlesParams } from "@components/effects/particle-mesh"
+import { createDecal } from "@components/effects/decal-mesh"
 import { removeEntities, setEntitiesFalling, useStore } from "@lib/store"
 import { useCollisionDetection } from "@src/hooks/use-collision-detection"
 import { useGravity } from "@src/hooks/use-gravity"
@@ -13,20 +13,9 @@ import { Owner } from "@src/types/bullet"
 import { BuildingEntity, EntityType } from "@src/types/entity"
 import { Tuple3 } from "@src/types/global"
 import random from "@huth/random"
-import { SpacebitsMaterial } from "@lib/materials"
+import { SpacebitsMaterial } from "@components/world/spacebits-material"
+import { getCollisionBox } from "@lib/world/bounding-boxes"
 
-// basemodule_a is ~2x1x2 sitting on y 0
-const defaultSize: Tuple3 = [2, 1, 2]
-// unrotated hitbox per model, sitting on y 0, from models.glb bounds
-const sizes: Partial<Record<ModelType, Tuple3>> = {
-    [ModelType.BASEMODULE_E]: [2, 1.65, 2],
-    // narrow along z, 90 deg rotation turns that into world width
-    [ModelType.TUNNEL_STRAIGHT_B]: [2, 1, .8],
-    // tall enough to cover a sprinkler on top, sprinkler mesh tops out at .5
-    [ModelType.SPACE_FARM_LARGE]: [2, .5, 2],
-    [ModelType.SPACE_FARM_LARGE_SPRINKLER]: [2, .5, 2],
-    [ModelType.SPRINKLER]: [2, .4, 2],
-}
 // barrel particle color
 const particleColor = "#667"
 
@@ -66,18 +55,12 @@ function Building({
 }: BuildingEntity) {
     const ref = useGravity<Mesh<BufferGeometry, SpacebitsMaterial>>(!!falling)
     const grid = useStore(i => i.world.grid)
-    const size = sizes[model] ?? defaultSize
+    const box = useMemo(() => getCollisionBox(model, rotation), [model, rotation])
     const client = useMemo(() => {
-        const cos = Math.abs(Math.cos(rotation))
-        const sin = Math.abs(Math.sin(rotation))
-        const aabb: Tuple3 = [
-            size[0] * cos + size[2] * sin,
-            size[1],
-            size[0] * sin + size[2] * cos,
-        ]
+        const [ox, oy, oz] = box.offset
 
-        return grid.createClient([x, y + size[1] / 2, z], aabb, { id, type: EntityType.BUILDING })
-    }, [grid, id, x, y, z, rotation, size])
+        return grid.createClient([x + ox, y + oy, z + oz], box.size, { id, type: EntityType.BUILDING })
+    }, [grid, id, x, y, z, box])
 
     useCollisionDetection({
         client,
@@ -184,7 +167,7 @@ function Building({
         }
 
         // keep the hitbox with the mesh
-        client.position[1] = ref.current.position.y + size[1] / 2
+        client.position[1] = ref.current.position.y + box.offset[1]
         grid.updateClient(client)
     })
 

@@ -2,12 +2,13 @@ import { memo, useEffect, useEffectEvent, useMemo, useRef } from "react"
 import { useFrame } from "@react-three/fiber"
 import { LineSegments } from "three"
 import random from "@huth/random"
-import TurretModel, { TurretRef, turretSize } from "./turret-model"
+import TurretModel, { TurretRef } from "./turret-model"
 import Hitbox from "@components/hitbox"
-import { createExplosion } from "@components/explosions/explosions"
-import { createParticles } from "@components/explosions/particle-mesh"
-import { createDecal } from "@components/explosions/decal-mesh"
+import { createExplosion } from "@components/effects/explosions"
+import { createParticles } from "@components/effects/particle-mesh"
+import { createDecal } from "@components/effects/decal-mesh"
 import { removeEntities, useStore } from "@lib/store"
+import { getCollisionBox } from "@lib/world/bounding-boxes"
 import { useCollisionDetection } from "@src/hooks/use-collision-detection"
 import { Owner } from "@src/types/bullet"
 import { EntityType, TurretEntity } from "@src/types/entity"
@@ -27,9 +28,12 @@ function Turret({
     const grid = useStore(i => i.world.grid)
     const ref = useRef<TurretRef>(null)
     const debugRef = useRef<LineSegments>(null)
+    const box = useMemo(() => getCollisionBox(EntityType.TURRET, rotation), [rotation])
     const client = useMemo(() => {
-        return grid.createClient([x, y + turretSize[1] / 2, z], turretSize, { id, type: EntityType.TURRET })
-    }, [grid, id, x, y, z])
+        const [ox, oy, oz] = box.offset
+
+        return grid.createClient([x + ox, y + oy, z + oz], box.size, { id, type: EntityType.TURRET })
+    }, [grid, id, x, y, z, box])
 
     useCollisionDetection({
         client,
@@ -96,7 +100,7 @@ function Turret({
         }
 
         // keep the hitbox with the model
-        client.position[1] = position.y + turretSize[1] / 2
+        client.position[1] = position.y + box.offset[1]
         grid.updateClient(client)
         debugRef.current?.position.fromArray(client.position)
     })

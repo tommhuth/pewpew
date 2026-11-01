@@ -21,7 +21,7 @@ export function useWorldPart() {
     return useContext(context)
 }
 
-// a part from its params: spawns placements as entities, <WorldGround> draws the terrain
+// a part from its params: spawns placements as entities, <WorldTerrain> draws the terrain
 function WorldSection({
     id,
     position,

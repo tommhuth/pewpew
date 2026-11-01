@@ -1,4 +1,4 @@
-import { GroundType } from "@lib/terrain"
+import { TerrainType } from "@lib/world/terrain"
 import {
     createMap,
     EditorMode,
@@ -11,7 +11,7 @@ import {
     toStoredMap,
     useEditorStore,
 } from "./store"
-import { terrains } from "./terrain/terrains"
+import { terrains } from "./terrain/terrain-loader"
 import { save } from "./save"
 
 export default function EditorUi() {
@@ -37,7 +37,7 @@ export default function EditorUi() {
 
                 <span className="w-4 ml-auto" />
 
-                {mode === EditorMode.TERRAIN && Object.values(GroundType).map(type => (
+                {mode === EditorMode.TERRAIN && Object.values(TerrainType).map(type => (
                     <button
                         key={type}
                         className={`px-2 py-1 border ${brush === type ? "bg-white text-black" : "border-white/50"}`}
@@ -55,7 +55,7 @@ export default function EditorUi() {
                         className="px-2 py-1 border border-white/50 bg-black"
                         value={terrainPreset}
                         onChange={(e) => {
-                            if (confirm(`Replace ground with ${e.target.value}?`)) {
+                            if (confirm(`Replace terrain with ${e.target.value}?`)) {
                                 setTerrainPreset(e.target.value)
                             }
                         }}

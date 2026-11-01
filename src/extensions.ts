@@ -3,7 +3,7 @@ import {
     Group, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial,
     Mesh, BoxGeometry, AmbientLight, DirectionalLight, LightProbe, HemisphereLight,
 } from "three"
-import { SpacebitsMaterial } from "@lib/materials"
+import { SpacebitsMaterial } from "@components/world/spacebits-material"
 
 export default {
     Group, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial,

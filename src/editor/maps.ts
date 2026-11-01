@@ -1,4 +1,4 @@
-import type { Terrain } from "@lib/terrain"
+import type { Terrain } from "@lib/world/terrain"
 import type { EditorPlacement } from "./store"
 
 // map stored on disk 

@@ -1,4 +1,3 @@
-
 import { Color, Vector3 } from "three"
 import { damp } from "three/src/math/MathUtils.js"
 
@@ -7,7 +6,8 @@ export class Light {
     decay = 1
     intensity = 0
     position = new Vector3()
-    color = new Color()
+    innerColor = new Color()
+    outerColor = new Color()
 
     update(delta: number) {
         this.radius = damp(this.radius, 0, this.decay, delta)

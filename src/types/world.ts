@@ -1,7 +1,7 @@
 import { Vector3 } from "three"
 import { Tuple2 } from "./global"
 import { EntityPlacement } from "./entity"
-import type { Terrain } from "@lib/terrain"
+import type { Terrain } from "@lib/world/terrain"
 
 export interface WorldPart {
     id: string

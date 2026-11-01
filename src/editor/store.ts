@@ -1,12 +1,12 @@
 import { create } from "zustand"
 import { subscribeWithSelector } from "zustand/middleware"
 import random from "@huth/random"
-import { d, TerrainCell, GroundType, Terrain, w } from "@lib/terrain"
+import { d, TerrainCell, TerrainType, Terrain, w } from "@lib/world/terrain"
 import { ModelType } from "@components/model"
-import { TreeType } from "@components/world/entities/tree/tree-model"
+import { TreeType } from "@components/entities/tree/tree-model"
 import { EntityType } from "@src/types/entity"
 import { Tuple3 } from "@src/types/global"
-import { terrainsByName } from "./terrain/terrains"
+import { terrainsByName } from "./terrain/terrain-loader"
 import { StoredMap, storedMaps } from "./maps"
 
 export const EditorMode = {
@@ -41,7 +41,7 @@ interface EditorStore {
     maps: Record<string, EditorMap>
     map: string | null
     terrainPreset: string
-    brush: GroundType
+    brush: TerrainType
     cameraZ: number
     // last picked, new placements copy it
     kind: PlacementKind
@@ -65,7 +65,7 @@ export function roundToNearest(value: number, nearest: number) {
 
 function emptyTerrain(): Terrain {
     return Array.from({ length: d })
-        .map(() => Array.from({ length: w }).map(() => ({ type: GroundType.LOW, rotation: 0 })))
+        .map(() => Array.from({ length: w }).map(() => ({ type: TerrainType.LOW, rotation: 0 })))
 }
 
 function copyTerrain(terrain: Terrain) {
@@ -96,7 +96,7 @@ const useEditorStore = create(
         maps: initialMaps,
         map: Object.keys(initialMaps)[0] ?? null,
         terrainPreset: Object.keys(terrainsByName)[0] ?? "",
-        brush: GroundType.TALL,
+        brush: TerrainType.TALL,
         cameraZ: 0,
         kind: { type: ModelType.BASEMODULE_A },
         activePlacementId: null,
@@ -141,7 +141,7 @@ export function rotateCell(x: number, z: number) {
     updateCell(x, z, cell => ({ ...cell, rotation: (cell.rotation + 1) % 4 as TerrainCell["rotation"] }))
 }
 
-export function setBrush(brush: GroundType) {
+export function setBrush(brush: TerrainType) {
     useEditorStore.setState({ brush })
 }
 

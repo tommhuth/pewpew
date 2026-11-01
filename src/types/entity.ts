@@ -1,6 +1,6 @@
 import { Tuple3 } from "./global"
 import type { ModelType } from "@components/model"
-import type { TreeType } from "@components/world/entities/tree/tree-model"
+import type { TreeType } from "@components/entities/tree/tree-model"
 import type Health from "@lib/helpers/health"
 
 export const EntityType = {

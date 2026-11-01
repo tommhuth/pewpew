@@ -1,23 +1,23 @@
 import { useGLTF } from "@react-three/drei"
 import { useEffect, useLayoutEffect, useRef } from "react"
 import { InstancedMesh, Mesh } from "three"
-import groundModel from "@assets/models/ground.glb"
-import { d, getCellPosition, GroundType, w } from "@lib/terrain"
+import terrainModel from "@assets/models/terrain.glb"
+import { d, getCellPosition, TerrainType, w } from "@lib/world/terrain"
 import { useStore } from "@lib/store"
 import { setMatrixAt } from "@lib/helpers/utils"
-import GroundMaterial from "./ground-material"
+import TerrainMaterial from "./terrain-material"
 
 const MAX_PARTS = 12
 const CAPACITY = MAX_PARTS * w * d
-const types = Object.values(GroundType)
+const types = Object.values(TerrainType)
 
-export default function WorldGround() {
-    const { nodes } = useGLTF(groundModel) as unknown as { nodes: Record<GroundType, Mesh> }
+export default function WorldTerrain() {
+    const { nodes } = useGLTF(terrainModel) as unknown as { nodes: Record<TerrainType, Mesh> }
     const parts = useStore(i => i.world.parts)
-    const meshes = useRef<Partial<Record<GroundType, InstancedMesh>>>({})
+    const meshes = useRef<Partial<Record<TerrainType, InstancedMesh>>>({})
 
     useEffect(() => {
-        const counts = Object.fromEntries(types.map(type => [type, 0])) as Record<GroundType, number>
+        const counts = Object.fromEntries(types.map(type => [type, 0])) as Record<TerrainType, number>
 
         for (const part of parts) {
             for (let z = 0; z < part.terrain.length; z++) {
@@ -55,9 +55,9 @@ export default function WorldGround() {
             frustumCulled={false}
             receiveShadow
         >
-            <GroundMaterial />
+            <TerrainMaterial />
         </instancedMesh>
     ))
 }
 
-useGLTF.preload(groundModel)
+useGLTF.preload(terrainModel)

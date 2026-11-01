@@ -1,7 +1,7 @@
 import { useGLTF } from "@react-three/drei"
 import { ThreeElements } from "@react-three/fiber"
 import { Mesh } from "three"
-import { spacebits } from "@lib/materials"
+import { spacebits } from "@components/world/spacebits-material"
 import modelsModel from "@assets/models/models.glb"
 
 export enum ModelType {
@@ -32,6 +32,7 @@ export enum ModelType {
     DROPSHIP_DOOR_LEFT = "dropship_door_left",
     DROPSHIP_DOOR_RIGHT = "dropship_door_right",
     DROPSHIP = "dropship",
+    ECO_MODULE = "eco_module",
     LANDER_A = "lander_A",
     LANDER_B = "lander_B",
     LANDER_BASE = "lander_base",
@@ -62,30 +63,8 @@ export enum ModelType {
     SPACE_FARM_LARGE_SPRINKLER = "space_farm_large_sprinkler",
     SPACE_FARM_LARGE = "space_farm_large",
     SPACE_FARM_SMALL = "space_farm_small",
-    /*
-    SPACETRUCK_LARGE_WHEEL_FRONT_LEFT = "spacetruck_large_wheel_front_left",
-    SPACETRUCK_LARGE_WHEEL_FRONT_RIGHT = "spacetruck_large_wheel_front_right",
-    SPACETRUCK_LARGE_WHEEL_REAR_LEFT = "spacetruck_large_wheel_rear_left",
-    SPACETRUCK_LARGE_WHEEL_REAR_RIGHT = "spacetruck_large_wheel_rear_right",
-    */
-    SPACETRUCK_LARGE = "spacetruck_large",
-    /*
-    SPACETRUCK_TRAILER_WHEEL_FRONT_LEFT = "spacetruck_trailer_wheel_front_left",
-    SPACETRUCK_TRAILER_WHEEL_FRONT_RIGHT = "spacetruck_trailer_wheel_front_right",
-    SPACETRUCK_TRAILER_WHEEL_REAR_LEFT = "spacetruck_trailer_wheel_rear_left",
-    SPACETRUCK_TRAILER_WHEEL_REAR_RIGHT = "spacetruck_trailer_wheel_rear_right",
-    */
-    SPACETRUCK_TRAILER = "spacetruck_trailer",
-    /*
-    SPACETRUCK_WHEEL_FRONT_LEFT = "spacetruck_wheel_front_left",
-    SPACETRUCK_WHEEL_FRONT_RIGHT = "spacetruck_wheel_front_right",
-    SPACETRUCK_WHEEL_REAR_LEFT = "spacetruck_wheel_rear_left",
-    SPACETRUCK_WHEEL_REAR_RIGHT = "spacetruck_wheel_rear_right",
-    */
-    SPACETRUCK = "spacetruck",
     STRUCTURE_LOW = "structure_low",
     STRUCTURE_TALL = "structure_tall",
-    TERRAIN_LOW_CURVED = "terrain_low_curved",
     TUNNEL_DIAGONAL_LONG_A = "tunnel_diagonal_long_A",
     TUNNEL_DIAGONAL_LONG_B = "tunnel_diagonal_long_B",
     TUNNEL_DIAGONAL_SHORT_A = "tunnel_diagonal_short_A",
@@ -99,9 +78,6 @@ export enum ModelType {
     WINDTURBINE_TALL = "windturbine_tall",
 }
 
-const wheels = Object.values(ModelType).filter(i => i.includes("_wheel_"))
-
-// terrain_* is left out, ground.glb covers it
 export const modelGroups: Record<string, ModelType[]> = {
     "Base": [
         ModelType.BASEMODULE_A,
@@ -110,6 +86,7 @@ export const modelGroups: Record<string, ModelType[]> = {
         ModelType.BASEMODULE_D,
         ModelType.BASEMODULE_E,
         ModelType.BASEMODULE_GARAGE,
+        ModelType.ECO_MODULE,
         ModelType.DOME,
         ModelType.STRUCTURE_LOW,
         ModelType.STRUCTURE_TALL,

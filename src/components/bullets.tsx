@@ -1,6 +1,6 @@
 import { useFrame } from "@react-three/fiber"
 import { useState } from "react"
-import { ColorRepresentation, CylinderGeometry, InstancedMesh, Vector3 } from "three"
+import { Color, ColorRepresentation, CylinderGeometry, InstancedMesh, Vector3 } from "three"
 import random from "@huth/random"
 import { useStore } from "@lib/store"
 import { dispatchCollisionEvent, getBulletCollision } from "@lib/helpers/collisions"
@@ -9,12 +9,12 @@ import { ndelta, setColorAt, setMatrixAt, setMatrixNullAt } from "@lib/helpers/u
 import { useInstanceClear } from "@src/hooks/use-instance-clear"
 import LineSegment from "@lib/helpers/line-segment"
 import LoopCounter from "@lib/helpers/loop-counter"
-import { lightColor, lightIndex, updateLight } from "@lib/helpers/lights"
+import { lightIndex, updateLight } from "@components/effects/lights/lights"
 import { Bullet, Owner } from "@src/types/bullet"
 import { Tuple3 } from "@src/types/global"
 import { WorldPart } from "@src/types/world"
-import { cellsize, getTerrainHeightAt } from "@lib/terrain"
-import { createParticles } from "@components/explosions/particle-mesh"
+import { cellsize, getTerrainHeightAt } from "@lib/world/terrain"
+import { createParticles } from "@components/effects/particle-mesh"
 
 // pool of all bullets, reused for the lifetime of the app to avoid per-shot allocs
 const pool: Bullet[] = Array.from({ length: BULLET_COUNT }, (_, i) => ({
@@ -116,6 +116,8 @@ const _bulletMatrix = {
     rotation: _bulletRot,
     scale: _bulletScale,
 }
+const _lightInnerColor = new Color("#fff")
+const _lightOuterColor = new Color("#fffcde")
 
 export default function Bullets() {
     const [instance, setInstance] = useState<InstancedMesh | null>(null)
@@ -171,7 +173,7 @@ export default function Bullets() {
             setMatrixAt(_bulletMatrix)
 
             // radius, decay, intensity. stops once the bullet is gone and the light fades out
-            updateLight(bullet.lightIndex, 2, 3, 1, bullet.line.position, lightColor.red)
+            updateLight(bullet.lightIndex, 2, 3, 1, bullet.line.position, _lightInnerColor, _lightOuterColor)
 
             // no frustum here, drop once far enough from the player
             if (dead || Math.abs(bullet.line.position.z - player.object.position.z) > 20) {

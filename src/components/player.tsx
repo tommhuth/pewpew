@@ -13,7 +13,7 @@ import {
     PLAYER_TERRAIN_BUFFER,
 } from "@lib/const"
 import { clamp, ndelta } from "@lib/helpers/utils"
-import { spacebits } from "@lib/materials"
+import { spacebits } from "@components/world/spacebits-material"
 import { useGLTF } from "@react-three/drei"
 import { LineSegments, Mesh, Vector3 } from "three"
 import playerModel from "@assets/models/player.glb"
@@ -24,12 +24,12 @@ import Hitbox from "@components/hitbox"
 import { useCollisionDetection } from "@src/hooks/use-collision-detection"
 import { CollisionType } from "@src/types/collision"
 import { WorldPart } from "@src/types/world"
-import { getWorldTerrainHeightAt } from "@lib/terrain"
+import { getWorldTerrainHeightAt } from "@lib/world/terrain"
 
 const _sample = { x: 0, y: 0, z: 0 }
 
 // highest terrain under the corners of the player box
-function getGroundHeight(parts: WorldPart[], position: Vector3) {
+function getTerrainHeight(parts: WorldPart[], position: Vector3) {
     let height = -Infinity
 
     for (let i = 0; i < 4; i++) {
@@ -82,7 +82,7 @@ export default function Player() {
         object.position.z += player.speed * nd //* 0
 
         // never dip into the terrain
-        const floor = getGroundHeight(world.parts, object.position) + PLAYER_SIZE[1] / 2 + PLAYER_TERRAIN_BUFFER
+        const floor = getTerrainHeight(world.parts, object.position) + PLAYER_SIZE[1] / 2 + PLAYER_TERRAIN_BUFFER
 
         object.position.y = Math.max(damp(object.position.y, y, 5, nd), floor)
         object.rotation.z = (targetPosition.x - object.position.x) * -.25

@@ -9,7 +9,7 @@ export const cellsize = 2
 // reported height off the terrain grid, things there fall away
 export const OUTSIDE_TERRAIN_HEIGHT = -35
 
-export enum GroundType {
+export enum TerrainType {
     SLOPE = "slope",
     SLOPE_OUTER_CORNER = "slope_outer_corner",
     SLOPE_INNER_CORNER = "slope_inner_corner",
@@ -18,7 +18,7 @@ export enum GroundType {
 }
 
 export interface TerrainCell {
-    type: GroundType
+    type: TerrainType
     rotation: 0 | 1 | 2 | 3 // quarter turns
 }
 
@@ -26,7 +26,7 @@ export interface TerrainCell {
 export type Terrain = TerrainCell[][]
 
 export const blankTerrain: Terrain = Array.from({ length: d })
-    .map(() => Array.from({ length: w }).map(() => ({ type: GroundType.LOW, rotation: 0 })))
+    .map(() => Array.from({ length: w }).map(() => ({ type: TerrainType.LOW, rotation: 0 })))
 
 const _origin = { x: 0, y: 0, z: 0 }
 
@@ -68,17 +68,17 @@ export function getTerrainHeightAt(
 
     let [u, v] = toCellLocal(position, ix, iz, startZ, cell.rotation)
 
-    if (cell.type === GroundType.LOW) {
+    if (cell.type === TerrainType.LOW) {
         return 0
-    } else if (cell.type === GroundType.TALL) {
+    } else if (cell.type === TerrainType.TALL) {
         return 1
-    } else if (cell.type === GroundType.SLOPE) {
+    } else if (cell.type === TerrainType.SLOPE) {
         // eases up along local +x across the whole cell
         return smoothstep(u, -1, 1)
-    } else if (cell.type === GroundType.SLOPE_OUTER_CORNER) {
+    } else if (cell.type === TerrainType.SLOPE_OUTER_CORNER) {
         // rounded, eases down from the high +x -z corner
         return 1 - smoothstep(Math.hypot(1 - u, v + 1), 0, 2)
-    } else if (cell.type === GroundType.SLOPE_INNER_CORNER) {
+    } else if (cell.type === TerrainType.SLOPE_INNER_CORNER) {
         // rounded, eases up from the low -x +z corner
         return smoothstep(Math.hypot(u + 1, v - 1), 0, 2)
     }

@@ -1,4 +1,4 @@
-import { TerrainCell, GroundType, Terrain } from "@lib/terrain"
+import { TerrainCell, TerrainType, Terrain } from "@lib/world/terrain"
 
 export interface TerrainPreset {
     name: string
@@ -24,23 +24,23 @@ export const terrainsByName: Record<string, Terrain> = Object.fromEntries(terrai
 
 // corner bits abcd -> piece, rotations are quarter turns of +y
 const cells: Record<string, TerrainCell> = {
-    "0000": { type: GroundType.LOW, rotation: 0 },
-    "1111": { type: GroundType.TALL, rotation: 0 },
+    "0000": { type: TerrainType.LOW, rotation: 0 },
+    "1111": { type: TerrainType.TALL, rotation: 0 },
     // slope, high side toward +x, -z, -x, +z
-    "0110": { type: GroundType.SLOPE, rotation: 0 },
-    "1100": { type: GroundType.SLOPE, rotation: 1 },
-    "1001": { type: GroundType.SLOPE, rotation: 2 },
-    "0011": { type: GroundType.SLOPE, rotation: 3 },
+    "0110": { type: TerrainType.SLOPE, rotation: 0 },
+    "1100": { type: TerrainType.SLOPE, rotation: 1 },
+    "1001": { type: TerrainType.SLOPE, rotation: 2 },
+    "0011": { type: TerrainType.SLOPE, rotation: 3 },
     // one high corner
-    "0100": { type: GroundType.SLOPE_OUTER_CORNER, rotation: 0 },
-    "1000": { type: GroundType.SLOPE_OUTER_CORNER, rotation: 1 },
-    "0001": { type: GroundType.SLOPE_OUTER_CORNER, rotation: 2 },
-    "0010": { type: GroundType.SLOPE_OUTER_CORNER, rotation: 3 },
+    "0100": { type: TerrainType.SLOPE_OUTER_CORNER, rotation: 0 },
+    "1000": { type: TerrainType.SLOPE_OUTER_CORNER, rotation: 1 },
+    "0001": { type: TerrainType.SLOPE_OUTER_CORNER, rotation: 2 },
+    "0010": { type: TerrainType.SLOPE_OUTER_CORNER, rotation: 3 },
     // one low corner
-    "1110": { type: GroundType.SLOPE_INNER_CORNER, rotation: 0 },
-    "1101": { type: GroundType.SLOPE_INNER_CORNER, rotation: 1 },
-    "1011": { type: GroundType.SLOPE_INNER_CORNER, rotation: 2 },
-    "0111": { type: GroundType.SLOPE_INNER_CORNER, rotation: 3 },
+    "1110": { type: TerrainType.SLOPE_INNER_CORNER, rotation: 0 },
+    "1101": { type: TerrainType.SLOPE_INNER_CORNER, rotation: 1 },
+    "1011": { type: TerrainType.SLOPE_INNER_CORNER, rotation: 2 },
+    "0111": { type: TerrainType.SLOPE_INNER_CORNER, rotation: 3 },
 }
 
 // heightmap on the cell corners, (d + 1) rows by (w + 1) cols, "#" high "." low

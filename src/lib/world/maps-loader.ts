@@ -1,15 +1,9 @@
-import random from "@huth/random"
-import { Vector3 } from "three"
-import { WorldPart } from "@src/types/world"
-import { WORLD_START_Z } from "./const"
 import { EntityPlacement, EntityType } from "@src/types/entity"
-import { cellsize, d, w } from "@lib/terrain"
 import { ModelType } from "@components/model"
 import type { StoredMap } from "@src/editor/maps"
 import { EditorPlacement } from "@src/editor/store"
 
-// which entity a map model spawns as, models not listed are skipped
-// everything is a building for now
+// which entity a map model spawns as, models not listed are skipped 
 const entityTypes: Partial<Record<ModelType, typeof EntityType.BUILDING>> = Object.fromEntries(
     Object.values(ModelType).map(i => [i, EntityType.BUILDING])
 )
@@ -31,7 +25,6 @@ function findgroup(placment: EditorPlacement, placements: EditorPlacement[]) {
     }
 
     return result.length === 1 ? [] : result.sort((a, b) => a.position[1] - b.position[1])
-
 }
 
 const files = import.meta.glob<StoredMap>("/assets/maps/map/*.json", {
@@ -39,7 +32,7 @@ const files = import.meta.glob<StoredMap>("/assets/maps/map/*.json", {
     import: "default",
 })
 
-const maps = Object.values(files).map(({ terrain, placements }) => {
+export const maps = Object.values(files).map(({ terrain, placements }) => {
     // trees dont take part in stacking
     const buildings = placements.filter(i => i.type !== EntityType.TREE)
 
@@ -79,16 +72,3 @@ const maps = Object.values(files).map(({ terrain, placements }) => {
             .filter(i => !!i)
     }
 })
-
-export function getNextWorldPart(previous?: Pick<WorldPart, "size" | "position">): WorldPart {
-    const z = previous ? previous.position.z + previous.size[1] : WORLD_START_Z
-    const map = random.pick(...maps)
-
-    return {
-        id: random.id(),
-        position: new Vector3(0, 0, z),
-        terrain: map.terrain,
-        placements: map.placements,
-        size: [w * cellsize, d * cellsize],
-    }
-}

@@ -34,10 +34,6 @@ export const WORLD_START_Z = -WORLD_PART_SIZE[1] * 2
 // shared unit box, scale it per use
 export const box = new BoxGeometry(1, 1, 1, 1, 1, 1)
 
-// ground tiles, single height level
-export const GROUND_CELL_SIZE = 2
-export const GROUND_HEIGHT = 1
-
 export const BULLET_SIZE = 1.25
 export const BULLET_SPEED = 40
 export const BULLET_COUNT = 40

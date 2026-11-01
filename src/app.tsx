@@ -11,7 +11,7 @@ import Lights from "@components/lights"
 import Player from "@components/player"
 import World from "@components/world/world"
 import Bullets from "@components/bullets"
-import Explosions from "@components/explosions/explosions"
+import Explosions from "@components/effects/explosions"
 
 extend(extensions)
 

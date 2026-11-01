@@ -1,7 +1,7 @@
 import { memo, useEffect, useEffectEvent, useMemo, useRef, useState } from "react"
 import TreeModel from "./tree-model"
 import Hitbox from "@components/hitbox"
-import { createParticles } from "@components/explosions/particle-mesh"
+import { createParticles } from "@components/effects/particle-mesh"
 import { removeEntities, useStore } from "@lib/store"
 import { useCollisionDetection } from "@src/hooks/use-collision-detection"
 import { Owner } from "@src/types/bullet"

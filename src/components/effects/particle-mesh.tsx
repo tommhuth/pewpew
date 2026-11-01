@@ -5,7 +5,7 @@ import { PARTICLE_COUNT } from "@lib/const"
 import { damp } from "three/src/math/MathUtils.js"
 import { useStore } from "@lib/store"
 import { ndelta, setColorAt, setMatrixAt } from "@lib/helpers/utils"
-import { getTerrainHeightAt, OUTSIDE_TERRAIN_HEIGHT } from "@lib/terrain"
+import { getTerrainHeightAt, OUTSIDE_TERRAIN_HEIGHT } from "@lib/world/terrain"
 import LoopCounter from "@lib/helpers/loop-counter"
 import { useInstanceClear } from "@src/hooks/use-instance-clear"
 import { Particle } from "@src/types/explosion"
@@ -91,16 +91,16 @@ export function createParticles({
 
 const geometry = new SphereGeometry(1, 3, 4)
 const colors = new Float32Array(PARTICLE_COUNT * 3).fill(1)
-const _groundPosition = new Vector3()
+const _terrainPosition = new Vector3()
 
-function getGroundHeight(position: Tuple3, parts: WorldPart[]) {
-    _groundPosition.set(position[0], position[1], position[2])
+function getTerrainHeight(position: Tuple3, parts: WorldPart[]) {
+    _terrainPosition.set(position[0], position[1], position[2])
 
     for (let i = 0, n = parts.length; i < n; i++) {
         const part = parts[i]
 
         if (position[2] >= part.position.z && position[2] < part.position.z + part.size[1]) {
-            return part.position.y + getTerrainHeightAt(part.terrain, _groundPosition, part.position.z)
+            return part.position.y + getTerrainHeightAt(part.terrain, _terrainPosition, part.position.z)
         }
     }
 
@@ -125,7 +125,7 @@ export default function ParticleMesh() {
         for (let i = particles.length - 1; i >= 0; i--) {
             const particle = particles[i]
             const { position, velocity, acceleration, rotation, radius, time } = particle
-            const floorY = getGroundHeight(position, world.parts)
+            const floorY = getTerrainHeight(position, world.parts)
             const grounded = position[1] <= floorY + radius + .15
             const magnitude = Math.abs(velocity[0]) + Math.abs(velocity[2])
 
