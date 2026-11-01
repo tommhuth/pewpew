@@ -6,7 +6,7 @@ import { FIREBALL_COUNT } from "@lib/const"
 import { depthIgnoreLayers } from "@lib/world/depth"
 import { useStore } from "@lib/store"
 import { clamp, setBufferAttribute, setMatrixAt } from "@lib/helpers/utils"
-import { blend, easeOutQuart } from "@lib/helpers/shaping"
+import { easeOutQuart, piecewiseLerp } from "@lib/helpers/shaping"
 import LoopCounter from "@lib/helpers/loop-counter"
 import { useShader } from "@src/hooks/use-shader"
 import { Fireball } from "@src/types/explosion"
@@ -47,13 +47,15 @@ export function createFireballs({
 }: CreateFireballsParams) {
     return Array.from({ length: count }, (_, i): Fireball => {
         const startRadius = (i / count) * (radius[1] - radius[0]) + radius[0]
+        // later ones are bigger, pull them in so the biggest sit in the middle
+        const reach = 1 - i / count
 
         return {
             index: fireballIndex.next(),
             position: [
-                random.pick(-spread[0], spread[0]) + position[0],
+                random.float(-spread[0], spread[0]) * reach + position[0],
                 random.float(0, spread[1]) + position[1],
-                random.pick(-spread[0], spread[0]) + position[2],
+                random.float(-spread[0], spread[0]) * reach + position[2],
             ],
             startRadius,
             maxRadius: startRadius * random.float(...growth),
@@ -82,7 +84,7 @@ export function updateFireball(instance: InstancedMesh, fireball: Fireball) {
         instance,
         index: fireball.index,
         position: _fireballPosition,
-        scale: fireball.time < 0 ? 0 : blend(_fireballBlend, easeOutQuart(t)),
+        scale: fireball.time < 0 ? 0 : piecewiseLerp(_fireballBlend, easeOutQuart(t)),
     })
 }
 

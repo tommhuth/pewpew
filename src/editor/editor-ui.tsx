@@ -2,13 +2,10 @@ import { TerrainType } from "@lib/world/terrain"
 import {
     createMap,
     EditorMode,
-    getCurrentMap,
-    resetTerrain,
     selectMap,
     setBrush,
     setMode,
     setTerrainPreset,
-    toStoredMap,
     useEditorStore,
 } from "./store"
 import { terrains } from "./terrain/terrain-loader"

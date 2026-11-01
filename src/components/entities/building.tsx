@@ -1,4 +1,4 @@
-import { memo, useEffect, useEffectEvent, useMemo, useRef } from "react"
+import { memo, useEffect, useEffectEvent, useMemo } from "react"
 import { useFrame } from "@react-three/fiber"
 import { BufferGeometry, Mesh } from "three"
 import Model, { ModelType } from "@components/model"
@@ -16,18 +16,14 @@ import random from "@huth/random"
 import { SpacebitsMaterial } from "@components/world/spacebits-material"
 import { getCollisionBox } from "@lib/world/bounding-boxes"
 
-// barrel particle color
 const particleColor = "#667"
 
-function explode([x, y, z]: Tuple3) {
-    const radius = random.float(.35, .45)
-
+function explode([x, y, z]: Tuple3, radius: number) {
     createExplosion({
         position: [x, y, z],
         count: 50,
-        radius: [radius * .25, radius * 1.5],
-        spread: [radius, radius * 3],
-        shockwave: random.float(radius * 6, radius * 8),
+        radius: [radius * .3 + .1, radius * .4 + .1],
+        spread: [radius, radius * 1.25],
     })
     createParticles({
         position: [x, y, z],
@@ -104,7 +100,8 @@ function Building({
         // falling ones have moved down since spawn
         const position: Tuple3 = ref.current ? ref.current.position.toArray() : [x, y, z]
 
-        explode(position)
+        // half the largest side, so the blast covers the building
+        explode(position, Math.max(...box.size) / 2)
 
         // only the one on the ground leaves a mark, group is sorted bottom up
         if (!group?.length || group[0].id === placementId) {
@@ -156,7 +153,7 @@ function Building({
     }, [grid, client])
 
     useFrame((state, delta) => {
-        if (model === ModelType.SPRINKLER) {
+        if (model === ModelType.SPRINKLER && ref.current) {
             ref.current.rotation.y += .5 * delta
         }
     })

@@ -2,7 +2,7 @@ import { createRoot as createUiRoot } from "react-dom/client"
 import { registerSW } from "virtual:pwa-register"
 import { lazy, Suspense, type JSX } from "react"
 import { createRoot, RenderProps, events } from "@react-three/fiber"
-import { AgXToneMapping, NoToneMapping } from "three"
+import { AgXToneMapping } from "three"
 import Ui from "./ui/ui"
 import { getCanvasSize, getDpr, getPixelSize, getZoom } from "@lib/viewport"
 

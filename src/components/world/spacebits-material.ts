@@ -1,10 +1,9 @@
-import { Camera, Group, MeshPhongMaterial, Object3D, Scene, SRGBColorSpace, TextureLoader, Vector2, WebGLRenderer } from "three"
+import { MeshPhongMaterial, SRGBColorSpace, TextureLoader, Vector2 } from "three"
 import spacebitsTextureUrl from "@assets/textures/spacebits_texture_alt.png"
 import dithering from "@shaders/dither.glsl"
 import noise from "@shaders/noise.glsl"
 import { lights, syncLights } from "@components/effects/lights/lights"
 import { lightsChunk, makeLightsUniform } from "@components/effects/lights/light-shader"
-import { BufferGeometry } from "three/webgpu"
 import random from "@huth/random"
 
 export const spacebitsTexture = new TextureLoader().load(spacebitsTextureUrl)

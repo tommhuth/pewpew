@@ -1,4 +1,4 @@
-import { extend, useFrame } from "@react-three/fiber"
+import { extend } from "@react-three/fiber"
 import { Perf } from "r3f-perf"
 import { useEffect } from "react"
 import config from "@lib/config"
@@ -49,11 +49,6 @@ export default function App() {
             canvas?.removeEventListener("transitionend", ready)
         }
     }, [loading])
-
-    useFrame(() => {
-        let x = useStore.getState().world.grid
-
-    })
 
     return (
         <>

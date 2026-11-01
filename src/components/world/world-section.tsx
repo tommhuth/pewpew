@@ -1,6 +1,6 @@
 import random from "@huth/random"
 import { useFrame } from "@react-three/fiber"
-import { createContext, memo, startTransition, useContext, useEffect, useMemo } from "react"
+import { createContext, memo, useContext, useEffect, useMemo } from "react"
 import { Vector3 } from "three"
 import { addEntities, removePartEntities, removeWorldPart, useStore } from "@lib/store"
 import Health from "@lib/helpers/health"

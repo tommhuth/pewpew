@@ -20,10 +20,9 @@ function Tree({
     variant,
     health,
     position: [x, y, z],
-    rotation,
 }: TreeEntity) {
     const grid = useStore(i => i.world.grid)
-    const [dead, setDead] = useState(false)
+    const [, setDead] = useState(false)
     const ref = useRef(null)
     // both share the entity id, so the player hitting either one damages the tree
     const trunk = useMemo(() => {
