@@ -1,5 +1,5 @@
 import { useFrame } from "@react-three/fiber"
-import { useState } from "react"
+import { useTransitionedState } from "@src/hooks/use-transitioned-state"
 import { InstancedMesh } from "three"
 import random from "@huth/random"
 import { useStore } from "@lib/store"
@@ -58,8 +58,8 @@ export function createExplosion({
 }
 
 export default function Explosions() {
-    const [fireballInstance, setFireballInstance] = useState<InstancedMesh | null>(null)
-    const [shockwaveInstance, setShockwaveInstance] = useState<InstancedMesh | null>(null)
+    const [fireballInstance, setFireballInstance] = useTransitionedState<InstancedMesh | null>(null)
+    const [shockwaveInstance, setShockwaveInstance] = useTransitionedState<InstancedMesh | null>(null)
 
     useInstanceClear(fireballInstance, FIREBALL_COUNT)
     useInstanceClear(shockwaveInstance, SHOCKWAVE_COUNT)

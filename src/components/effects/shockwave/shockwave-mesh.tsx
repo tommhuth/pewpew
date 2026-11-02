@@ -1,4 +1,5 @@
-import { Ref, useState } from "react"
+import { Ref } from "react"
+import { useTransitionedState } from "@src/hooks/use-transitioned-state"
 import { InstancedBufferAttribute, InstancedMesh, SphereGeometry } from "three"
 import random from "@huth/random"
 import { SHOCKWAVE_COUNT } from "@lib/const"
@@ -40,7 +41,7 @@ export function updateShockwave(instance: InstancedMesh, shockwave: Shockwave, p
 }
 
 export default function ShockwaveMesh({ ref }: { ref: Ref<InstancedMesh> }) {
-    const [material, setMaterial] = useState<ShockwaveMaterial | null>(null)
+    const [material, setMaterial] = useTransitionedState<ShockwaveMaterial | null>(null)
 
     useDepth(material?.uniforms)
 

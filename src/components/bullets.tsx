@@ -1,5 +1,5 @@
 import { useFrame } from "@react-three/fiber"
-import { useState } from "react"
+import { useTransitionedState } from "@src/hooks/use-transitioned-state"
 import { Color, ColorRepresentation, CylinderGeometry, InstancedMesh, Vector3 } from "three"
 import random from "@huth/random"
 import { useStore } from "@lib/store"
@@ -120,7 +120,7 @@ const _lightInnerColor = new Color("#fff")
 const _lightOuterColor = new Color("#fffcde")
 
 export default function Bullets() {
-    const [instance, setInstance] = useState<InstancedMesh | null>(null)
+    const [instance, setInstance] = useTransitionedState<InstancedMesh | null>(null)
 
     useInstanceClear(instance, BULLET_COUNT)
 

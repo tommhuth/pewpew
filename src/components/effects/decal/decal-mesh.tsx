@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useTransitionedState } from "@src/hooks/use-transitioned-state"
 import { useFrame } from "@react-three/fiber"
 import { InstancedBufferAttribute, InstancedMesh, PlaneGeometry } from "three"
 import random from "@huth/random"
@@ -35,8 +35,8 @@ geometry.rotateX(-Math.PI * .5)
 geometry.setAttribute("aTime", new InstancedBufferAttribute(new Float32Array(DECAL_COUNT), 1))
 
 export default function DecalMesh() {
-    const [decalInstance, setDecalInstance] = useState<InstancedMesh | null>(null)
-    const [material, setMaterial] = useState<DecalMaterial | null>(null)
+    const [decalInstance, setDecalInstance] = useTransitionedState<InstancedMesh | null>(null)
+    const [material, setMaterial] = useTransitionedState<DecalMaterial | null>(null)
 
     useInstanceClear(decalInstance, DECAL_COUNT)
     useLights(material?.uniforms.uLights)

@@ -1,4 +1,5 @@
-import { Ref, useState } from "react"
+import { Ref } from "react"
+import { useTransitionedState } from "@src/hooks/use-transitioned-state"
 import { InstancedMesh, Vector3 } from "three"
 import random from "@huth/random"
 import { FIREBALL_COUNT } from "@lib/const"
@@ -80,7 +81,7 @@ export function updateFireball(
 }
 
 export default function FireballMesh({ ref }: { ref: Ref<InstancedMesh> }) {
-    const [material, setMaterial] = useState<FireballMaterial | null>(null)
+    const [material, setMaterial] = useTransitionedState<FireballMaterial | null>(null)
 
     useDepth(material?.uniforms)
 

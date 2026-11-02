@@ -1,4 +1,5 @@
-import { memo, useEffect, useEffectEvent, useMemo, useRef, useState } from "react"
+import { memo, useEffect, useEffectEvent, useMemo, useRef } from "react"
+import { useTransitionedState } from "@src/hooks/use-transitioned-state"
 import TreeModel from "./tree-model"
 import Hitbox from "@components/hitbox"
 import { createParticles } from "@components/effects/particle-mesh"
@@ -22,7 +23,7 @@ function Tree({
     position: [x, y, z],
 }: TreeEntity) {
     const grid = useStore(i => i.world.grid)
-    const [, setDead] = useState(false)
+    const [, setDead] = useTransitionedState(false)
     const ref = useRef(null)
     // both share the entity id, so the player hitting either one damages the tree
     const trunk = useMemo(() => {

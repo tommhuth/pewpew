@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useTransitionedState } from "@src/hooks/use-transitioned-state"
 import { ColorRepresentation, InstancedMesh, SphereGeometry, Vector3 } from "three"
 import random from "@huth/random"
 import { PARTICLE_COUNT } from "@lib/const"
@@ -108,7 +108,7 @@ function getTerrainHeight(position: Tuple3, parts: WorldPart[]) {
 }
 
 export default function ParticleMesh() {
-    const [particleInstance, setParticleInstance] = useState<InstancedMesh | null>(null)
+    const [particleInstance, setParticleInstance] = useTransitionedState<InstancedMesh | null>(null)
 
     useInstanceClear(particleInstance, PARTICLE_COUNT)
 
