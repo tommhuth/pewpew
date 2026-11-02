@@ -6,7 +6,7 @@ export default function Debug() {
     const hitboxes = useStore(i => i.debug.hitboxes)
 
     return (
-        <div className="text-white absolute z-50 text-left top-4 w-45 left-4 overflow-hidden flex flex-col gap-1 pointer-events-auto text-sm">
+        <div className="text-black absolute z-50 text-left top-4 w-45 left-4 overflow-hidden flex flex-col gap-1 pointer-events-auto text-sm">
             <div>
                 State: {state.toUpperCase()}
             </div>

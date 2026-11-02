@@ -38,9 +38,12 @@ export function syncLights(uniform: LightUniforms) {
     }
 }
 
-export function useLights(uniform: LightUniforms) {
+// undefined until the material is mounted
+export function useLights(uniform: LightUniforms | undefined) {
     useFrame(() => {
-        syncLights(uniform)
+        if (uniform) {
+            syncLights(uniform)
+        }
     })
 }
 

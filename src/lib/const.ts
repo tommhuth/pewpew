@@ -43,5 +43,5 @@ export const FIRE_FREQUENCY = 150
 // explosion instance pools
 export const FIREBALL_COUNT = 600
 export const SHOCKWAVE_COUNT = 25
-export const PARTICLE_COUNT = 800
+export const PARTICLE_COUNT = 1000
 export const DECAL_COUNT = 30

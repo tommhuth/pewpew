@@ -5,7 +5,7 @@ import Model, { ModelType } from "@components/model"
 import Hitbox from "@components/hitbox"
 import { createExplosion } from "@components/effects/explosions"
 import { createParticles, CreateParticlesParams } from "@components/effects/particle-mesh"
-import { createDecal } from "@components/effects/decal-mesh"
+import { createDecal } from "@components/effects/decal/decal-mesh"
 import { removeEntities, setEntitiesFalling, useStore } from "@lib/store"
 import { useCollisionDetection } from "@src/hooks/use-collision-detection"
 import { useGravity } from "@src/hooks/use-gravity"
@@ -19,10 +19,12 @@ import { getCollisionBox } from "@lib/world/bounding-boxes"
 const particleColor = "#667"
 
 function explode([x, y, z]: Tuple3, radius: number) {
+    let r = Math.max(radius, .85)
+
     createExplosion({
         position: [x, y, z],
         count: 50,
-        radius: [radius * .3 + .1, radius * .4 + .1],
+        radius: [r * .4, r * .5],
         spread: [radius, radius * 1.25],
     })
     createParticles({
@@ -115,23 +117,23 @@ function Building({
         // falling ones were set off by a cascade from below that already covers everything above
         if (!falling && group?.length) {
             // placement ids repeat across parts, so match within this part only
-            let groupitems = useStore.getState().world.entities
+            let groupItems = useStore.getState().world.entities
                 .filter(i => i.partId === partId && group.some(g => g.id === i.placementId))
                 .sort((a, b) => a.position[1] - b.position[1])
-            let indx = groupitems.findIndex(i => i.id === id)
+            let index = groupItems.findIndex(i => i.id === id)
 
             // everything above falls then dies, further away starts later
             // no cleanup, these outlive the 200ms unmount
-            for (let i = indx + 1; i < groupitems.length; i++) {
-                let dur = i - indx
+            for (let i = index + 1; i < groupItems.length; i++) {
+                let duration = i - index
 
                 setTimeout(() => {
-                    setEntitiesFalling([groupitems[i].id])
-                }, random.integer(100, 170) * dur)
+                    setEntitiesFalling([groupItems[i].id])
+                }, random.integer(100, 170) * duration)
 
                 setTimeout(() => {
-                    groupitems[i].health.decrease(100)
-                }, random.integer(250, 450) * dur)
+                    groupItems[i].health.decrease(100)
+                }, random.integer(250, 450) * duration)
             }
         }
     })
@@ -139,7 +141,7 @@ function Building({
     useEffect(() => {
         return health.onChange(value => {
             if (ref.current) {
-                ref.current.material.uHealth.value = value / 100
+                ref.current.material.targetHealth = value / 100
             }
 
             if (value === 0) {

@@ -3,7 +3,7 @@ import { useFrame, useThree } from "@react-three/fiber"
 import { useEffect, useMemo } from "react"
 import { DepthTexture, MeshBasicMaterial, NearestFilter, UnsignedShortType } from "three"
 import { setState } from "@lib/store"
-import { DEPTH_IGNORE_LAYER } from "@lib/world/depth"
+import { DEPTH_IGNORE_LAYER } from "@components/effects/depth/depth-layers"
 
 // depth only, the color target is never read
 const depthMaterial = new MeshBasicMaterial({ colorWrite: false })

@@ -55,7 +55,7 @@ export const lightsChunk = /* glsl */`
         return result;
     }
 
-    void colorLight(vec3 vWorldPosition) {
+    void applyLights(vec3 vWorldPosition) {
         vec3 innerColor = vec3(0.);
         vec3 outerColor = vec3(0.);
         float light = getLight(vWorldPosition, innerColor, outerColor);

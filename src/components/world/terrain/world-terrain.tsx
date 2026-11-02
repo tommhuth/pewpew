@@ -53,6 +53,7 @@ export default function WorldTerrain() {
             args={[nodes[type].geometry, undefined, CAPACITY]}
             castShadow
             frustumCulled={false}
+            renderOrder={-2}
             receiveShadow
         >
             <TerrainMaterial />

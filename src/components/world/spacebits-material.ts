@@ -1,33 +1,31 @@
-import { MeshPhongMaterial, SRGBColorSpace, TextureLoader, Vector2 } from "three"
+import { MeshLambertMaterial, MeshPhongMaterial, SRGBColorSpace, TextureLoader, Vector2, WebGLProgramParametersWithUniforms } from "three"
 import spacebitsTextureUrl from "@assets/textures/spacebits_texture_alt.png"
 import dithering from "@shaders/dither.glsl"
 import noise from "@shaders/noise.glsl"
 import { lights, syncLights } from "@components/effects/lights/lights"
 import { lightsChunk, makeLightsUniform } from "@components/effects/lights/light-shader"
 import random from "@huth/random"
+import { damp } from "three/src/math/MathUtils.js"
 
 export const spacebitsTexture = new TextureLoader().load(spacebitsTextureUrl)
 
 spacebitsTexture.flipY = false
 spacebitsTexture.colorSpace = SRGBColorSpace
 
+const lightsUniform = makeLightsUniform()
 
-const lightsuni = makeLightsUniform()
-
-function upd() {
+function lightsUniformSync() {
     for (let i = 0; i < lights.length; i++) {
-        syncLights(lightsuni)
+        syncLights(lightsUniform)
     }
 
-    requestAnimationFrame(upd)
+    requestAnimationFrame(lightsUniformSync)
 }
 
-requestAnimationFrame(upd)
-
-
-
+requestAnimationFrame(lightsUniformSync)
 export class SpacebitsMaterial extends MeshPhongMaterial {
     uHealth = { value: 1 }
+    targetHealth = 1
 
     constructor() {
         super({
@@ -35,13 +33,21 @@ export class SpacebitsMaterial extends MeshPhongMaterial {
             shininess: 100,
             toneMapped: false
         })
+
+        this.animate()
+    }
+
+    animate() {
+        this.uHealth.value = damp(this.uHealth.value, this.targetHealth, 3.5, 1 / 60)
+
+        requestAnimationFrame(() => this.animate())
     }
 
     customProgramCacheKey() {
-        return "spacebits-dither"
+        return "spacebits"
     }
 
-    onBeforeCompile(shader) {
+    onBeforeCompile(shader: WebGLProgramParametersWithUniforms) {
         // swatch columns and rows in the texture
         shader.uniforms.uSwatches = { value: new Vector2(8, 4) }
         // colors picked down each swatch's gradient
@@ -51,13 +57,12 @@ export class SpacebitsMaterial extends MeshPhongMaterial {
         shader.uniforms.uDither = { value: 1 }
         shader.uniforms.uDamageOffset = { value: random.float(0, 100) }
         shader.uniforms.uHealth = this.uHealth
-        shader.uniforms.uLights = lightsuni
+        shader.uniforms.uLights = lightsUniform
         // see through swatch, pixels are dithered out instead of using alpha
         shader.uniforms.uGlassSwatch = { value: new Vector2(7, 3) }
         // swatch the glass takes its colors from, blue to dark blue
         shader.uniforms.uGlassGradient = { value: new Vector2(1, 1) }
-        // at the bottom of the glass, fades to fully see through at the top
-        shader.uniforms.uGlassOpacity = { value: 1 }
+        shader.uniforms.uGlassOpacity = { value: .8 }
 
         shader.vertexShader = shader.vertexShader
             .replace("#include <common>", /* glsl */`
@@ -96,9 +101,10 @@ export class SpacebitsMaterial extends MeshPhongMaterial {
                 ${noise}
 
                 // 0-1, grows in noise patches as health drops, scale sets the patch size
+                // - uHealth * .4
                 float getDamage(float scale) {
                     return (1. - pow(uHealth, 2.5))
-                        * smoothstep(.2, 1. - uHealth * .4, noise(vWorldPosition * scale + uDamageOffset));
+                        * smoothstep(.2 + uHealth * .3, 1. - (1. - uHealth) * .4, noise(vWorldPosition * scale + uDamageOffset));
                 }
             `)
             .replace("#include <dithering_fragment>", /* glsl */`
@@ -145,13 +151,12 @@ export class SpacebitsMaterial extends MeshPhongMaterial {
                 gl_FragColor.rgb = sRGBTransferOETF(textureLod(map, swatchUv, 0.)).rgb;
 
                 if (damaged) {
-                    gl_FragColor.rgb *= .85;
+                    gl_FragColor.rgb *= .95;
                 }
 
-                colorLight(vWorldPosition);
+                applyLights(vWorldPosition);
             `)
     }
 }
-
 
 export const spacebits = new SpacebitsMaterial()

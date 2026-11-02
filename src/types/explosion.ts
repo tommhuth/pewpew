@@ -31,7 +31,8 @@ export interface Explosion {
 // scorch mark, flat on the ground
 export interface Decal {
     position: Tuple3
-    // radians around y
+    time: number
+    lifetime: number
     rotation: number
     scale: number
     index: number

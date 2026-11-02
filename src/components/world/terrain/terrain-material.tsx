@@ -9,12 +9,15 @@ import noise from "@shaders/noise.glsl"
 import utils from "@shaders/utils.glsl"
 import easings from "@shaders/easings.glsl"
 
-// raw srgb values since the pick happens after the colorspace conversion
-const palette = ["#666", "#ccc", "#eee", "#fff"].map(i => new Color(i).convertLinearToSRGB())
+const palette = [
+    "#6a6a6e",
+    "#d0d0d4",
+    "#f2f2f6",
+    "#fbfbff",
+].map(i => new Color(i).convertLinearToSRGB())
 
 type TerrainMaterialProps = Omit<ThreeElements["meshPhongMaterial"], "onBeforeCompile" | "customProgramCacheKey">
 
-// used by the editor meshes and the instanced world terrain, works with and without instancing
 export default function TerrainMaterial(props: TerrainMaterialProps) {
     const {
         uniforms,
@@ -85,7 +88,7 @@ export default function TerrainMaterial(props: TerrainMaterialProps) {
 
                 gl_FragColor.rgb = uPalette[ditherStep(gl_FragCoord.xy, shade, float(PALETTE_SIZE), uDither)];
  
-                colorLight(vGridPosition); 
+                applyLights(vGridPosition); 
             `
         }
     })
@@ -97,7 +100,6 @@ export default function TerrainMaterial(props: TerrainMaterialProps) {
             shininess={6}
             specular="#666"
             toneMapped={false}
-            dithering
             color="#212629"
             onBeforeCompile={onBeforeCompile}
             customProgramCacheKey={customProgramCacheKey}

@@ -8,10 +8,10 @@ import { FIREBALL_COUNT, SHOCKWAVE_COUNT } from "@lib/const"
 import { useInstanceClear } from "@src/hooks/use-instance-clear"
 import { Explosion } from "@src/types/explosion"
 import { Tuple2, Tuple3 } from "@src/types/global"
-import FireballMesh, { createFireballs, updateFireball } from "./fireball-mesh"
-import ShockwaveMesh, { createShockwave, updateShockwave } from "./shockwave-mesh"
+import FireballMesh, { createFireballs, updateFireball } from "./fireball/fireball-mesh"
+import ShockwaveMesh, { createShockwave, updateShockwave } from "./shockwave/shockwave-mesh"
 import ParticleMesh from "./particle-mesh"
-import DecalMesh from "./decal-mesh"
+import DecalMesh from "./decal/decal-mesh"
 
 
 // active explosions, nothing renders off the list
