@@ -80,13 +80,16 @@ export function useControls() {
         targetPosition.clamp(EDGE_MIN, EDGE_MAX)
     })
 
-    // pointer: mouse maps screen position to target, touch drags relative
     useEffect(() => {
         let movementPointerId: number | null = null
+        let shootPointerId: number | null = null
         let previous: Tuple3 | null = null
 
         const onPointerDown = ({ pointerType, pointerId, clientX, clientY }: PointerEvent) => {
-            if (pointerType === "touch" && movementPointerId === null) {
+            if (pointerType === "touch" && clientX > window.innerWidth / 2) {
+                keys.space = true
+                shootPointerId = pointerId
+            } else if (pointerType === "touch" && movementPointerId === null) {
                 movementPointerId = pointerId
                 previous = toWorldCoords([clientX, clientY], camera)
             }
@@ -123,6 +126,11 @@ export function useControls() {
             if (movementPointerId === pointerId) {
                 movementPointerId = null
                 previous = null
+            }
+
+            if (shootPointerId === pointerId) {
+                shootPointerId = null
+                keys.space = false
             }
         }
 
