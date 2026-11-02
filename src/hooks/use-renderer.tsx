@@ -41,6 +41,9 @@ export default function useRenderer() {
     }, [fbo, depthTexture])
 
     useFrame(({ gl, scene, camera }) => {
+        // shadows only for the final pass, the depth pass never samples them
+        gl.shadowMap.autoUpdate = false
+
         // render to depth buffer, excluding depth-ignored objects
         camera.layers.enableAll()
         camera.layers.disable(DEPTH_IGNORE_LAYER)
@@ -52,6 +55,7 @@ export default function useRenderer() {
         scene.overrideMaterial = null
         camera.layers.enableAll()
         gl.setRenderTarget(null)
+        gl.shadowMap.needsUpdate = true
         gl.render(scene, camera)
     }, { phase: "render" })
 }
