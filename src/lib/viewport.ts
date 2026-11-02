@@ -8,9 +8,7 @@ const _up = new Vector3()
 // pixelated render: render at 1/pixelSize resolution and
 // let the browser upscale with image-rendering: pixelated
 export function getPixelSize() {
-    return 3
-
-    return Math.min(window.innerWidth, window.innerHeight) < 800 ? 2 : 2
+    return Math.min(window.innerWidth, window.innerHeight) < 800 ? 2 : 3
 }
 
 export function getDpr() {
