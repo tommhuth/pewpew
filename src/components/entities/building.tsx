@@ -15,6 +15,7 @@ import { Tuple3 } from "@src/types/global"
 import random from "@huth/random"
 import { SpacebitsMaterial } from "@components/world/spacebits-material"
 import { getCollisionBox } from "@lib/world/bounding-boxes"
+import { ndelta } from "@lib/helpers/utils"
 
 const particleColor = "#667"
 
@@ -155,6 +156,8 @@ function Building({
     }, [grid, client])
 
     useFrame((state, delta) => {
+        ref.current?.material.update(ndelta(delta))
+
         if (model === ModelType.SPRINKLER && ref.current) {
             ref.current.rotation.y += .5 * delta
         }

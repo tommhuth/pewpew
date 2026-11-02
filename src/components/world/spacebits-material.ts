@@ -2,7 +2,7 @@ import { MeshLambertMaterial, MeshPhongMaterial, SRGBColorSpace, TextureLoader, 
 import spacebitsTextureUrl from "@assets/textures/spacebits_texture_alt.png"
 import dithering from "@shaders/dither.glsl"
 import noise from "@shaders/noise.glsl"
-import { lights, syncLights } from "@components/effects/lights/lights"
+import { syncLights } from "@components/effects/lights/lights"
 import { lightsChunk, makeLightsUniform } from "@components/effects/lights/light-shader"
 import random from "@huth/random"
 import { damp } from "three/src/math/MathUtils.js"
@@ -15,9 +15,7 @@ spacebitsTexture.colorSpace = SRGBColorSpace
 const lightsUniform = makeLightsUniform()
 
 function lightsUniformSync() {
-    for (let i = 0; i < lights.length; i++) {
-        syncLights(lightsUniform)
-    }
+    syncLights(lightsUniform)
 
     requestAnimationFrame(lightsUniformSync)
 }
@@ -33,14 +31,11 @@ export class SpacebitsMaterial extends MeshPhongMaterial {
             shininess: 100,
             toneMapped: false
         })
-
-        this.animate()
     }
 
-    animate() {
-        this.uHealth.value = damp(this.uHealth.value, this.targetHealth, 3.5, 1 / 60)
-
-        requestAnimationFrame(() => this.animate())
+    // driven by the owner's useFrame, so it stops with the owner
+    update(delta: number) {
+        this.uHealth.value = damp(this.uHealth.value, this.targetHealth, 3.5, delta)
     }
 
     customProgramCacheKey() {
