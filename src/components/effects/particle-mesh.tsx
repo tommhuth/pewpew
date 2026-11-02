@@ -112,19 +112,25 @@ export default function ParticleMesh() {
 
     useInstanceClear(particleInstance, PARTICLE_COUNT)
 
-    useFrame((_, delta) => {
-        const { world } = useStore.getState()
+    useFrame((state, delta) => {
+        const { world, player } = useStore.getState()
 
-        if (!particleInstance) {
+        if (!particleInstance || !player.object) {
             return
         }
 
         const nd = ndelta(delta)
+        const diagonal = 10
 
         // backwards so removing while looping is safe
         for (let i = particles.length - 1; i >= 0; i--) {
             const particle = particles[i]
             const { position, velocity, acceleration, rotation, radius, time } = particle
+
+            if (position[2] < player.object.position.z - diagonal) {
+                particles.splice(i, 1)
+                continue
+            }
             const floorY = getTerrainHeight(position, world.parts)
             const grounded = position[1] <= floorY + radius + .15
             const magnitude = Math.abs(velocity[0]) + Math.abs(velocity[2])
