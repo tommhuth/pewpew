@@ -1,6 +1,6 @@
 import { memo, useEffect, useEffectEvent, useMemo, useRef } from "react"
 import { useTransitionedState } from "@src/hooks/use-transitioned-state"
-import TreeModel from "./tree-model"
+import TreeModel, { TreeModelRef } from "./tree-model"
 import Hitbox from "@components/hitbox"
 import { createParticles } from "@components/effects/particle/particle-mesh"
 import { createLeaves } from "@components/effects/leaf/leaf-mesh"
@@ -10,7 +10,6 @@ import { Owner } from "@src/types/bullet"
 import { EntityType, TreeEntity } from "@src/types/entity"
 import { Tuple3 } from "@src/types/global"
 
-// same boxes for every variant, square so rotation doesnt matter 
 const trunkSize: Tuple3 = [.28, 1.03, .28]
 const crownSize: Tuple3 = [1.25, 1.5, 1.25]
 export const crownColor = "#63c7a1"
@@ -24,8 +23,8 @@ function Tree({
 }: TreeEntity) {
     const grid = useStore(i => i.world.grid)
     const [, setDead] = useTransitionedState(false)
-    const ref = useRef(null)
-    // both share the entity id, so the player hitting either one damages the tree
+    const treeModelRef = useRef<TreeModelRef>(null)
+    const damagedBy = useRef(new Set<string>())
     const trunk = useMemo(() => {
         return grid.createClient(
             [x, y + trunkSize[1] / 2, z],
@@ -51,7 +50,7 @@ function Tree({
         client: crown,
         autoRemove: false,
         bullet: ({ bullet }) => {
-            ref.current?.hit()
+            treeModelRef.current?.hit()
             createParticles({
                 position: [
                     bullet.line.position.x,
@@ -78,8 +77,13 @@ function Tree({
                 count: [2, 4],
             })
 
-            if (bullet.owner === Owner.PLAYER && health.decrease(8)) {
-                setDead(true)
+            // bullets pass through and damages once
+            if (bullet.owner === Owner.PLAYER && !damagedBy.current.has(bullet.id)) {
+                damagedBy.current.add(bullet.id)
+
+                if (health.decrease(15)) {
+                    setDead(true)
+                }
             }
         },
     })
@@ -88,21 +92,23 @@ function Tree({
         createParticles({
             position: crown.position,
             offset: [[-.5, .5], [-1, 1], [-.5, .5]],
-            speed: [2.5, 10],
-            normal: [0, 1, 1],
-            spread: [[-1, 1], [-1, 1]],
+            speed: [3, 8],
+            normal: [0, .5, 1],
+            spread: [[-0, 0], [-1, 1]],
             count: [8, 15],
             radius: [.085, .2],
+            delay: 0,
             color: crownColor,
         })
         createParticles({
             position: crown.position,
             offset: [[-.25, .25], [-.51, .51], [-.25, .25]],
-            speed: [1, 10],
-            normal: [0, 1, 0],
-            spread: [[-.51, .51], [-.5, .5]],
+            speed: [6, 10],
+            normal: [0, .5, 1],
+            spread: [[-1, 1], [-.5, .5]],
             count: [5, 9],
             radius: [.15, .3],
+            delay: 0,
             color: crownColor,
         })
         createLeaves({
@@ -131,7 +137,7 @@ function Tree({
     return (
         <>
             <TreeModel
-                ref={ref}
+                ref={treeModelRef}
                 variant={variant}
                 position={[x, y, z]}
                 rotation-y={rotation}

@@ -52,13 +52,13 @@ export enum TreeType {
 // what the editor offers, type 0, 1, 2 and 6 left out
 export const treeVariants = Object.entries(TreeType).filter(([name]) => !/^TYPE[0126]_/.test(name))
 
-export type TreeRef = {
+export type TreeModelRef = {
     // tilts on z, eases back to 0
     hit: (amount?: number) => void
 }
 
 type TreeModelProps = {
-    ref?: Ref<TreeRef>
+    ref?: Ref<TreeModelRef>
     variant: TreeType
 } & Omit<ThreeElements["mesh"], "ref">
 
