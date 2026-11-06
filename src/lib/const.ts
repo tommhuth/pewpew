@@ -1,5 +1,6 @@
 import { BoxGeometry, Vector3 } from "three"
-import { Tuple2, Tuple3 } from "@src/types/global"
+import { Tuple3 } from "@src/types/global"
+import { cellsize, d } from "@lib/world/terrain"
 
 // world bounds the player can move within
 export const WORLD_CENTER_X = 0
@@ -27,9 +28,8 @@ export const PLAYER_SPEED = 3
 // min gap between the bottom of the player box and the terrain
 export const PLAYER_TERRAIN_BUFFER = .3
 
-// [width, depth]
-export const WORLD_PART_SIZE: Tuple2 = [20, 20]
-export const WORLD_START_Z = -WORLD_PART_SIZE[1] * 2
+// first part starts two part depths behind the player
+export const WORLD_START_Z = -d * cellsize * 2
 
 // shared unit box, scale it per use
 export const box = new BoxGeometry(1, 1, 1, 1, 1, 1)
@@ -43,5 +43,7 @@ export const FIRE_FREQUENCY = 150
 // explosion instance pools
 export const FIREBALL_COUNT = 600
 export const SHOCKWAVE_COUNT = 25
-export const PARTICLE_COUNT = 1000
+export const PARTICLE_COUNT = 900
 export const DECAL_COUNT = 30
+export const SMOKE_COUNT = 100
+export const LEAF_COUNT = 150

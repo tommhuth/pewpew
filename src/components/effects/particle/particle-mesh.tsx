@@ -2,9 +2,8 @@ import { useTransitionedState } from "@src/hooks/use-transitioned-state"
 import { ColorRepresentation, InstancedMesh, SphereGeometry, Vector3 } from "three"
 import random from "@huth/random"
 import { PARTICLE_COUNT } from "@lib/const"
-import { damp } from "three/src/math/MathUtils.js"
 import { useStore } from "@lib/store"
-import { ndelta, setColorAt, setMatrixAt } from "@lib/helpers/utils"
+import { addScaled, dampFactor, ndelta, scaleXZ, setColorAt, setMatrixAt } from "@lib/helpers/utils"
 import { getTerrainHeightAt, OUTSIDE_TERRAIN_HEIGHT } from "@lib/world/terrain"
 import LoopCounter from "@lib/helpers/loop-counter"
 import { useInstanceClear } from "@src/hooks/use-instance-clear"
@@ -147,21 +146,16 @@ export default function ParticleMesh() {
             }
 
             // at rest or 15s old, the instance is left where it is as debris until the slot is reused
-            if ((magnitude < .05 && grounded) || time > 15_000) {
+            if ((magnitude < .05 && grounded) || time > 10_000) {
                 particles.splice(i, 1)
                 continue
             }
 
-            velocity[0] += acceleration[0] * nd
-            velocity[1] += acceleration[1] * nd
-            velocity[2] += acceleration[2] * nd
+            addScaled(velocity, acceleration, nd)
+            scaleXZ(velocity, dampFactor(grounded ? 3 : particle.friction, nd))
+            addScaled(position, velocity, nd)
 
-            velocity[0] = damp(velocity[0], 0, grounded ? 3 : particle.friction, nd)
-            velocity[2] = damp(velocity[2], 0, grounded ? 3 : particle.friction, nd)
-
-            position[0] += velocity[0] * nd
-            position[1] = Math.max(floorY + radius * .25, position[1] + velocity[1] * nd)
-            position[2] += velocity[2] * nd
+            position[1] = Math.max(floorY + radius * .25, position[1])
 
             rotation[0] += -velocity[0] * nd * 6
             rotation[1] += -velocity[1] * nd * 4
@@ -171,6 +165,7 @@ export default function ParticleMesh() {
                 velocity[1] *= -particle.restitution
             }
 
+            setColorAt(particleInstance, particle.index, particle.color)
             setMatrixAt({
                 instance: particleInstance,
                 index: particle.index,
@@ -190,7 +185,7 @@ export default function ParticleMesh() {
             frustumCulled={false}
         >
             <instancedBufferAttribute attach="instanceColor" args={[colors, 3]} />
-            <meshLambertMaterial color="#fff" />
+            <particleMaterial />
         </instancedMesh>
     )
 }

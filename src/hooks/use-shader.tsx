@@ -1,6 +1,16 @@
 import { useCallback, useMemo } from "react"
 import { IUniform, WebGLRenderer, WebGLProgramParametersWithUniforms } from "three"
-import random from "@huth/random"
+
+// djb2, cheap stable key from the injected source
+function hash(input: string) {
+    let h = 5381
+
+    for (let i = 0; i < input.length; i++) {
+        h = (h * 33) ^ input.charCodeAt(i)
+    }
+
+    return (h >>> 0).toString(36)
+}
 
 export interface ShaderPart {
     head?: string
@@ -46,8 +56,12 @@ export function useShader<T extends UniformsRecord>({
     const uniforms = useMemo(() => {
         return incomingUniforms || {}
     }, [])
-    const id = useMemo(() => random.id(), [])
-    const customProgramCacheKey = useCallback(() => id, [id])
+    // same injected source = same key, so three shares one program across instances
+    // uniforms stay per material, three keeps them per material even when the program is shared
+    const key = useMemo(() => {
+        return hash([shared, vertex.head, vertex.main, fragment.head, fragment.main].join("\u0000"))
+    }, [shared, vertex.head, vertex.main, fragment.head, fragment.main])
+    const customProgramCacheKey = useCallback(() => key, [key])
     const onBeforeCompile = useCallback((shader: WebGLProgramParametersWithUniforms) => {
         shader.uniforms = {
             ...shader.uniforms,
@@ -76,7 +90,7 @@ export function useShader<T extends UniformsRecord>({
 
             ${fragment?.main ?? ""}  
         `)
-    }, [vertex.head, vertex.main, fragment.head, fragment.main])
+    }, [shared, vertex.head, vertex.main, fragment.head, fragment.main])
 
     return {
         uniforms: uniforms as ReturnUniformsRecord<T>,

@@ -10,7 +10,8 @@ import { Explosion } from "@src/types/explosion"
 import { Tuple2, Tuple3 } from "@src/types/global"
 import FireballMesh, { createFireballs, updateFireball } from "./fireball/fireball-mesh"
 import ShockwaveMesh, { createShockwave, updateShockwave } from "./shockwave/shockwave-mesh"
-import ParticleMesh from "./particle-mesh"
+import ParticleMesh from "./particle/particle-mesh"
+import LeafMesh from "./leaf/leaf-mesh"
 import DecalMesh from "./decal/decal-mesh"
 
 
@@ -23,7 +24,7 @@ interface CreateExplosionParams {
     radius: Tuple2 // fireball start radius, spread from first to last fireball
     growth?: Tuple2 // fireball max radius as a multiple of its start radius
     spread: [xz: number, y: number] // fireball offset from position, xz either side, y upwards
-    shockwave?: boolean
+    shockwave?: number // radius, always spawns one when given, otherwise 65% chance at radius[1] * 5
     delay?: number
 }
 
@@ -33,6 +34,7 @@ export function createExplosion({
     radius,
     growth = [1, 3.5],
     spread,
+    shockwave,
     delay = 0,
 }: CreateExplosionParams) {
     return setTimeout(() => {
@@ -44,7 +46,9 @@ export function createExplosion({
             lifetime: random.integer(baseLifetime * .75, baseLifetime),
             time: 0,
             mounted: false,
-            shockwave: random.boolean(.65) ? createShockwave(radius[1] * 5) : null,
+            shockwave: shockwave !== undefined
+                ? createShockwave(shockwave)
+                : random.boolean(.65) ? createShockwave(radius[1] * 5) : null,
             fireballs: createFireballs({
                 position,
                 count,
@@ -76,7 +80,6 @@ export default function Explosions() {
         const nd = ndelta(delta)
         const t = nd * 1000
 
-        // backwards so removing while looping is safe
         for (let i = explosions.length - 1; i >= 0; i--) {
             const explosion = explosions[i]
             const outside = explosion.position[2] < player.object.position.z - diagonal
@@ -109,6 +112,7 @@ export default function Explosions() {
             <FireballMesh ref={setFireballInstance} />
             <ShockwaveMesh ref={setShockwaveInstance} />
             <ParticleMesh />
+            <LeafMesh />
             <DecalMesh />
         </>
     )

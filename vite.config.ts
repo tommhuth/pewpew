@@ -46,7 +46,7 @@ export default defineConfig({
                 theme_color: "#000000",
                 icons: [
                     {
-                        "src": "./assets/icons/pwa-icon.png",
+                        "src": "icons/pwa-icon.png",
                         "sizes": "512x512",
                         "type": "image/png",
                         "purpose": "any maskable"

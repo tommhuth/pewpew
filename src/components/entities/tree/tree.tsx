@@ -2,24 +2,24 @@ import { memo, useEffect, useEffectEvent, useMemo, useRef } from "react"
 import { useTransitionedState } from "@src/hooks/use-transitioned-state"
 import TreeModel from "./tree-model"
 import Hitbox from "@components/hitbox"
-import { createParticles } from "@components/effects/particle-mesh"
+import { createParticles } from "@components/effects/particle/particle-mesh"
+import { createLeaves } from "@components/effects/leaf/leaf-mesh"
 import { removeEntities, useStore } from "@lib/store"
 import { useCollisionDetection } from "@src/hooks/use-collision-detection"
 import { Owner } from "@src/types/bullet"
 import { EntityType, TreeEntity } from "@src/types/entity"
 import { Tuple3 } from "@src/types/global"
 
-// same boxes for every variant, square so rotation doesnt matter
-// trunks are ~.19 wide, crowns start around 1.03 and top out at ~2.89
+// same boxes for every variant, square so rotation doesnt matter 
 const trunkSize: Tuple3 = [.28, 1.03, .28]
 const crownSize: Tuple3 = [1.25, 1.5, 1.25]
-// mid step of the crown swatch (col 1, row 2) in the spacebits texture
-const crownColor = "#008854"
+export const crownColor = "#63c7a1"
 
 function Tree({
     id,
     variant,
     health,
+    rotation,
     position: [x, y, z],
 }: TreeEntity) {
     const grid = useStore(i => i.world.grid)
@@ -67,6 +67,16 @@ function Tree({
                 stagger: [0, 0],
                 color: crownColor,
             })
+            createLeaves({
+                position: [
+                    bullet.line.position.x,
+                    bullet.line.position.y,
+                    crown.position[2] + crown.size[2] * .3
+                ],
+                size: [.2, .2, 0],
+                velocity: [0, .1, 6],
+                count: [2, 4],
+            })
 
             if (bullet.owner === Owner.PLAYER && health.decrease(8)) {
                 setDead(true)
@@ -95,8 +105,13 @@ function Tree({
             radius: [.15, .3],
             color: crownColor,
         })
-
-        setTimeout(() => removeEntities([id]), 150)
+        createLeaves({
+            position: crown.position,
+            size: crown.size,
+            velocity: [0, .5, 0],
+            count: [20, 30],
+        })
+        removeEntities([id])
     })
 
     useEffect(() => health.onChange(value => {
@@ -119,7 +134,7 @@ function Tree({
                 ref={ref}
                 variant={variant}
                 position={[x, y, z]}
-            //rotation-y={rotation}
+                rotation-y={rotation}
             />
             <Hitbox position={trunk.position} size={trunk.size} />
             <Hitbox position={crown.position} size={crown.size} />

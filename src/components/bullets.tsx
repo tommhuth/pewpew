@@ -14,7 +14,7 @@ import { Bullet, Owner } from "@src/types/bullet"
 import { Tuple3 } from "@src/types/global"
 import { WorldPart } from "@src/types/world"
 import { cellsize, getTerrainHeightAt } from "@lib/world/terrain"
-import { createParticles } from "@components/effects/particle-mesh"
+import { createParticles } from "@components/effects/particle/particle-mesh"
 
 // pool of all bullets, reused for the lifetime of the app to avoid per-shot allocs
 const pool: Bullet[] = Array.from({ length: BULLET_COUNT }, (_, i) => ({

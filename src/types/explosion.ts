@@ -38,6 +38,25 @@ export interface Decal {
     index: number
 }
 
+export interface Smoke {
+    position: Tuple3
+    radius: number
+    targetRadius: number
+    id: number
+    time: number
+    lifetime: number
+    color: ColorRepresentation
+}
+
+export interface Leaf {
+    position: Tuple3
+    velocity: Tuple3
+    scale: number
+    index: number
+    // flutter phase in radians, not ms
+    phase: number
+}
+
 export interface Particle {
     position: Tuple3
     velocity: Tuple3

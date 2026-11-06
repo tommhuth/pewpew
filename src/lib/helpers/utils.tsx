@@ -116,3 +116,24 @@ export function setBufferAttribute(
 export function dampFactor(lambda: number, delta: number) {
     return Math.exp(-lambda * delta)
 }
+
+/**
+ * In place `out += v * scale`, eg `addScaled(position, velocity, delta)`.
+ */
+export function addScaled(out: Tuple3, v: Tuple3, scale: number) {
+    out[0] += v[0] * scale
+    out[1] += v[1] * scale
+    out[2] += v[2] * scale
+
+    return out
+}
+
+/**
+ * In place scale of x and z only, y is left as is.
+ */
+export function scaleXZ(v: Tuple3, scale: number) {
+    v[0] *= scale
+    v[2] *= scale
+
+    return v
+}

@@ -1,4 +1,4 @@
-import { MeshLambertMaterial, MeshPhongMaterial, SRGBColorSpace, TextureLoader, Vector2, WebGLProgramParametersWithUniforms } from "three"
+import { MeshPhongMaterial, SRGBColorSpace, TextureLoader, Vector2, WebGLProgramParametersWithUniforms } from "three"
 import spacebitsTextureUrl from "@assets/textures/spacebits_texture_alt.png"
 import dithering from "@shaders/dither.glsl"
 import noise from "@shaders/noise.glsl"

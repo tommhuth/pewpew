@@ -5,7 +5,7 @@ import random from "@huth/random"
 import TurretModel, { TurretRef } from "./turret-model"
 import Hitbox from "@components/hitbox"
 import { createExplosion } from "@components/effects/explosions"
-import { createParticles } from "@components/effects/particle-mesh"
+import { createParticles } from "@components/effects/particle/particle-mesh"
 import { createDecal } from "@components/effects/decal/decal-mesh"
 import { removeEntities, useStore } from "@lib/store"
 import { getCollisionBox } from "@lib/world/bounding-boxes"
@@ -13,8 +13,7 @@ import { useCollisionDetection } from "@src/hooks/use-collision-detection"
 import { Owner } from "@src/types/bullet"
 import { EntityType, TurretEntity } from "@src/types/entity"
 
-// mid step of the body swatch (col 4, row 1) in the spacebits texture
-const particleColor = "#c8490f"
+const particleColor = "#ed9d79"
 
 function Turret({
     id,
@@ -45,7 +44,7 @@ function Turret({
                 normal: [0, 0, -1],
                 speed: [1, 5],
                 count: [2, 4],
-                radius: [.05, .15],
+                radius: [.05, .2],
                 stagger: [0, 0],
                 color: particleColor,
             })

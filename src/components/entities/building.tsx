@@ -4,7 +4,7 @@ import { BufferGeometry, Mesh } from "three"
 import Model, { ModelType } from "@components/model"
 import Hitbox from "@components/hitbox"
 import { createExplosion } from "@components/effects/explosions"
-import { createParticles, CreateParticlesParams } from "@components/effects/particle-mesh"
+import { createParticles, CreateParticlesParams } from "@components/effects/particle/particle-mesh"
 import { createDecal } from "@components/effects/decal/decal-mesh"
 import { removeEntities, setEntitiesFalling, useStore } from "@lib/store"
 import { useCollisionDetection } from "@src/hooks/use-collision-detection"
@@ -17,7 +17,7 @@ import { SpacebitsMaterial } from "@components/world/spacebits-material"
 import { getCollisionBox } from "@lib/world/bounding-boxes"
 import { ndelta } from "@lib/helpers/utils"
 
-const particleColor = "#667"
+const particleColor = "#eee"
 
 function explode([x, y, z]: Tuple3, radius: number) {
     let r = Math.max(radius, .85)
@@ -35,7 +35,7 @@ function explode([x, y, z]: Tuple3, radius: number) {
         normal: [0, 1, 0],
         spread: [[-1, 1], [-1, 1]],
         count: [30, 40],
-        radius: [.01, .2],
+        radius: [.01, .25],
         color: particleColor,
         stagger: [-150, 0],
     })
