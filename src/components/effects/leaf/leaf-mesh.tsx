@@ -10,6 +10,8 @@ import { useInstanceClear } from "@src/hooks/use-instance-clear"
 import { Leaf } from "@src/types/explosion"
 import { Tuple2, Tuple3 } from "@src/types/global"
 import { useFrame } from "@react-three/fiber"
+import { useLights } from "@components/effects/lights/lights"
+import type { LeafMaterial } from "./leaf-material"
 
 export const leaves: Leaf[] = []
 
@@ -83,8 +85,10 @@ const _rotation: Tuple3 = [0, 0, 0]
 
 export default function LeafMesh() {
     const [leafInstance, setLeafInstance] = useTransitionedState<InstancedMesh | null>(null)
+    const [material, setMaterial] = useTransitionedState<LeafMaterial | null>(null)
 
     useInstanceClear(leafInstance, LEAF_COUNT)
+    useLights(material?.uLights)
 
     useFrame((state, delta) => {
         const { world, player } = useStore.getState()
@@ -144,6 +148,7 @@ export default function LeafMesh() {
             frustumCulled={false}
         >
             <leafMaterial
+                ref={setMaterial}
                 side={DoubleSide}
                 shininess={87}
             />

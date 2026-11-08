@@ -11,6 +11,8 @@ import { Particle } from "@src/types/explosion"
 import { Tuple2, Tuple3 } from "@src/types/global"
 import { WorldPart } from "@src/types/world"
 import { useFrame } from "@react-three/fiber"
+import { useLights } from "@components/effects/lights/lights"
+import type { ParticleMaterial } from "./particle-material"
 
 export const particles: Particle[] = []
 
@@ -108,8 +110,10 @@ function getTerrainHeight(position: Tuple3, parts: WorldPart[]) {
 
 export default function ParticleMesh() {
     const [particleInstance, setParticleInstance] = useTransitionedState<InstancedMesh | null>(null)
+    const [material, setMaterial] = useTransitionedState<ParticleMaterial | null>(null)
 
     useInstanceClear(particleInstance, PARTICLE_COUNT)
+    useLights(material?.uLights)
 
     useFrame((state, delta) => {
         const { world, player } = useStore.getState()
@@ -185,7 +189,7 @@ export default function ParticleMesh() {
             frustumCulled={false}
         >
             <instancedBufferAttribute attach="instanceColor" args={[colors, 3]} />
-            <particleMaterial />
+            <particleMaterial ref={setMaterial} />
         </instancedMesh>
     )
 }

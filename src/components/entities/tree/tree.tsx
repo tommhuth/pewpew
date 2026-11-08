@@ -2,7 +2,7 @@ import { memo, useEffect, useEffectEvent, useMemo, useRef } from "react"
 import { useTransitionedState } from "@src/hooks/use-transitioned-state"
 import TreeModel, { TreeModelRef } from "./tree-model"
 import Hitbox from "@components/hitbox"
-import { createParticles } from "@components/effects/particle/particle-mesh"
+import { createParticles, CreateParticlesParams } from "@components/effects/particle/particle-mesh"
 import { createLeaves } from "@components/effects/leaf/leaf-mesh"
 import { removeEntities, useStore } from "@lib/store"
 import { useCollisionDetection } from "@src/hooks/use-collision-detection"
@@ -89,27 +89,28 @@ function Tree({
     })
 
     const handleDead = useEffectEvent(() => {
-        createParticles({
+        let sharedProps = {
+            normal: [0, .5, 1],
             position: crown.position,
+            delay: 0,
+            color: crownColor,
+        } satisfies Partial<CreateParticlesParams>
+
+        createParticles({
             offset: [[-.5, .5], [-1, 1], [-.5, .5]],
             speed: [3, 8],
-            normal: [0, .5, 1],
             spread: [[-0, 0], [-1, 1]],
             count: [8, 15],
             radius: [.085, .2],
-            delay: 0,
-            color: crownColor,
+            ...sharedProps
         })
         createParticles({
-            position: crown.position,
             offset: [[-.25, .25], [-.51, .51], [-.25, .25]],
             speed: [6, 10],
-            normal: [0, .5, 1],
             spread: [[-1, 1], [-.5, .5]],
             count: [5, 9],
             radius: [.15, .3],
-            delay: 0,
-            color: crownColor,
+            ...sharedProps
         })
         createLeaves({
             position: crown.position,
@@ -122,7 +123,7 @@ function Tree({
 
     useEffect(() => health.onChange(value => {
         if (value === 0) {
-            handleDead()
+            setTimeout(() => handleDead(), 180)
         }
     }), [health])
 

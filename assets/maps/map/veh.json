@@ -1,0 +1,278 @@
+{
+    "terrain": [
+        [
+            {
+                "type": "slope_outer_corner",
+                "rotation": 3
+            },
+            {
+                "type": "slope_outer_corner",
+                "rotation": 2
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "slope_outer_corner",
+                "rotation": 3
+            },
+            {
+                "type": "slope_outer_corner",
+                "rotation": 2
+            }
+        ],
+        [
+            {
+                "type": "slope_outer_corner",
+                "rotation": 0
+            },
+            {
+                "type": "slope_outer_corner",
+                "rotation": 1
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "slope_outer_corner",
+                "rotation": 0
+            },
+            {
+                "type": "slope_outer_corner",
+                "rotation": 1
+            }
+        ],
+        [
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "slope_outer_corner",
+                "rotation": 3
+            },
+            {
+                "type": "slope_outer_corner",
+                "rotation": 2
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            }
+        ],
+        [
+            {
+                "type": "slope_outer_corner",
+                "rotation": 3
+            },
+            {
+                "type": "slope_outer_corner",
+                "rotation": 2
+            },
+            {
+                "type": "slope_outer_corner",
+                "rotation": 0
+            },
+            {
+                "type": "slope_outer_corner",
+                "rotation": 1
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            }
+        ],
+        [
+            {
+                "type": "slope_outer_corner",
+                "rotation": 0
+            },
+            {
+                "type": "slope_outer_corner",
+                "rotation": 1
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "slope_outer_corner",
+                "rotation": 3
+            },
+            {
+                "type": "slope_outer_corner",
+                "rotation": 2
+            }
+        ],
+        [
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "slope_outer_corner",
+                "rotation": 0
+            },
+            {
+                "type": "slope_outer_corner",
+                "rotation": 1
+            }
+        ],
+        [
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            }
+        ]
+    ],
+    "placements": [
+        {
+            "type": "mobile_base_carriage_assembled",
+            "id": "62ac1b5d-273e-4769-b7af-2244dde827a4",
+            "position": [
+                0,
+                -2.3175916827487333e-15,
+                10
+            ],
+            "rotation": 2.443460952792061
+        },
+        {
+            "type": "mobile_base_cargo_assembled",
+            "id": "c1f89f54-c643-4556-b4d4-1e2afd5f758d",
+            "position": [
+                1.5,
+                -1.842065726639868e-15,
+                8.5
+            ],
+            "rotation": 2.443460952792061
+        },
+        {
+            "type": "mobile_base_command_assembled",
+            "id": "bff727b5-dde4-42e5-a74b-b7b950169b00",
+            "position": [
+                2.75,
+                -1.550752528302906e-15,
+                6.75
+            ],
+            "rotation": 2.6179938779914944
+        },
+        {
+            "type": "mobile_base_carriage_assembled",
+            "id": "19c8b062-e7ec-45d8-bec6-e8eb9f6c6270",
+            "position": [
+                -1.5,
+                -2.6388930044439122e-15,
+                11.5
+            ],
+            "rotation": 2.2689280275926285
+        },
+        {
+            "type": "structure_low",
+            "id": "6391401e-559c-4f5d-b53e-7ed9fe31a23c",
+            "position": [
+                -3,
+                0,
+                5
+            ],
+            "rotation": 1.3962634015954636
+        },
+        {
+            "type": "basemodule_B",
+            "id": "b32b9ae5-a2ed-4d31-87a9-f551cf875d10",
+            "position": [
+                -3,
+                1,
+                5
+            ],
+            "rotation": 3.3161255787892263
+        },
+        {
+            "type": "dome",
+            "id": "8f3cdd4b-49a7-4eb2-8f22-6ffbe830b8a0",
+            "position": [
+                -3,
+                2,
+                5
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "cargo_A_packed",
+            "id": "231bd22c-9589-4bb2-8dcc-07d912c86286",
+            "position": [
+                -0.25,
+                2.744736659051837e-15,
+                3.75
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "cargo_A_stacked",
+            "id": "3b443f5d-5566-4ace-9e2b-2dc46ac5568c",
+            "position": [
+                -1,
+                2.9867836547288726e-15,
+                4.25
+            ],
+            "rotation": 0.3490658503988659
+        }
+    ]
+}

@@ -5,10 +5,23 @@ import { clamp } from "./helpers/utils"
 const _right = new Vector3()
 const _up = new Vector3()
 
+// measured from a fixed inset-0 element (see root.tsx) since innerWidth/innerHeight
+// are stale or short in ios standalone mode, falls back to window until first measure
+const viewportSize: Tuple2 = [window.innerWidth, window.innerHeight]
+
+export function setViewportSize(width: number, height: number) {
+    viewportSize[0] = width
+    viewportSize[1] = height
+}
+
+export function getViewportSize(): Readonly<Tuple2> {
+    return viewportSize
+}
+
 // pixelated render: render at 1/pixelSize resolution and
 // let the browser upscale with image-rendering: pixelated
 export function getPixelSize() {
-    return Math.min(window.innerWidth, window.innerHeight) < 800 ? 2 : 3
+    return Math.min(...viewportSize) < 800 ? 2 : 3
 }
 
 export function getDpr() {
@@ -19,10 +32,11 @@ export function getDpr() {
 // overscan on each side so shifting by the snap remainder never shows an edge
 export function getCanvasSize(): Tuple2 {
     const pixelSize = getPixelSize()
+    const [width, height] = viewportSize
 
     return [
-        Math.ceil(window.innerWidth / pixelSize) * pixelSize + pixelSize * 2,
-        Math.ceil(window.innerHeight / pixelSize) * pixelSize + pixelSize * 2,
+        Math.ceil(width / pixelSize) * pixelSize + pixelSize * 2,
+        Math.ceil(height / pixelSize) * pixelSize + pixelSize * 2,
     ]
 }
 
@@ -68,5 +82,5 @@ export function getCanvasOffset(remainder: Vector2): Tuple2 {
 }
 
 export function getZoom() {
-    return 80 - clamp(1 - (Math.min(window.innerWidth, window.innerHeight) - 400) / 600, 0, 1) * 30
+    return 80 - clamp(1 - (Math.min(...viewportSize) - 400) / 600, 0, 1) * 30
 }

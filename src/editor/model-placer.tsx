@@ -276,8 +276,8 @@ export default function ModelPlacer() {
                                 <input
                                     type="range"
                                     min={0}
-                                    max={placement.type === EntityType.TURRET ? 270 : 315}
-                                    step={placement.type === EntityType.TURRET ? 90 : 45}
+                                    max={placement.type === EntityType.TURRET ? 270 : 350}
+                                    step={placement.type === EntityType.TURRET ? 90 : 10}
                                     value={placement.rotation * (180 / Math.PI)}
                                     onChange={(e) => {
                                         updatePlacement(placement.id, { rotation: e.currentTarget.valueAsNumber * (Math.PI / 180) })
