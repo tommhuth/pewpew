@@ -10,10 +10,10 @@ import utils from "@shaders/utils.glsl"
 import easings from "@shaders/easings.glsl"
 
 const palette = [
-    "#6a6a6e",
-    "#d0d0d4",
-    "#f2f2f6",
-    "#fbfbff",
+    "#5e6a82",
+    "#ccd0d9",
+    "#f1f2f6",
+    "#fbfbfd",
 ].map(i => new Color(i).convertLinearToSRGB())
 
 type TerrainMaterialProps = Omit<ThreeElements["meshPhongMaterial"], "onBeforeCompile" | "customProgramCacheKey">
@@ -36,7 +36,7 @@ export default function TerrainMaterial(props: TerrainMaterialProps) {
             // luma stretched from this range to the full palette
             uLumaRange: { value: new Vector2(0, .4) },
             uDither: { value: 1 },
-            uLineWidth: { value: 3 },
+            uLineWidth: { value: 1.5 },
             uLights: makeLightsUniform(),
         },
         vertex: {
@@ -81,7 +81,7 @@ export default function TerrainMaterial(props: TerrainMaterialProps) {
                     gl_FragColor.rgb * .45,
                     smoothstep(.3, 1., map((noise(vGridPosition.xz * .1) * 2. - 1.) * dot(vec3(0., 1., 0.), vGridNormal), -1., 1., 0., 1.))
                 );
-                gl_FragColor.rgb *= 1. - line * .05;
+                gl_FragColor.rgb *= 1. - line * .1;
                 gl_FragColor.rgb = mix(gl_FragColor.rgb , vec3(0.), smoothstep(0., -6., vGridPosition.y));
 
                 float shade = map(luma(gl_FragColor.rgb), uLumaRange.x, uLumaRange.y, 0., 1.);

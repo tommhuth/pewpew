@@ -81,8 +81,8 @@ export default function Lights() {
                 shadow-camera-top={10} // z
                 shadow-camera-bottom={-10}
                 shadow-mapSize={[512, 512]}
-                shadow-bias={.001}
-                shadow-radius={2.5}
+                shadow-bias={-.001}
+                shadow-radius={1.5}
             />
         </>
     )

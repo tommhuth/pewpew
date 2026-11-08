@@ -17,7 +17,7 @@ import { SpacebitsMaterial } from "@components/world/spacebits-material"
 import { getCollisionBox } from "@lib/world/bounding-boxes"
 import { ndelta } from "@lib/helpers/utils"
 
-const particleColor = "#eee"
+const particleColor = "#eaecf2"
 
 function explode([x, y, z]: Tuple3, radius: number) {
     let r = Math.max(radius, .85)

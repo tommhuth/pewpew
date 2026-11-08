@@ -46,4 +46,4 @@ export const SHOCKWAVE_COUNT = 25
 export const PARTICLE_COUNT = 900
 export const DECAL_COUNT = 30
 export const SMOKE_COUNT = 100
-export const LEAF_COUNT = 150
+export const LEAF_COUNT = 350

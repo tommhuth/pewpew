@@ -19,7 +19,7 @@ function getConfiguration() {
         events,
         orthographic: true,
         shadows: true,
-        dpr: getDpr(), // clamp(Math.pow(window.devicePixelRatio, 0.55), 1, 2),
+        dpr: getDpr(),
         size: {
             width,
             height,
@@ -33,7 +33,6 @@ function getConfiguration() {
             stencil: false,
             alpha: false,
             powerPreference: "high-performance",
-            //localClippingEnabled: true,
         },
     } satisfies RenderProps<HTMLCanvasElement>
 }

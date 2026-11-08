@@ -154,7 +154,7 @@ export default function Bullets() {
                     count: [2, 4],
                     radius: [.05, .15],
                     stagger: [0, 0],
-                    color: "#fff",
+                    color: "#f4f6fa",
                 })
             }
 
