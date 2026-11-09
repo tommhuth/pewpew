@@ -66,13 +66,13 @@ export default function Lights() {
             <hemisphereLight
                 groundColor={"#fff"}
                 color={"#fff"}
-                intensity={1.5}
+                intensity={1}
             />
             <directionalLight
                 ref={shadowLight}
                 color="#fff"
                 position={[-.35, .2, iz]}
-                intensity={14}
+                intensity={12}
                 castShadow
                 shadow-camera-near={-15} // y
                 shadow-camera-far={20}
@@ -83,6 +83,11 @@ export default function Lights() {
                 shadow-mapSize={[512, 512]}
                 shadow-bias={-.001}
                 shadow-radius={2}
+            />
+            <directionalLight
+                color="#fff"
+                position={[-1, .5, -1]}
+                intensity={2}
             />
         </>
     )
