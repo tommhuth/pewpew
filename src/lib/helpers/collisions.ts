@@ -12,10 +12,21 @@ const _collisions: Client[] = []
 
 export interface CollisionEventDetails {
     client: Client
+    point: Tuple3
+    normal: Tuple3
     bullet: Bullet
 }
 
-export function getBulletCollision(bullet: Bullet) {
+declare global {
+    interface WindowEventMap {
+        bulletcollision: CustomEvent<CollisionEventDetails>
+    }
+}
+
+let _point = new Vector3()
+let _normal = new Vector3()
+
+export function getBulletCollision(bullet: Bullet): [client: Client, normal: Vector3, point: Vector3] | null {
     const grid = useStore.getState().world.grid
     const near = grid.findNear(bullet.line.position, _findNearSize)
 
@@ -28,8 +39,8 @@ export function getBulletCollision(bullet: Bullet) {
         _size.set(s[0], s[1], s[2])
         _box.setFromCenterAndSize(_center, _size)
 
-        if (bullet.line.intersectsBox(_box)) {
-            return client
+        if (bullet.line.intersectsBox(_box, _normal, _point)) {
+            return [client, _normal, _point] as const
         }
     }
 

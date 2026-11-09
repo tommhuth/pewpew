@@ -1,5 +1,4 @@
 import { memo, useEffect, useEffectEvent, useMemo, useRef } from "react"
-import { useTransitionedState } from "@src/hooks/use-transitioned-state"
 import TreeModel, { TreeModelRef } from "./tree-model"
 import Hitbox from "@components/hitbox"
 import { createParticles, CreateParticlesParams } from "@components/effects/particle/particle-mesh"
@@ -22,22 +21,21 @@ function Tree({
     position: [x, y, z],
 }: TreeEntity) {
     const grid = useStore(i => i.world.grid)
-    const [, setDead] = useTransitionedState(false)
     const treeModelRef = useRef<TreeModelRef>(null)
-    const damagedBy = useRef(new Set<string>())
-    const trunk = useMemo(() => {
-        return grid.createClient(
-            [x, y + trunkSize[1] / 2, z],
-            trunkSize,
-            { id, type: EntityType.TREE }
-        )
-    }, [grid, id, x, y, z])
-    const crown = useMemo(() => {
-        return grid.createClient(
-            [x, y + trunkSize[1] + crownSize[1] / 2, z],
-            crownSize,
-            { id, type: EntityType.TREE }
-        )
+    const { trunk, crown, damagedBy } = useMemo(() => {
+        return {
+            damagedBy: new Set<string>(),
+            trunk: grid.createClient(
+                [x, y + trunkSize[1] / 2, z],
+                trunkSize,
+                { id, type: EntityType.TREE }
+            ),
+            crown: grid.createClient(
+                [x, y + trunkSize[1] + crownSize[1] / 2, z],
+                crownSize,
+                { id, type: EntityType.TREE }
+            )
+        }
     }, [grid, id, x, y, z])
 
     // player collision only, bullets pass through
@@ -49,41 +47,33 @@ function Tree({
     useCollisionDetection({
         client: crown,
         autoRemove: false,
-        bullet: ({ bullet }) => {
-            treeModelRef.current?.hit()
+        bullet: ({ bullet, point, normal }) => {
+            if (damagedBy.has(bullet.id)) {
+                return
+            }
+
+            damagedBy.add(bullet.id)
+            treeModelRef.current?.hit(normal)
             createParticles({
-                position: [
-                    bullet.line.position.x,
-                    bullet.line.position.y,
-                    crown.position[2] + crown.size[2] * .3
-                ],
-                spread: [[0, 0], [0, 0]],
+                position: point,
                 offset: [[-.1, .1], [-.1, .1], [0, 0]],
-                normal: [0, 0, 1],
-                speed: [4, 12],
+                normal,
+                speed: [2, 8],
+                spread: [[-.5, .5], [-.5, .5]],
                 count: [1, 2],
                 radius: [.05, .15],
                 stagger: [0, 0],
                 color: crownColor,
             })
             createLeaves({
-                position: [
-                    bullet.line.position.x,
-                    bullet.line.position.y,
-                    crown.position[2] + crown.size[2] * .3
-                ],
+                position: point,
                 size: [.2, .2, 0],
-                velocity: [0, .1, 6],
-                count: [2, 4],
+                velocity: [-normal[0] * 6, .1, -normal[2] * 6],
+                count: [4, 7],
             })
 
-            // bullets pass through and damages once
-            if (bullet.owner === Owner.PLAYER && !damagedBy.current.has(bullet.id)) {
-                damagedBy.current.add(bullet.id)
-
-                if (health.decrease(15)) {
-                    setDead(true)
-                }
+            if (bullet.owner === Owner.PLAYER) {
+                health.decrease(15)
             }
         },
     })
@@ -116,7 +106,7 @@ function Tree({
             position: crown.position,
             size: crown.size,
             velocity: [0, .5, 0],
-            count: [20, 30],
+            count: [15, 20],
         })
         removeEntities([id])
     })
@@ -143,8 +133,14 @@ function Tree({
                 position={[x, y, z]}
                 rotation-y={rotation}
             />
-            <Hitbox position={trunk.position} size={trunk.size} />
-            <Hitbox position={crown.position} size={crown.size} />
+            <Hitbox
+                position={trunk.position}
+                size={trunk.size}
+            />
+            <Hitbox
+                position={crown.position}
+                size={crown.size}
+            />
         </>
     )
 }

@@ -134,28 +134,37 @@ export default function Bullets() {
         // backwards so removing while looping is safe
         for (let i = bullets.length - 1; i >= 0; i--) {
             const bullet = bullets[i]
-            const client = getBulletCollision(bullet)
-            const part = client ? null : getTerrainHit(bullet, world.parts)
+            const hit = getBulletCollision(bullet)
+            const part = hit ? null : getTerrainHit(bullet, world.parts)
             let dead = false
 
-            if (client) {
-                dead = dispatchCollisionEvent({ client, bullet })
+            if (hit) {
+                let [client, normal, point] = hit
+
+                dead = dispatchCollisionEvent({
+                    client,
+                    bullet,
+                    normal: normal.toArray(),
+                    point: point.toArray()
+                })
             } else if (part) {
                 const { position } = bullet.line
-                // near face of the cell, off by up to half a cell on slopes but good enough
-                const iz = Math.floor((position.z - part.position.z) / cellsize)
 
-                dead = true
                 createParticles({
-                    position: [position.x, position.y, part.position.z + iz * cellsize],
-                    offset: [[-.1, .1], [-.1, .1], [0, 0]],
-                    normal: [0, 0, -1],
+                    position: position.toArray(),
+                    offset: [[-.1, .1], [-.1, .1], [-.1, .1]],
+                    normal: [
+                        -bullet.line.direction.x,
+                        0,
+                        -bullet.line.direction.z
+                    ],
                     speed: [2.5, 6],
                     count: [2, 4],
                     radius: [.05, .15],
                     stagger: [0, 0],
                     color: "#f4f6fa",
                 })
+                dead = true
             }
 
             if (!bullet.mounted) {
@@ -175,8 +184,12 @@ export default function Bullets() {
             // radius, decay, intensity. stops once the bullet is gone and the light fades out
             updateLight(bullet.lightIndex, 2, 3, 1, bullet.line.position, _lightInnerColor, _lightOuterColor)
 
-            // no frustum here, drop once far enough from the player
-            if (dead || Math.abs(bullet.line.position.z - player.object.position.z) > 20) {
+            let outside = Math.abs(bullet.line.position.z - player.object.position.z) > 20
+                || bullet.line.position.x < -10
+                || bullet.line.position.x > 10
+                || bullet.line.position.z < player.object.position.z - 10
+
+            if (dead || outside) {
                 bullets.splice(i, 1)
                 setMatrixNullAt(instance, bullet.index)
             }

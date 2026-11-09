@@ -63,7 +63,7 @@ function Building({
 
     useCollisionDetection({
         client,
-        bullet: ({ bullet }) => {
+        bullet: ({ bullet, point, normal }) => {
             let shared = {
                 radius: [.05, .15],
                 stagger: [0, 0],
@@ -71,13 +71,9 @@ function Building({
             } satisfies Partial<CreateParticlesParams>
 
             createParticles({
-                position: [
-                    bullet.line.position.x,
-                    bullet.line.position.y,
-                    client.position[2] - client.size[2] / 2
-                ],
+                position: point,
                 offset: [[-.1, .1], [-.1, .1], [0, 0]],
-                normal: [0, 0, -1],
+                normal,
                 speed: [1, 5],
                 count: [2, 4],
                 ...shared

@@ -410,6 +410,46 @@
                 5.75
             ],
             "rotation": 0
+        },
+        {
+            "type": "turret",
+            "id": "a547726e-ada4-4881-8741-606fbd7bc74e",
+            "position": [
+                -4.25,
+                0.75,
+                4.75
+            ],
+            "rotation": 1.5707963267948966
+        },
+        {
+            "type": "turret",
+            "id": "ac6a2a69-4d99-425d-8ca8-9c56772cf562",
+            "position": [
+                -8.5,
+                1.75,
+                1.25
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "turret",
+            "id": "df3abc8a-a40d-4763-a209-231d90a868ce",
+            "position": [
+                -2.25,
+                2.75,
+                7.5
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "turret",
+            "id": "dd36c434-337d-4b1b-82c2-bc503efd9994",
+            "position": [
+                4,
+                2.5,
+                11.5
+            ],
+            "rotation": 1.5707963267948966
         }
     ]
 }

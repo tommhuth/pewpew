@@ -1,6 +1,5 @@
 import { memo, useEffect, useEffectEvent, useMemo, useRef } from "react"
 import { useFrame } from "@react-three/fiber"
-import { LineSegments } from "three"
 import random from "@huth/random"
 import TurretModel, { TurretRef } from "./turret-model"
 import Hitbox from "@components/hitbox"
@@ -12,6 +11,8 @@ import { getCollisionBox } from "@lib/world/bounding-boxes"
 import { useCollisionDetection } from "@src/hooks/use-collision-detection"
 import { Owner } from "@src/types/bullet"
 import { EntityType, TurretEntity } from "@src/types/entity"
+import { ndelta } from "@lib/helpers/utils"
+import { createBullet } from "@components/bullets"
 
 const particleColor = "#ed9d79"
 
@@ -25,23 +26,27 @@ function Turret({
     falling,
 }: TurretEntity) {
     const grid = useStore(i => i.world.grid)
-    const ref = useRef<TurretRef>(null)
-    const debugRef = useRef<LineSegments>(null)
-    const box = useMemo(() => getCollisionBox(EntityType.TURRET, rotation), [rotation])
-    const client = useMemo(() => {
+    const turretRef = useRef<TurretRef>(null)
+    const { box, client } = useMemo(() => {
+        const box = getCollisionBox(EntityType.TURRET, rotation)
         const [ox, oy, oz] = box.offset
 
-        return grid.createClient([x + ox, y + oy, z + oz], box.size, { id, type: EntityType.TURRET })
-    }, [grid, id, x, y, z, box])
+        return {
+            box,
+            client: grid.createClient([x + ox, y + oy, z + oz], box.size, {
+                id,
+                type: EntityType.TURRET
+            })
+        }
+    }, [rotation, grid, id, x, y, z])
 
     useCollisionDetection({
         client,
-        bullet: ({ bullet }) => {
-            // on the face toward the player
+        bullet: ({ bullet, point, normal }) => {
             createParticles({
-                position: [bullet.line.position.x, bullet.line.position.y, client.position[2] - client.size[2] / 2],
+                position: point,
                 offset: [[-.1, .1], [-.1, .1], [0, 0]],
-                normal: [0, 0, -1],
+                normal,
                 speed: [1, 5],
                 count: [2, 4],
                 radius: [.05, .2],
@@ -50,7 +55,7 @@ function Turret({
             })
 
             if (bullet.owner === Owner.PLAYER) {
-                health.decrease(25)
+                health.decrease(35)
             }
         },
     })
@@ -91,8 +96,14 @@ function Turret({
         }
     }), [health])
 
+    useEffect(() => {
+        return () => {
+            grid.remove(client)
+        }
+    }, [grid, client])
+
     useFrame(() => {
-        const position = ref.current?.position
+        const position = turretRef.current?.position
 
         if (!falling || !position) {
             return
@@ -101,28 +112,49 @@ function Turret({
         // keep the hitbox with the model
         client.position[1] = position.y + box.offset[1]
         grid.updateClient(client)
-        debugRef.current?.position.fromArray(client.position)
     })
 
-    useEffect(() => {
-        const iid = setInterval(() => ref.current?.shoot(), 2_000)
 
-        return () => {
-            clearInterval(iid)
-            grid.remove(client)
+    let nextShotAt = useRef(0)
+    let time = useRef(0)
+
+    useFrame((state, delta) => {
+        let { player } = useStore.getState()
+        let d = 15
+
+        if (z - d < player.position.z && health.value > 0) {
+            if (time.current > nextShotAt.current) {
+                turretRef.current?.shoot()
+
+                let r = 3.5
+
+                createBullet({
+                    position: [
+                        x + Math.cos(rotation) * r,
+                        y + .6,
+                        z - Math.sin(rotation) * r
+                    ],
+                    rotation,
+                    owner: Owner.ENEMY,
+                    speed: 10,
+                })
+                time.current = 0
+                nextShotAt.current = random.pick(300, 700, 1100, 1600, 2400)
+            } else {
+                time.current += ndelta(delta) * 1000
+            }
         }
-    }, [grid, client])
+    })
 
     return (
         <>
             <TurretModel
-                ref={ref}
+                ref={turretRef}
                 position={[x, y, z]}
                 rotation-y={rotation}
                 falling={falling}
             />
             <Hitbox
-                ref={debugRef}
                 position={client.position}
                 size={client.size}
             />

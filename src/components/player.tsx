@@ -100,6 +100,11 @@ export default function Player() {
         building: (data) => damageEntity(data.id, 100),
         tree: (data) => damageEntity(data.id, 100),
         turret: (data) => damageEntity(data.id, 100),
+        bullet: (data) => {
+            if (data.bullet.owner === Owner.ENEMY) {
+                console.log("boom")
+            }
+        }
     })
 
     // shoot

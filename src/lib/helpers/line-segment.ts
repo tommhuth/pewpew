@@ -28,7 +28,10 @@ export default class LineSegment {
 
     // Check if the line segment intersects a Box3, using the Slab Method
     // thanks chattyman
-    intersectsBox(box: Box3): boolean {
+    // on hit, normal gets the axis aligned face the line entered through, point the entry point on that face
+    // entry is tracked unclamped, so a segment starting inside the box (tunneled in on a long frame)
+    // still resolves to the real entry face, with the point extrapolated back behind the start
+    intersectsBox(box: Box3, normal?: Vector3, point?: Vector3): boolean {
         const start = this.getStartPoint(_start)
         const end = this.getEndPoint(_end)
         const direction = _direction.subVectors(end, start)
@@ -36,6 +39,8 @@ export default class LineSegment {
         const boxMax = box.max
         let tMin = 0
         let tMax = 1
+        let tEntry = -Infinity
+        let axis = -1
 
         // x
         if (direction.x === 0) {
@@ -46,6 +51,11 @@ export default class LineSegment {
             const t2 = (boxMax.x - start.x) * inv
             const tNear = t1 < t2 ? t1 : t2
             const tFar = t1 < t2 ? t2 : t1
+
+            if (tNear > tEntry) {
+                tEntry = tNear
+                axis = 0
+            }
 
             if (tNear > tMin) tMin = tNear
             if (tFar < tMax) tMax = tFar
@@ -62,6 +72,11 @@ export default class LineSegment {
             const tNear = t1 < t2 ? t1 : t2
             const tFar = t1 < t2 ? t2 : t1
 
+            if (tNear > tEntry) {
+                tEntry = tNear
+                axis = 1
+            }
+
             if (tNear > tMin) tMin = tNear
             if (tFar < tMax) tMax = tFar
             if (tMin > tMax) return false
@@ -77,9 +92,30 @@ export default class LineSegment {
             const tNear = t1 < t2 ? t1 : t2
             const tFar = t1 < t2 ? t2 : t1
 
+            if (tNear > tEntry) {
+                tEntry = tNear
+                axis = 2
+            }
+
             if (tNear > tMin) tMin = tNear
             if (tFar < tMax) tMax = tFar
             if (tMin > tMax) return false
+        }
+
+        // zero length segment, no direction to resolve a face from
+        if (axis === -1) {
+            normal?.set(0, 0, 0)
+            point?.copy(start)
+
+            return true
+        }
+
+        if (normal) {
+            normal.set(0, 0, 0).setComponent(axis, direction.getComponent(axis) > 0 ? -1 : 1)
+        }
+
+        if (point) {
+            point.copy(direction).multiplyScalar(tEntry).add(start)
         }
 
         return true

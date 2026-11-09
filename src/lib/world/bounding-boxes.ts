@@ -97,7 +97,7 @@ export const boundingBoxes: Partial<Record<BoundingBoxKey, [min: Tuple3, max: Tu
     [TreeType.TYPE7_02]: [[-.88, -.12, -.93], [1.21, 2.89, .91]],
     [TreeType.TYPE7_03]: [[-1.06, 0, -1.07], [1.15, 2.89, 1.14]],
     [TreeType.TYPE7_04]: [[-.25, -.14, -1], [1.51, 2.89, .99]],
-    [EntityType.TURRET]: [[-.92, 0, -.44], [1.95, .84, .46]],
+    [EntityType.TURRET]: [[-.92, 0, -.44], [1.55, .84, .46]],
 }
 
 export function getBoundingBox(key: BoundingBoxKey): BoundingBox | undefined {

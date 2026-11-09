@@ -1,12 +1,13 @@
 import { Ref, useImperativeHandle, useRef } from "react"
 import { useGLTF } from "@react-three/drei"
 import { ThreeElements, useFrame } from "@react-three/fiber"
-import { Mesh } from "three"
+import { Group, Mesh } from "three"
 import { damp } from "three/src/math/MathUtils.js"
 import { spacebits } from "@components/world/spacebits-material"
 import { ndelta } from "@lib/helpers/utils"
 import treesModel from "@assets/models/trees.glb"
 import random from "@huth/random"
+import { Tuple3 } from "@src/types/global"
 
 export enum TreeType {
     TYPE3_01 = "Tree_Type3_01_Model",
@@ -32,8 +33,7 @@ export enum TreeType {
 export const treeVariants = Object.entries(TreeType)
 
 export type TreeModelRef = {
-    // tilts on z, eases back to 0
-    hit: (amount?: number) => void
+    hit: (normal: Tuple3, amount?: number) => void
 }
 
 type TreeModelProps = {
@@ -41,35 +41,45 @@ type TreeModelProps = {
     variant: TreeType
 } & Omit<ThreeElements["mesh"], "ref">
 
-export default function TreeModel({ ref, variant, ...rest }: TreeModelProps) {
+export default function TreeModel({ ref, variant, position, ...rest }: TreeModelProps) {
     const { nodes } = useGLTF(treesModel) as unknown as { nodes: Record<TreeType, Mesh> }
-    const meshRef = useRef<Mesh>(null)
+    const tiltRef = useRef<Group>(null)
 
     useImperativeHandle(ref, () => ({
-        hit: (amount = .15) => {
-            if (meshRef.current) {
-                meshRef.current.rotation.x = random.float(amount * .5, amount)
+        hit: ([nx, , nz], amount = .15) => {
+            if (tiltRef.current) {
+                let a = random.float(amount * .5, amount)
+
+                tiltRef.current.rotation.x = -nz * a
+                tiltRef.current.rotation.z = nx * a
             }
         },
     }), [])
 
     useFrame((_, delta) => {
-        if (!meshRef.current) {
+        let mesh = tiltRef.current
+
+        if (!mesh) {
             return
         }
 
-        meshRef.current.rotation.x = damp(meshRef.current.rotation.x, 0, 2.5, ndelta(delta))
+        mesh.rotation.x = damp(mesh.rotation.x, 0, 2.5, ndelta(delta))
+        mesh.rotation.z = damp(mesh.rotation.z, 0, 2.5, ndelta(delta))
     })
 
     return (
-        <mesh
-            geometry={nodes[variant].geometry}
-            material={spacebits}
-            castShadow
-            receiveShadow
-            ref={meshRef}
-            {...rest}
-        />
+        <group
+            position={position}
+            ref={tiltRef}
+        >
+            <mesh
+                geometry={nodes[variant].geometry}
+                material={spacebits}
+                castShadow
+                receiveShadow
+                {...rest}
+            />
+        </group>
     )
 }
 

@@ -1,7 +1,7 @@
 import { createRoot as createUiRoot } from "react-dom/client"
 import { registerSW } from "virtual:pwa-register"
 import { lazy, Suspense, type JSX } from "react"
-import { createRoot, RenderProps, events } from "@react-three/fiber/legacy"
+import { createRoot, RenderProps, events } from "@react-three/fiber"
 import { AgXToneMapping } from "three"
 import Ui from "./ui/ui"
 import { getCanvasSize, getDpr, getPixelSize, getZoom, setViewportSize } from "@lib/viewport"
@@ -79,11 +79,13 @@ if (isEditorMode) {
 }
 
 // ios standalone settles its viewport after load without a (correct) resize event,
-// observing a fixed inset-0 element catches that plus regular resizes/rotations
-new ResizeObserver(([entry]) => {
+// this catches resizes/rotations
+let observer = new ResizeObserver(([entry]) => {
     setViewportSize(entry.contentRect.width, entry.contentRect.height)
     configure()
-}).observe(document.getElementById("viewport") as HTMLDivElement)
+})
+
+observer.observe(document.getElementById("viewport") as HTMLDivElement)
 
 let updateSW = registerSW({
     onNeedRefresh() {
