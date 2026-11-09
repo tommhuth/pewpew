@@ -25,11 +25,11 @@ function getConfiguration() {
             top: 0,
             left: 0
         },
+        shadows: true,
         gl: {
             toneMapping: AgXToneMapping,
             antialias: false,
             depth: true,
-            shadows: true,
             stencil: false,
             alpha: false,
             powerPreference: "high-performance",
