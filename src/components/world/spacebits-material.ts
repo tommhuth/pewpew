@@ -35,7 +35,7 @@ export class SpacebitsMaterial extends MeshPhongMaterial {
 
     // driven by the owner's useFrame, so it stops with the owner
     update(delta: number) {
-        this.uHealth.value = damp(this.uHealth.value, this.targetHealth, 3.5, delta)
+        this.uHealth.value = damp(this.uHealth.value, this.targetHealth, 6, delta)
     }
 
     customProgramCacheKey() {
@@ -98,8 +98,8 @@ export class SpacebitsMaterial extends MeshPhongMaterial {
                 // 0-1, grows in noise patches as health drops, scale sets the patch size
                 // - uHealth * .4
                 float getDamage(float scale) {
-                    return (1. - pow(uHealth, 2.5))
-                        * smoothstep(.2 + uHealth * .3, 1. - (1. - uHealth) * .4, noise(vWorldPosition * scale + uDamageOffset));
+                    return (1. - pow(uHealth, 2.5)) 
+                        * smoothstep(.2 + uHealth * .3, 1. - (1. - uHealth) * .4, noise(vWorldPosition * scale * 2. + uDamageOffset));
                 }
             `)
             .replace("#include <dithering_fragment>", /* glsl */`
@@ -146,7 +146,7 @@ export class SpacebitsMaterial extends MeshPhongMaterial {
                 gl_FragColor.rgb = sRGBTransferOETF(textureLod(map, swatchUv, 0.)).rgb;
 
                 if (damaged) {
-                    gl_FragColor.rgb *= .95;
+                    gl_FragColor.rgb *= vec3(.95, .95, 1.);
                 }
 
                 applyLights(vWorldPosition);

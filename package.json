@@ -13,7 +13,7 @@
     "dependencies": {
         "@huth/random": "^6.0.2",
         "@react-three/drei": "11.0.0-alpha.7",
-        "@react-three/fiber": "10.0.0-alpha.5",
+        "@react-three/fiber": "10.0.0-alpha.6",
         "@types/node": "^26.2.0",
         "r3f-perf": "^7.2.3",
         "react": "^19.2.8",

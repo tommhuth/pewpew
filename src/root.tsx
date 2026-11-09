@@ -1,7 +1,7 @@
 import { createRoot as createUiRoot } from "react-dom/client"
 import { registerSW } from "virtual:pwa-register"
 import { lazy, Suspense, type JSX } from "react"
-import { createRoot, RenderProps, events } from "@react-three/fiber"
+import { createRoot, RenderProps, events } from "@react-three/fiber/legacy"
 import { AgXToneMapping } from "three"
 import Ui from "./ui/ui"
 import { getCanvasSize, getDpr, getPixelSize, getZoom, setViewportSize } from "@lib/viewport"
@@ -18,7 +18,6 @@ function getConfiguration() {
         },
         events,
         orthographic: true,
-        shadows: true,
         dpr: getDpr(),
         size: {
             width,
@@ -30,6 +29,7 @@ function getConfiguration() {
             toneMapping: AgXToneMapping,
             antialias: false,
             depth: true,
+            shadows: true,
             stencil: false,
             alpha: false,
             powerPreference: "high-performance",
