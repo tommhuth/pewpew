@@ -62,7 +62,10 @@ export const lightsChunk = /* glsl */`
         int lit = ditherStep(gl_FragCoord.xy, smoothstep(.0, .9, light), 2., 1.) ;
 
         if (lit> 0) {
-            vec3 palette[2] = vec3[2](outerColor, innerColor);
+            // filled per element, mali skips default precision on array constructors
+            vec3 palette[2];
+            palette[0] = outerColor;
+            palette[1] = innerColor;
             int index = ditherStep(gl_FragCoord.xy + vec2(1.), light, 2., .5) ;
 
             gl_FragColor.rgb = palette[index];

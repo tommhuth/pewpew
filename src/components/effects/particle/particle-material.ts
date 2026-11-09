@@ -61,7 +61,11 @@ export class ParticleMaterial extends MeshPhongMaterial {
             `)
         shader.fragmentShader = shader.fragmentShader.replace("#include <dithering_fragment>", /* glsl */`
             vec3 col = vColor.rgb * map(random(vec2(vInstanceId, 0.)), 0., 1., .85, 1.1);
-            vec3 palette[3] = vec3[3](col * .9,col , col + vec3(.1));
+            // filled per element, mali skips default precision on array constructors
+            vec3 palette[3];
+            palette[0] = col * .9;
+            palette[1] = col;
+            palette[2] = col + vec3(.1);
             int dither = ditherStep(gl_FragCoord.xy, map(light, .0, 5., 0., 1.), 3., 1.);
 
             gl_FragColor.rgb = palette[dither] ;

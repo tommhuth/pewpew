@@ -5,7 +5,7 @@ import type { LightUniforms } from "./light-shader"
 import LoopCounter from "@lib/helpers/loop-counter"
 import { ndelta } from "@lib/helpers/utils"
 
-export const LIGHT_INDEX = 10
+export const LIGHT_INDEX = 30
 export const lightIndex = new LoopCounter(LIGHT_INDEX)
 export const lights = Array.from({ length: LIGHT_INDEX }).map(() => new Light())
 

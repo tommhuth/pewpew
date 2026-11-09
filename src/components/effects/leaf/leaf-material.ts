@@ -63,7 +63,11 @@ export class LeafMaterial extends MeshPhongMaterial {
         shader.fragmentShader = shader.fragmentShader.replace("#include <dithering_fragment>", /* glsl */`
             vec3 col = diffuse.rgb
                 * map(random(vec2(vInstanceId, 0.)), 0., 1., .8, 1.1);
-            vec3 palette[3] = vec3[3](col * .8,col , col + vec3(.2));
+            // filled per element, mali skips default precision on array constructors
+            vec3 palette[3];
+            palette[0] = col * .8;
+            palette[1] = col;
+            palette[2] = col + vec3(.2);
             int dither = ditherStep(gl_FragCoord.xy, map(light, .0, 5., 0., 1.), 3., .5);
 
             gl_FragColor.rgb = palette[dither] ;
