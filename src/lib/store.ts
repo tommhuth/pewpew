@@ -138,6 +138,19 @@ export function removePartEntities(partId: string) {
     })
 }
 
+
+const queue: Entity[] = []
+
+export function queueEntities(entities: Entity[]) {
+    queue.push(...entities)
+}
+
+export function flushEntityQueue(max = 1) {
+    if (queue.length) {
+        addEntities(queue.splice(0, max))
+    }
+}
+
 export function setEntitiesFalling(ids: string[]) {
     const world = useStore.getState().world
     const falling = new Set(ids)

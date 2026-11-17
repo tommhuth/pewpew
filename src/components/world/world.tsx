@@ -1,6 +1,6 @@
 import { useFrame } from "@react-three/fiber"
 import { useLayoutEffect } from "react"
-import { addWorldPart, useStore } from "@lib/store"
+import { addWorldPart, flushEntityQueue, useStore } from "@lib/store"
 import WorldSection from "./world-section"
 import Entities from "@components/entities/entities"
 import WorldTerrain from "./terrain/world-terrain"
@@ -28,6 +28,8 @@ export default function World() {
         if (lastPart.position.z + lastPart.size[1] < player.object.position.z + buffer) {
             addWorldPart()
         }
+
+        flushEntityQueue()
     })
 
     return (
