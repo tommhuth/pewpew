@@ -67,9 +67,7 @@ const fragmentShader = /* glsl */`
         }
  
 
-        gl_FragColor.rgb = mix(vec3(0.), vec3(1.), l); 
-        // vColor is linear, back to srgb so the hex matches the spacebits swatches
-        gl_FragColor.rgb = sRGBTransferOETF(vec4(vColor, 1.)).rgb;
+        gl_FragColor.rgb = vec3(1.);  
         gl_FragColor.a = 1.;
     }
 `

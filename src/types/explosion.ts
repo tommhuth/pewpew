@@ -40,12 +40,15 @@ export interface Decal {
 
 export interface Smoke {
     position: Tuple3
-    radius: number
-    targetRadius: number
-    id: number
+    normal: Tuple3
+    scale: number
+    // drift along normal, units per second
+    speed: number
+    // shrink rate of the scale
+    damping: number
     time: number
-    lifetime: number
-    color: ColorRepresentation
+    duration: number
+    id: number
 }
 
 export interface Leaf {
