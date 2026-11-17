@@ -407,6 +407,16 @@
                 1.5
             ],
             "rotation": 0
+        },
+        {
+            "type": "turret",
+            "id": "400dcf98-c2f0-4151-9e01-4be0de2880c5",
+            "position": [
+                -5,
+                2.25,
+                5.5
+            ],
+            "rotation": 0
         }
     ]
 }

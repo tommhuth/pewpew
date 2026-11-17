@@ -91,7 +91,7 @@ function Turret({
     })
 
     useEffect(() => health.onChange(value => {
-        turretRef.current?.hit()
+        turretRef.current?.flash()
 
         if (value === 0) {
             handleDead()

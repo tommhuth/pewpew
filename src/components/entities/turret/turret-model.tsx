@@ -16,7 +16,7 @@ type TurretNodes = Record<"turret2_1" | "turret2_2", Mesh>
 export type TurretRef = {
     // barrel kick and muzzle smoke
     shoot: () => void
-    hit: () => void
+    flash: () => void
     position: Vector3 | undefined
 }
 
@@ -40,7 +40,7 @@ export default function TurretModel({ ref, falling, ...rest }: TurretModelProps)
                 barrelRef.current.position.x = -.65
             }
         },
-        hit() {
+        flash() {
             hitSpacebitsMaterial(groupRef.current)
         },
         get position() {
