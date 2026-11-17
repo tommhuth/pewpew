@@ -195,8 +195,8 @@
             "rotation": 3.141592653589793
         },
         {
+            "type": "eco_module",
             "id": "9889d407-b73e-4bd8-9680-7191be6fed59",
-            "type": "basemodule_B",
             "position": [
                 4,
                 1,
@@ -341,9 +341,9 @@
             "variant": "Tree_Type5_04_Model",
             "id": "7cd7fd0c-9906-4094-9b7d-0b5d111cb984",
             "position": [
-                1.75,
+                0,
                 1,
-                4.5
+                5.5
             ],
             "rotation": 0.7853981633974483
         },
@@ -388,22 +388,23 @@
             "rotation": 0
         },
         {
-            "type": "eco_module",
-            "id": "1ff8943d-1a5d-4cd5-b148-fe208b2a31da",
-            "position": [
-                0.75,
-                -2.6819227496971456e-16,
-                1.25
-            ],
-            "rotation": 0
-        },
-        {
             "type": "dome",
             "id": "92f98f2b-d36c-4b3c-bc8b-ab4a963cf154",
             "position": [
                 -3.75,
                 2,
                 3
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "plant",
+            "scale": 1.5,
+            "id": "7a4cbd79-9489-4dd0-bde1-40642c3582d2",
+            "position": [
+                0.5,
+                3.1643523210719963e-15,
+                1.5
             ],
             "rotation": 0
         }

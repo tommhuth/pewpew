@@ -3,6 +3,7 @@ import { EntityType } from "@src/types/entity"
 import Building from "./building"
 import Turret from "./turret/turret"
 import Tree from "./tree/tree"
+import Plant from "./plant/plant"
 
 export default function Entities() {
     const entities = useStore(i => i.world.entities)
@@ -15,6 +16,8 @@ export default function Entities() {
                 return <Turret key={entity.id} {...entity} />
             case EntityType.TREE:
                 return <Tree key={entity.id} {...entity} />
+            case EntityType.PLANT:
+                return <Plant key={entity.id} {...entity} />
         }
     })
 }

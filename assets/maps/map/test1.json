@@ -320,9 +320,9 @@
             "variant": "Tree_Type3_02_Model",
             "id": "b6d1eba1-13ce-4f06-978f-811d30c7be74",
             "position": [
-                -1.25,
+                -0.25,
                 0,
-                7.25
+                6.25
             ],
             "rotation": 0
         },
@@ -331,31 +331,31 @@
             "variant": "Tree_Type3_04_Model",
             "id": "f89e16e4-b895-4b35-ad48-806389880b7f",
             "position": [
-                1.5,
+                2,
                 0,
-                7.25
+                6.5
             ],
-            "rotation": 0
+            "rotation": 1.3962634015954636
         },
         {
             "type": "tree",
             "variant": "Tree_Type5_02_Model",
             "id": "e9f0ec68-eea7-4edc-9543-65a7a1f144ea",
             "position": [
-                -3,
+                -1,
                 -3.3992814749318495e-16,
-                1.5
+                3.75
             ],
             "rotation": 0
         },
         {
             "type": "tree",
-            "variant": "Tree_Type4_05_Model",
+            "variant": "Tree_Type7_03_Model",
             "id": "d8993dea-955d-4809-9487-ad6daf7d02b4",
             "position": [
-                2,
+                3,
                 0,
-                12.5
+                11.75
             ],
             "rotation": 0
         },
@@ -375,9 +375,9 @@
             "variant": "Tree_Type5_04_Model",
             "id": "97aa6d57-03b5-44fe-891a-76d2bc26acd1",
             "position": [
-                -0.25,
+                -1.5,
                 0,
-                11
+                8.5
             ],
             "rotation": 0
         },
@@ -385,9 +385,9 @@
             "type": "dome",
             "id": "f441e20d-8daa-4389-b253-66fb95652443",
             "position": [
-                1.25,
-                -5.117891303367313e-16,
-                2.25
+                -5,
+                2,
+                6.75
             ],
             "rotation": 0
         },
@@ -398,16 +398,6 @@
                 4.75,
                 3,
                 4.5
-            ],
-            "rotation": 0
-        },
-        {
-            "type": "eco_module",
-            "id": "b514e326-e4d4-4979-8ab3-3ae48f50a4bd",
-            "position": [
-                -1,
-                0,
-                5.75
             ],
             "rotation": 0
         },
@@ -425,19 +415,9 @@
             "type": "turret",
             "id": "ac6a2a69-4d99-425d-8ca8-9c56772cf562",
             "position": [
-                -8.5,
-                1.75,
-                1.25
-            ],
-            "rotation": 0
-        },
-        {
-            "type": "turret",
-            "id": "df3abc8a-a40d-4763-a209-231d90a868ce",
-            "position": [
-                -2.25,
-                2.75,
-                7.5
+                -4.25,
+                3,
+                9
             ],
             "rotation": 0
         },
@@ -446,10 +426,43 @@
             "id": "dd36c434-337d-4b1b-82c2-bc503efd9994",
             "position": [
                 4,
-                2.5,
-                11.5
+                5,
+                7
             ],
             "rotation": 1.5707963267948966
+        },
+        {
+            "type": "tree",
+            "variant": "Tree_Type5_04_Model",
+            "id": "88a9f739-67fb-49cb-b9ac-21da2341d5d3",
+            "position": [
+                -3,
+                -4.3228705729802075e-16,
+                2
+            ],
+            "rotation": 0.6981317007977318
+        },
+        {
+            "type": "tree",
+            "variant": "Tree_Type5_04_Model",
+            "id": "734f1616-6786-4b18-bc9f-96aab56407fb",
+            "position": [
+                -5,
+                -4.744506655235436e-16,
+                1
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "plant",
+            "scale": 1,
+            "id": "dfd90dde-ab60-4bb8-9090-3fb1c376d39a",
+            "position": [
+                0.5,
+                -5.138042391688599e-16,
+                2.25
+            ],
+            "rotation": 0
         }
     ]
 }

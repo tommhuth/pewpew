@@ -1,26 +1,26 @@
 import { useThree } from "@react-three/fiber"
 import { useEffect, useLayoutEffect } from "react"
-import { CAMERA_DIRECTION, CAMERA_OFFSET } from "@lib/const"
+import { CAMERA_DIRECTION } from "@lib/const"
 import Lights from "@components/lights"
 import TerrainEditor from "./terrain/terrain-editor"
-import { EditorMode, paintCell, rotateCell, setCameraZ, useEditorStore } from "./store"
-import ModelPlacer, { placeAt } from "./model-placer"
+import { paintCell, rotateCell, moveCamera, useEditorStore, createPlacement } from "./store"
+import { EditorMode } from "./editor-types"
+import ModelPlacer from "./model-placer/model-placer"
 
 function EditorCamera() {
     const camera = useThree(i => i.camera)
-    const cameraZ = useEditorStore(i => i.cameraZ)
+    const cameraPosition = useEditorStore(i => i.cameraPosition)
 
     useLayoutEffect(() => {
         camera.position.copy(CAMERA_DIRECTION)
         camera.lookAt(0, 0, 0)
-        camera.position.x = CAMERA_DIRECTION.x + CAMERA_OFFSET.x - 3
-        camera.position.z = CAMERA_DIRECTION.z + CAMERA_OFFSET.z + cameraZ
-    }, [camera, cameraZ])
+        camera.position.set(...cameraPosition)
+    }, [camera, cameraPosition])
 
-    // wheel pans along z
     useEffect(() => {
         const onWheel = (e: WheelEvent) => {
-            setCameraZ(useEditorStore.getState().cameraZ + e.deltaY * .02)
+            // wheel pans along z
+            moveCamera([0, 0, e.deltaY * .02])
         }
 
         window.addEventListener("wheel", onWheel)
@@ -48,8 +48,10 @@ export default function Editor() {
                     onCellClick={(x, z, e) => {
                         e.stopPropagation()
 
-                        if (useEditorStore.getState().mode === EditorMode.PLACEMENT) {
-                            placeAt(e.point.toArray())
+                        const { mode } = useEditorStore.getState()
+
+                        if (mode === EditorMode.PLACEMENT) {
+                            createPlacement(e.point.toArray())
                         } else if (e.shiftKey) {
                             rotateCell(x, z)
                         } else {

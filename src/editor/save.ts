@@ -1,4 +1,4 @@
-import { toStoredMap, useEditorStore } from "./store"
+import { useEditorStore } from "./store"
 
 // assets/maps, picked on first save and reused until the page reloads
 let directory: FileSystemDirectoryHandle | null = null
@@ -28,7 +28,8 @@ export async function save() {
 
     try {
         for (const [name, map] of Object.entries(maps)) {
-            await writeJson("map", name, toStoredMap(map))
+            // map is stored directly as editor object
+            await writeJson("map", name, map)
         }
     } catch (e) {
         console.error(e)

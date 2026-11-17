@@ -2,13 +2,13 @@ import { useGLTF } from "@react-three/drei"
 import { useEffect, useRef } from "react"
 import { InstancedMesh, Mesh } from "three"
 import terrainModel from "@assets/models/terrain.glb"
-import { d, getCellPosition, TerrainType, w } from "@lib/world/terrain"
+import { MAP_DEPTH, getCellPosition, TerrainType, MAP_WIDTH } from "@lib/world/terrain"
 import { useStore } from "@lib/store"
 import { setMatrixAt } from "@lib/helpers/utils"
 import TerrainMaterial from "./terrain-material"
 
 const MAX_PARTS = 12
-const CAPACITY = MAX_PARTS * w * d
+const CAPACITY = MAX_PARTS * MAP_WIDTH * MAP_DEPTH
 const types = Object.values(TerrainType)
 
 export default function WorldTerrain() {

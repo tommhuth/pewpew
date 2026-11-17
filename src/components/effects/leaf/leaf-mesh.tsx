@@ -23,6 +23,7 @@ export interface CreateLeavesParams {
     spread?: Tuple3 // extra jitter on top of size
     velocity?: Tuple3 // each leaf gets 50-100% of this
     count?: Tuple2 | number
+    scale?: Tuple2
 }
 
 export function createLeaves({
@@ -30,6 +31,7 @@ export function createLeaves({
     size = [1, 1, 1],
     spread = [.5, .5, .5],
     velocity = [0, 0, 0],
+    scale = [.85, 2],
     count = 8,
 }: CreateLeavesParams) {
     const amount = Array.isArray(count) ? random.integer(...count) : count
@@ -47,8 +49,8 @@ export function createLeaves({
                 random.float(velocity[1] * .5, velocity[1]),
                 random.float(velocity[2] * .5, velocity[2]),
             ],
-            scale: random.float(.85, 2),
-            phase: random.float(0, Math.PI * 2),
+            scale: random.float(...scale),
+            phase: random.float(0, Math.PI * 10),
         })
     }
 }

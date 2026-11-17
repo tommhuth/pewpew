@@ -17,7 +17,7 @@ export type State = typeof State[keyof typeof State]
 interface Store {
     state: State
     loading: boolean
-    // scene depth without depth-ignored objects, set by useRenderer
+    // custom scene depth 
     depthTexture: DepthTexture | null
     debug: {
         hitboxes: boolean

@@ -52,12 +52,9 @@ export default function App() {
 
     return (
         <>
-
             <color attach={"background"} args={["#fff"]} />
             <Camera />
             <Lights />
-
-            <axesHelper scale={5} position={[0, .01, 0]} />
 
             <World />
             <Player />

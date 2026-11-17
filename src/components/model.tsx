@@ -3,6 +3,7 @@ import { ThreeElements } from "@react-three/fiber"
 import { Mesh } from "three"
 import { spacebits } from "@components/world/spacebits-material"
 import modelsModel from "@assets/models/models.glb"
+import { EntityType } from "@src/types/entity"
 
 export enum ModelType {
     BASEMODULE_A = "basemodule_A",
@@ -75,7 +76,10 @@ export enum ModelType {
     WINDTURBINE_TALL = "windturbine_tall",
 }
 
-export const modelGroups: Record<string, ModelType[]> = {
+export const modelGroups: Record<string, (ModelType | EntityType)[]> = {
+    "Entities": [
+        EntityType.TURRET,
+    ],
     "Base": [
         ModelType.BASEMODULE_A,
         ModelType.BASEMODULE_B,
@@ -87,6 +91,8 @@ export const modelGroups: Record<string, ModelType[]> = {
         ModelType.DOME,
         ModelType.STRUCTURE_LOW,
         ModelType.STRUCTURE_TALL,
+    ],
+    "Tunnels": [
         ModelType.TUNNEL_STRAIGHT_A,
         ModelType.TUNNEL_STRAIGHT_B,
         ModelType.TUNNEL_DIAGONAL_SHORT_A,
@@ -101,7 +107,7 @@ export const modelGroups: Record<string, ModelType[]> = {
         ModelType.ROOFMODULE_CARGO_C,
         ModelType.ROOFMODULE_SOLARPANELS,
     ],
-    "Utilities": [
+    "Utils": [
         ModelType.SOLARPANEL,
         ModelType.WINDTURBINE_LOW,
         ModelType.WINDTURBINE_TALL,
@@ -112,6 +118,10 @@ export const modelGroups: Record<string, ModelType[]> = {
         ModelType.LIGHTS,
         ModelType.SPRINKLER,
         ModelType.SPACE_FARM_LARGE_SPRINKLER,
+        ModelType.BASEMODULE_GARAGE_DOOR,
+        ModelType.DRILL_MODULE,
+        ModelType.WINDTURBINE_LOW_FAN,
+        ModelType.WINDTURBINE_TALL_FAN,
     ],
     "Cargo": [
         ModelType.CARGO_A,
@@ -136,8 +146,6 @@ export const modelGroups: Record<string, ModelType[]> = {
         ModelType.MOBILE_BASE_CARRIAGE_ASSEMBLED,
         ModelType.MOBILE_BASE_CARGO_ASSEMBLED,
         ModelType.MOBILE_BASE_COMMAND_ASSEMBLED,
-    ],
-    "Aircraft": [
         ModelType.DROPSHIP,
         ModelType.DROPSHIP_PACKED,
         ModelType.LANDER_A,
@@ -151,12 +159,8 @@ export const modelGroups: Record<string, ModelType[]> = {
         ModelType.ROCK_B,
         ModelType.ROCKS_A,
         ModelType.ROCKS_B,
-    ],
-    "Parts": [
-        ModelType.BASEMODULE_GARAGE_DOOR,
-        ModelType.DRILL_MODULE,
-        ModelType.WINDTURBINE_LOW_FAN,
-        ModelType.WINDTURBINE_TALL_FAN,
+        EntityType.PLANT,
+        EntityType.TREE,
     ],
 }
 

@@ -92,3 +92,34 @@ export default function Lights() {
         </>
     )
 }
+
+
+/*
+
+            <hemisphereLight
+                groundColor={"#fff"}
+                color={"#fff"}
+                intensity={1}
+            />
+            <directionalLight
+                ref={shadowLight}
+                color="#fff"
+                position={[-.35, .2, -.1iz]}
+                intensity={12}
+                castShadow
+                shadow-camera-near={-15} // y
+                shadow-camera-far={20}
+                shadow-camera-left={-diagonal} // x
+                shadow-camera-right={diagonal}
+                shadow-camera-top={10} // z
+                shadow-camera-bottom={-10}
+                shadow-mapSize={[512, 512]}
+                shadow-bias={-.001}
+                shadow-radius={2}
+            />
+            <directionalLight
+                color="#fff"
+                position={[-1, .5, -1]}
+                intensity={2}
+            />
+*/

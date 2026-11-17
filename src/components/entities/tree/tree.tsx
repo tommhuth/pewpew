@@ -11,7 +11,8 @@ import { Tuple3 } from "@src/types/global"
 
 const trunkSize: Tuple3 = [.28, 1.03, .28]
 const crownSize: Tuple3 = [1.25, 1.5, 1.25]
-export const crownColor = "#63c7a1"
+
+export const crownColor = "#60c439"
 
 function Tree({
     id,

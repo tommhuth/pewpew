@@ -1,15 +1,15 @@
 import { TerrainType } from "@lib/world/terrain"
 import {
     createMap,
-    EditorMode,
     selectMap,
     setBrush,
     setMode,
     setTerrainPreset,
     useEditorStore,
-} from "./store"
-import { terrains } from "./terrain/terrain-loader"
-import { save } from "./save"
+} from "../store"
+import { EditorMode } from "../editor-types"
+import { terrains } from "../terrain/terrain-loader"
+import { save } from "../save"
 
 export default function EditorUi() {
     const brush = useEditorStore(i => i.brush)

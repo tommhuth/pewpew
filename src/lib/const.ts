@@ -1,6 +1,6 @@
 import { BoxGeometry, Vector3 } from "three"
 import { Tuple3 } from "@src/types/global"
-import { cellsize, d } from "@lib/world/terrain"
+import { MAP_CELL_SIZE, MAP_DEPTH } from "@lib/world/terrain"
 
 // world bounds the player can move within
 export const WORLD_CENTER_X = 0
@@ -29,7 +29,7 @@ export const PLAYER_SPEED = 3
 export const PLAYER_TERRAIN_BUFFER = .3
 
 // first part starts two part depths behind the player
-export const WORLD_START_Z = -d * cellsize * 2
+export const WORLD_START_Z = -MAP_DEPTH * MAP_CELL_SIZE * 2
 
 // shared unit box, scale it per use
 export const box = new BoxGeometry(1, 1, 1, 1, 1, 1)

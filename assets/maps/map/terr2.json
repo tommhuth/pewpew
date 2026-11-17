@@ -1,0 +1,339 @@
+{
+    "terrain": [
+        [
+            {
+                "type": "low",
+                "rotation": 3
+            },
+            {
+                "type": "low",
+                "rotation": 2
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 3
+            },
+            {
+                "type": "low",
+                "rotation": 2
+            }
+        ],
+        [
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 1
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 1
+            }
+        ],
+        [
+            {
+                "type": "slope",
+                "rotation": 3
+            },
+            {
+                "type": "slope_outer_corner",
+                "rotation": 2
+            },
+            {
+                "type": "low",
+                "rotation": 3
+            },
+            {
+                "type": "low",
+                "rotation": 2
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            }
+        ],
+        [
+            {
+                "type": "tall",
+                "rotation": 3
+            },
+            {
+                "type": "slope",
+                "rotation": 2
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "slope",
+                "rotation": 0
+            },
+            {
+                "type": "tall",
+                "rotation": 0
+            },
+            {
+                "type": "tall",
+                "rotation": 0
+            }
+        ],
+        [
+            {
+                "type": "slope",
+                "rotation": 1
+            },
+            {
+                "type": "slope_outer_corner",
+                "rotation": 1
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 3
+            },
+            {
+                "type": "low",
+                "rotation": 2
+            }
+        ],
+        [
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 1
+            }
+        ],
+        [
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            },
+            {
+                "type": "low",
+                "rotation": 0
+            }
+        ]
+    ],
+    "placements": [
+        {
+            "type": "dropship_packed",
+            "id": "fd8a336c-e95b-45a3-b403-99706f40e0b1",
+            "position": [
+                3.25,
+                -2.122333336061777e-15,
+                11.25
+            ],
+            "rotation": 4.1887902047863905
+        },
+        {
+            "type": "rocks_B",
+            "id": "553fe979-a15f-4834-9a81-0b32177d149d",
+            "position": [
+                5,
+                0,
+                9.75
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "rocks_A",
+            "id": "30068282-9bcf-4a7a-b826-a8c59bb99ba8",
+            "position": [
+                1.25,
+                0,
+                8.75
+            ],
+            "rotation": 1.3962634015954636
+        },
+        {
+            "type": "rock_B",
+            "id": "b51d85f6-9926-44f3-8db0-6e41085c8fe5",
+            "position": [
+                3,
+                0,
+                9.5
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "rocks_A",
+            "id": "b2a97eac-5d6b-47fe-932a-20e65ff3bec6",
+            "position": [
+                3,
+                -9.096276518610083e-16,
+                4
+            ],
+            "rotation": 1.9198621771937625
+        },
+        {
+            "type": "rocks_B",
+            "id": "2b6f90c1-8ebc-48c5-b7e3-6c3269a6dbbd",
+            "position": [
+                -4.75,
+                2.9281923301787436e-15,
+                2.75
+            ],
+            "rotation": 2.9670597283903604
+        },
+        {
+            "type": "rock_B",
+            "id": "45256320-e5cc-400b-9f27-f92474f1a426",
+            "position": [
+                3.75,
+                -5.642876225852944e-16,
+                3.25
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "rock_B",
+            "id": "c38087c2-ed14-4f63-8d05-b1df3896af77",
+            "position": [
+                5,
+                -4.524582847565855e-15,
+                4.25
+            ],
+            "rotation": 1.5707963267948966
+        },
+        {
+            "type": "rock_B",
+            "id": "892a0425-467f-447b-a880-c11888aed25f",
+            "position": [
+                2,
+                0,
+                5.5
+            ],
+            "rotation": 1.3962634015954636
+        },
+        {
+            "type": "windturbine_low",
+            "id": "712fc490-c7fd-4b6b-a10c-f6972e8aee3f",
+            "position": [
+                -4.75,
+                1,
+                7
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "containers_D",
+            "id": "5a8e1a2a-e5af-4c54-8489-63d32968e06e",
+            "position": [
+                -0.5,
+                0,
+                10.5
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "water_storage",
+            "id": "957da894-6247-46d6-a181-c9e1bf6b8bb0",
+            "position": [
+                0.5,
+                -6.1938913817130295e-15,
+                12
+            ],
+            "rotation": 3.839724354387525
+        },
+        {
+            "type": "cargo_A",
+            "id": "3e1889f9-5415-4f7c-8aa1-fceccb4c9c5c",
+            "position": [
+                0.25,
+                1.2709305412388621e-15,
+                10.25
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "lander_B",
+            "id": "cbd2447b-da68-4404-9a6d-5e85ddd8281f",
+            "position": [
+                0,
+                0,
+                2.25
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "plant",
+            "scale": 1,
+            "id": "6ba2e5f7-ff46-4bc2-86e9-05fabf2c780e",
+            "position": [
+                -1.25,
+                2.5679845240604765e-15,
+                4.5
+            ],
+            "rotation": 0
+        }
+    ]
+}

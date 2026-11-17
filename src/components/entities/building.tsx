@@ -138,7 +138,7 @@ function Building({
     useEffect(() => {
         return health.onChange(value => {
             if (ref.current) {
-                ref.current.material.targetHealth = value / 100
+                ref.current.material.uHit.value = 1.25
             }
 
             if (value === 0) {

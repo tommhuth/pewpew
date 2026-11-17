@@ -62,7 +62,7 @@ const isEditorMode = window.location.hash.includes("editor")
 
 if (isEditorMode) {
     const Editor = lazy(() => import("./editor/editor"))
-    const EditorUi = lazy(() => import("./editor/editor-ui"))
+    const EditorUi = lazy(() => import("./editor/editor-ui/editor-ui"))
 
     document.title = "pewpew editor"
     // skip the game's reveal

@@ -7,6 +7,7 @@ export const EntityType = {
     BUILDING: "building",
     TURRET: "turret",
     TREE: "tree",
+    PLANT: "plant",
 } as const
 
 export type EntityType = typeof EntityType[keyof typeof EntityType]
@@ -37,15 +38,19 @@ interface TreePlacement extends BasePlacement {
     variant: TreeType
 }
 
+interface PlantPlacement extends BasePlacement {
+    type: typeof EntityType.PLANT
+    scale: number
+}
+
 // placed by a world part, position is part local
-export type EntityPlacement = BuildingPlacement | TurretPlacement | TreePlacement
+export type EntityPlacement = BuildingPlacement | TurretPlacement | TreePlacement | PlantPlacement
 
 interface BaseEntity {
     id: string
     partId: string
-    // the EntityPlacement it spawned from
+    // editor placement id
     placementId: string
-    // world space
     position: Tuple3
     rotation: number
     health: Health
@@ -55,14 +60,12 @@ export interface BuildingEntity extends BaseEntity {
     type: typeof EntityType.BUILDING
     model: ModelType
     group?: EntityGroup
-    // lost what was under it
     falling?: boolean
 }
 
 export interface TurretEntity extends BaseEntity {
     type: typeof EntityType.TURRET
     group?: EntityGroup
-    // lost what was under it
     falling?: boolean
 }
 
@@ -71,4 +74,9 @@ export interface TreeEntity extends BaseEntity {
     variant: TreeType
 }
 
-export type Entity = BuildingEntity | TurretEntity | TreeEntity
+export interface PlantEntity extends BaseEntity {
+    type: typeof EntityType.PLANT
+    scale: number
+}
+
+export type Entity = BuildingEntity | TurretEntity | TreeEntity | PlantEntity

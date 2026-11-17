@@ -3,10 +3,9 @@ import { smoothstep } from "three/src/math/MathUtils.js"
 import { Tuple3 } from "@src/types/global"
 import type { WorldPart } from "@src/types/world"
 
-export const w = 6
-export const d = 7
-export const cellsize = 2
-// reported height off the terrain grid, things there fall away
+export const MAP_WIDTH = 6
+export const MAP_DEPTH = 7
+export const MAP_CELL_SIZE = 2
 export const OUTSIDE_TERRAIN_HEIGHT = -35
 
 export enum TerrainType {
@@ -25,24 +24,24 @@ export interface TerrainCell {
 // rows along +z, cells along +x
 export type Terrain = TerrainCell[][]
 
-export const blankTerrain: Terrain = Array.from({ length: d })
-    .map(() => Array.from({ length: w }).map(() => ({ type: TerrainType.LOW, rotation: 0 })))
+export const blankTerrain: Terrain = Array.from({ length: MAP_DEPTH })
+    .map(() => Array.from({ length: MAP_WIDTH }).map(() => ({ type: TerrainType.LOW, rotation: 0 })))
 
 const _origin = { x: 0, y: 0, z: 0 }
 
 // world position of a cell, x centered on the terrain, z running from start
 export function getCellPosition(x: number, z: number, start: Vector3Like = _origin): Tuple3 {
     return [
-        start.x + (x - (w - 1) / 2) * cellsize,
+        start.x + (x - (MAP_WIDTH - 1) / 2) * MAP_CELL_SIZE,
         start.y,
-        start.z + z * cellsize + cellsize / 2,
+        start.z + z * MAP_CELL_SIZE + MAP_CELL_SIZE / 2,
     ]
 }
 
 // world -> cell local space, -1 to 1 like the glb pieces, rotation undone
 function toCellLocal(position: Vector3Like, ix: number, iz: number, startZ: number, rotation: number) {
-    let u = (position.x - (ix - w / 2) * cellsize) / cellsize * 2 - 1
-    let v = (position.z - startZ - iz * cellsize) / cellsize * 2 - 1
+    let u = (position.x - (ix - MAP_WIDTH / 2) * MAP_CELL_SIZE) / MAP_CELL_SIZE * 2 - 1
+    let v = (position.z - startZ - iz * MAP_CELL_SIZE) / MAP_CELL_SIZE * 2 - 1
 
     // inverse of rotation.y = +90deg is (x, z) -> (-z, x)
     // applied once per quarter turn it undoes the rotation, giving local space
@@ -58,8 +57,8 @@ export function getTerrainHeightAt(
     position: Vector3Like,
     startZ: number
 ): number {
-    let ix = Math.floor(position.x / cellsize + w / 2)
-    let iz = Math.floor((position.z - startZ) / cellsize)
+    let ix = Math.floor(position.x / MAP_CELL_SIZE + MAP_WIDTH / 2)
+    let iz = Math.floor((position.z - startZ) / MAP_CELL_SIZE)
     let cell = terrain[iz]?.[ix]
 
     if (!cell) {

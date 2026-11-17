@@ -1,7 +1,7 @@
 import { ThreeElements } from "@react-three/fiber"
 import { Color, Vector2 } from "three"
 import { useShader } from "@src/hooks/use-shader"
-import { cellsize, w } from "@lib/world/terrain"
+import { MAP_CELL_SIZE, MAP_WIDTH } from "@lib/world/terrain"
 import { useLights } from "@components/effects/lights/lights"
 import { lightsChunk, makeLightsUniform } from "@components/effects/lights/light-shader"
 import dithering from "@shaders/dither.glsl"
@@ -29,9 +29,9 @@ export default function TerrainMaterial(props: TerrainMaterialProps) {
             varying vec3 vGridNormal;
         `,
         uniforms: {
-            uCellSize: { value: cellsize },
+            uCellSize: { value: MAP_CELL_SIZE },
             // cell edges on x sit at (ix - w / 2) * cellsize
-            uGridOffset: { value: new Vector2((w / 2 * cellsize) % cellsize, 0) },
+            uGridOffset: { value: new Vector2((MAP_WIDTH / 2 * MAP_CELL_SIZE) % MAP_CELL_SIZE, 0) },
             uPalette: { value: palette },
             // luma stretched from this range to the full palette
             uLumaRange: { value: new Vector2(0, .4) },
@@ -80,6 +80,7 @@ export default function TerrainMaterial(props: TerrainMaterialProps) {
                     gl_FragColor.rgb,
                     gl_FragColor.rgb * .45,
                     smoothstep(.3, 1., map((noise(vGridPosition.xz * .1) * 2. - 1.) * dot(vec3(0., 1., 0.), vGridNormal), -1., 1., 0., 1.))
+                        * (1. - clamp(abs(vGridPosition.x) / 6., 0., 1.))
                 );
                 gl_FragColor.rgb *= 1. - line * .1;
                 gl_FragColor.rgb = mix(gl_FragColor.rgb , vec3(0.), smoothstep(0., -6., vGridPosition.y));
