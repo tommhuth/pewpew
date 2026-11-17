@@ -329,9 +329,42 @@
             "scale": 1,
             "id": "6ba2e5f7-ff46-4bc2-86e9-05fabf2c780e",
             "position": [
-                -1.25,
+                2.5,
                 2.5679845240604765e-15,
-                4.5
+                4.75
+            ],
+            "rotation": 0.8726646259971648
+        },
+        {
+            "type": "plant",
+            "scale": 1,
+            "id": "34bce51f-d313-43c0-adf3-6015e422f0ea",
+            "position": [
+                5,
+                -4.195697916801135e-15,
+                3
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "plant",
+            "scale": 1,
+            "id": "edec017a-7759-458c-bec9-5741a2139941",
+            "position": [
+                -3.25,
+                0,
+                2.5
+            ],
+            "rotation": 3.141592653589793
+        },
+        {
+            "type": "plant",
+            "scale": 1,
+            "id": "f9476ccf-5713-42a3-bc74-fc659a9d72a5",
+            "position": [
+                4,
+                -2.1171479815015956e-15,
+                9.5
             ],
             "rotation": 0
         }
