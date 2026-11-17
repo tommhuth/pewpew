@@ -1,4 +1,4 @@
-import { memo, useEffect, useEffectEvent, useMemo } from "react"
+import { memo, useEffect, useEffectEvent, useMemo, useRef } from "react"
 import Hitbox from "@components/hitbox"
 import { createLeaves } from "@components/effects/leaf/leaf-mesh"
 import { removeEntities, useStore } from "@lib/store"
@@ -7,6 +7,10 @@ import { Owner } from "@src/types/bullet"
 import { EntityType, PlantEntity } from "@src/types/entity"
 import PlantModel from "./plant-model"
 import { getCollisionBox } from "@lib/world/bounding-boxes"
+import { hitSpacebitsMaterial } from "@components/world/spacebits-material-pool"
+import { SpacebitsMaterial } from "@components/world/spacebits-material"
+import { BufferGeometry, Mesh } from "three"
+import { useSpacebitsMaterialSwap } from "@src/hooks/use-spacebits-material-swap"
 
 const coll = getCollisionBox("plant", 0)
 
@@ -20,6 +24,7 @@ function Plant({
     position: [x, y, z],
 }: PlantEntity) {
     const grid = useStore(i => i.world.grid)
+    const ref = useRef<Mesh<BufferGeometry, SpacebitsMaterial>>(null)
     const { client, damagedBy } = useMemo(() => {
         return {
             damagedBy: new Set<string>(),
@@ -30,6 +35,8 @@ function Plant({
             ),
         }
     }, [grid, id, x, y, z])
+
+    useSpacebitsMaterialSwap(ref)
 
     useCollisionDetection({
         client,
@@ -78,6 +85,8 @@ function Plant({
 
     useEffect(() => {
         return health.onChange(value => {
+            hitSpacebitsMaterial(ref.current)
+
             if (value === 0) {
                 handleDead()
             }
@@ -91,6 +100,7 @@ function Plant({
     return (
         <>
             <PlantModel
+                ref={ref}
                 scale={scale}
                 position={[x, y, z]}
                 rotation-y={rotation}

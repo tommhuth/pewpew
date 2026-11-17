@@ -31,7 +31,7 @@ export class SpacebitsMaterial extends MeshPhongMaterial {
     }
 
     update(delta: number) {
-        this.uHit.value = damp(this.uHit.value, 0, 6, delta)
+        this.uHit.value = damp(this.uHit.value, 0, 9, delta)
     }
 
     customProgramCacheKey() {

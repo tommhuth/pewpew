@@ -13,10 +13,10 @@ import { Owner } from "@src/types/bullet"
 import { BuildingEntity, EntityType } from "@src/types/entity"
 import { Tuple3 } from "@src/types/global"
 import random from "@huth/random"
-import { spacebits, SpacebitsMaterial } from "@components/world/spacebits-material"
+import { SpacebitsMaterial } from "@components/world/spacebits-material"
 import { getCollisionBox } from "@lib/world/bounding-boxes"
-import { ndelta } from "@lib/helpers/utils"
-import { getNextSpacebitsMaterial } from "@components/world/spacebits-material-pool"
+import { hitSpacebitsMaterial } from "@components/world/spacebits-material-pool"
+import { useSpacebitsMaterialSwap } from "@src/hooks/use-spacebits-material-swap"
 
 const particleColor = "#eaecf2"
 
@@ -61,6 +61,8 @@ function Building({
 
         return grid.createClient([x + ox, y + oy, z + oz], box.size, { id, type: EntityType.BUILDING })
     }, [grid, id, x, y, z, box])
+
+    useSpacebitsMaterialSwap(ref)
 
     useCollisionDetection({
         client,
@@ -138,15 +140,7 @@ function Building({
 
     useEffect(() => {
         return health.onChange(value => {
-            let mesh = ref.current
-
-            if (mesh) {
-                if (mesh.material === spacebits) {
-                    mesh.material = getNextSpacebitsMaterial()
-                }
-
-                mesh.material.uHit.value = 1.25
-            }
+            hitSpacebitsMaterial(ref.current)
 
             if (value === 0) {
                 handleDead()
@@ -163,15 +157,6 @@ function Building({
 
         if (!mesh) {
             return
-        }
-
-        if (mesh.material !== spacebits) {
-            ref.current?.material.update(ndelta(delta))
-
-            if (mesh.material.uHit.value < .01) {
-                mesh.material.uHit.value = 0
-                mesh.material = spacebits
-            }
         }
 
         if (model === ModelType.SPRINKLER) {

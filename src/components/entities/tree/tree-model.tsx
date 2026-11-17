@@ -8,6 +8,8 @@ import { ndelta } from "@lib/helpers/utils"
 import treesModel from "@assets/models/trees.glb"
 import random from "@huth/random"
 import { Tuple3 } from "@src/types/global"
+import { useSpacebitsMaterialSwap } from "@src/hooks/use-spacebits-material-swap"
+import { hitSpacebitsMaterial } from "@components/world/spacebits-material-pool"
 
 export enum TreeType {
     TYPE3_01 = "Tree_Type3_01_Model",
@@ -33,7 +35,10 @@ export enum TreeType {
 export const treeVariants = Object.entries(TreeType)
 
 export type TreeModelRef = {
+    // tilts away from the normal, any bullet
     hit: (normal: Tuple3, amount?: number) => void
+    // hit flash, on damage only
+    flash: () => void
 }
 
 type TreeModelProps = {
@@ -45,6 +50,8 @@ export default function TreeModel({ ref, variant, position, ...rest }: TreeModel
     const { nodes } = useGLTF(treesModel) as unknown as { nodes: Record<TreeType, Mesh> }
     const tiltRef = useRef<Group>(null)
 
+    useSpacebitsMaterialSwap(tiltRef)
+
     useImperativeHandle(ref, () => ({
         hit: ([nx, , nz], amount = .15) => {
             if (tiltRef.current) {
@@ -53,6 +60,9 @@ export default function TreeModel({ ref, variant, position, ...rest }: TreeModel
                 tiltRef.current.rotation.x = -nz * a
                 tiltRef.current.rotation.z = nx * a
             }
+        },
+        flash: () => {
+            hitSpacebitsMaterial(tiltRef.current)
         },
     }), [])
 

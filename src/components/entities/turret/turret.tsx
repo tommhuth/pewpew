@@ -91,6 +91,8 @@ function Turret({
     })
 
     useEffect(() => health.onChange(value => {
+        turretRef.current?.hit()
+
         if (value === 0) {
             handleDead()
         }

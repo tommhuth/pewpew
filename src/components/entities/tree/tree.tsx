@@ -113,6 +113,8 @@ function Tree({
     })
 
     useEffect(() => health.onChange(value => {
+        treeModelRef.current?.flash()
+
         if (value === 0) {
             setTimeout(() => handleDead(), 180)
         }

@@ -9,6 +9,8 @@ import { Tuple3 } from "@src/types/global"
 import { useGravity } from "@src/hooks/use-gravity"
 import Muzzle, { MuzzleRef } from "./muzzle"
 import turretModel from "@assets/models/turret.glb"
+import { useSpacebitsMaterialSwap } from "@src/hooks/use-spacebits-material-swap"
+import { hitSpacebitsMaterial } from "@components/world/spacebits-material-pool"
 
 // one mesh of 2 primitives in the glb, 1 is the body and 2 the barrel
 type TurretNodes = Record<"turret2_1" | "turret2_2", Mesh>
@@ -16,6 +18,7 @@ type TurretNodes = Record<"turret2_1" | "turret2_2", Mesh>
 export type TurretRef = {
     // barrel kick and muzzle smoke
     shoot: () => void
+    hit: () => void
     // live, moves while falling
     position: Vector3 | undefined
 }
@@ -34,6 +37,8 @@ export default function TurretModel({ ref, falling, ...rest }: TurretModelProps)
     const barrelRef = useRef<Mesh>(null)
     const muzzleRef = useRef<MuzzleRef>(null)
 
+    useSpacebitsMaterialSwap(groupRef)
+
     useImperativeHandle(ref, () => ({
         shoot: () => {
             if (barrelRef.current) {
@@ -41,6 +46,9 @@ export default function TurretModel({ ref, falling, ...rest }: TurretModelProps)
             }
 
             muzzleRef.current?.activate()
+        },
+        hit() {
+            hitSpacebitsMaterial(groupRef.current)
         },
         get position() {
             return groupRef.current?.position
@@ -73,13 +81,17 @@ export default function TurretModel({ ref, falling, ...rest }: TurretModelProps)
                 castShadow
                 receiveShadow
             />
+        </group>
+    )
+}
+
+/* 
+
             <Muzzle
                 ref={muzzleRef}
                 position={muzzlePosition}
                 scale={.9}
             />
-        </group>
-    )
-}
+            */
 
 useGLTF.preload(turretModel)

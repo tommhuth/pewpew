@@ -4,7 +4,7 @@ import { Mesh } from "three"
 import { spacebits } from "@components/world/spacebits-material"
 import plantModel from "@assets/models/plant.glb"
 
-type PlantModelProps = Omit<ThreeElements["mesh"], "ref">
+type PlantModelProps = ThreeElements["mesh"]
 
 export default function PlantModel(props: PlantModelProps) {
     const { nodes } = useGLTF(plantModel) as unknown as { nodes: Record<"plant", Mesh> }
