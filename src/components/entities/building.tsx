@@ -13,9 +13,10 @@ import { Owner } from "@src/types/bullet"
 import { BuildingEntity, EntityType } from "@src/types/entity"
 import { Tuple3 } from "@src/types/global"
 import random from "@huth/random"
-import { SpacebitsMaterial } from "@components/world/spacebits-material"
+import { spacebits, SpacebitsMaterial } from "@components/world/spacebits-material"
 import { getCollisionBox } from "@lib/world/bounding-boxes"
 import { ndelta } from "@lib/helpers/utils"
+import { getNextSpacebitsMaterial } from "@components/world/spacebits-material-pool"
 
 const particleColor = "#eaecf2"
 
@@ -137,8 +138,14 @@ function Building({
 
     useEffect(() => {
         return health.onChange(value => {
-            if (ref.current) {
-                ref.current.material.uHit.value = 1.25
+            let mesh = ref.current
+
+            if (mesh) {
+                if (mesh.material === spacebits) {
+                    mesh.material = getNextSpacebitsMaterial()
+                }
+
+                mesh.material.uHit.value = 1.25
             }
 
             if (value === 0) {
@@ -152,10 +159,23 @@ function Building({
     }, [grid, client])
 
     useFrame((state, delta) => {
-        ref.current?.material.update(ndelta(delta))
+        let mesh = ref.current
 
-        if (model === ModelType.SPRINKLER && ref.current) {
-            ref.current.rotation.y += .5 * delta
+        if (!mesh) {
+            return
+        }
+
+        if (mesh.material !== spacebits) {
+            ref.current?.material.update(ndelta(delta))
+
+            if (mesh.material.uHit.value < .01) {
+                mesh.material.uHit.value = 0
+                mesh.material = spacebits
+            }
+        }
+
+        if (model === ModelType.SPRINKLER) {
+            mesh.rotation.y += .5 * delta
         }
     })
 
@@ -176,9 +196,7 @@ function Building({
                 type={model}
                 position={[x, y, z]}
                 rotation-y={rotation}
-            >
-                <spacebitsMaterial attach={"material"} />
-            </Model>
+            />
             <Hitbox
                 position={client.position}
                 size={client.size}
