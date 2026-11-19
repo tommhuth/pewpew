@@ -71,11 +71,12 @@ function Building({
                 radius: [.05, .15],
                 stagger: [0, 0],
                 color: particleColor,
+                restitution: [.4, .8]
             } satisfies Partial<CreateParticlesParams>
 
             createParticles({
                 position: point,
-                offset: [[-.1, .1], [-.1, .1], [0, 0]],
+                offset: [[-.1, .1], [0, box.size[1]], [0, 0]],
                 normal,
                 speed: [1, 5],
                 count: [2, 4],
@@ -84,10 +85,10 @@ function Building({
 
             createParticles({
                 position: [x, y, z],
-                offset: [[-.5, .5], [-.5, .5], [-.5, .5]],
+                offset: [[-.5, .5], [0, box.size[1]], [-.5, .5]],
                 normal: [0, 0, 0],
                 spread: [[-1, 1], [0, .5]],
-                speed: [5, 10],
+                speed: [9, 15],
                 count: [3, 5],
                 ...shared
             })

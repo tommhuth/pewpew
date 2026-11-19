@@ -1,11 +1,14 @@
-import { useThree } from "@react-three/fiber"
+import { extend, useThree } from "@react-three/fiber"
 import { useEffect, useLayoutEffect } from "react"
 import { CAMERA_DIRECTION } from "@lib/const"
 import Lights from "@components/lights"
+import extensions from "@src/extensions"
 import TerrainEditor from "./terrain/terrain-editor"
 import { paintCell, rotateCell, moveCamera, useEditorStore, createPlacement } from "./store"
 import { EditorMode } from "./editor-types"
 import ModelPlacer from "./model-placer/model-placer"
+
+extend(extensions)
 
 function EditorCamera() {
     const camera = useThree(i => i.camera)

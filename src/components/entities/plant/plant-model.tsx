@@ -1,7 +1,6 @@
 import { useGLTF } from "@react-three/drei"
 import { ThreeElements } from "@react-three/fiber"
-import { Mesh } from "three"
-import { spacebits } from "@components/world/spacebits-material"
+import { DoubleSide, Mesh } from "three"
 import plantModel from "@assets/models/plant.glb"
 
 type PlantModelProps = ThreeElements["mesh"]
@@ -12,11 +11,12 @@ export default function PlantModel(props: PlantModelProps) {
     return (
         <mesh
             geometry={nodes.plant.geometry}
-            material={spacebits}
             castShadow
             receiveShadow
             {...props}
-        />
+        >
+            <spacebitsMaterial side={DoubleSide} />
+        </mesh>
     )
 }
 

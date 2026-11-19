@@ -81,24 +81,23 @@ function Tree({
 
     const handleDead = useEffectEvent(() => {
         let sharedProps = {
-            normal: [0, .5, 1],
+            normal: [0, 0, 1],
             position: crown.position,
-            delay: 0,
             color: crownColor,
         } satisfies Partial<CreateParticlesParams>
 
         createParticles({
-            offset: [[-.5, .5], [-1, 1], [-.5, .5]],
-            speed: [3, 8],
-            spread: [[-0, 0], [-1, 1]],
+            offset: [[-.5, .5], [0, 1.5], [-.5, .5]],
+            speed: [5, 12],
+            spread: [[-1, 1], [-1, 1]],
             count: [8, 15],
             radius: [.085, .2],
             ...sharedProps
         })
         createParticles({
-            offset: [[-.25, .25], [-.51, .51], [-.25, .25]],
-            speed: [6, 10],
-            spread: [[-1, 1], [-.5, .5]],
+            offset: [[-.5, .5], [0, 1.5], [-.5, .5]],
+            speed: [1, 2],
+            spread: [[-1, 1], [-1, 1]],
             count: [5, 9],
             radius: [.15, .3],
             ...sharedProps
@@ -116,7 +115,7 @@ function Tree({
         treeModelRef.current?.flash()
 
         if (value === 0) {
-            setTimeout(() => handleDead(), 180)
+            handleDead()
         }
     }), [health])
 
