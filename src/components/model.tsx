@@ -4,6 +4,7 @@ import { Mesh } from "three"
 import { spacebits } from "@components/world/spacebits-material"
 import modelsModel from "@assets/models/models.glb"
 import { EntityType } from "@src/types/entity"
+import { glass } from "./world/glass-material"
 
 export enum ModelType {
     BASEMODULE_A = "basemodule_A",
@@ -176,7 +177,7 @@ export default function Model({ type, ...rest }: ModelProps) {
     return (
         <mesh
             geometry={nodes[type].geometry}
-            material={spacebits}
+            material={isGlassModel(type) ? glass : spacebits}
             castShadow
             receiveShadow
             {...rest}
