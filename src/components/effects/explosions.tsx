@@ -42,13 +42,13 @@ export function createExplosion({
 
         explosions.push({
             id: random.id(),
-            position,
+            position: [...position],
             lifetime: random.integer(baseLifetime * .75, baseLifetime),
             time: 0,
             mounted: false,
             shockwave: shockwave ? createShockwave(radius[1] * 5) : null,
             fireballs: createFireballs({
-                position,
+                position: [...position],
                 count,
                 radius,
                 growth,

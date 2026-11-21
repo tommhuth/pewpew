@@ -6,7 +6,7 @@ import Hitbox from "@components/hitbox"
 import { createExplosion } from "@components/effects/explosions"
 import { createParticles } from "@components/effects/particle/particle-mesh"
 import { createDecal } from "@components/effects/decal/decal-mesh"
-import { removeEntities, useStore } from "@lib/store"
+import { removeEntities, State, useStore } from "@lib/store"
 import { getCollisionBox } from "@lib/world/bounding-boxes"
 import { useCollisionDetection } from "@src/hooks/use-collision-detection"
 import { useGridClient } from "@src/hooks/use-grid-client"
@@ -110,10 +110,11 @@ function Turret({
     let time = useRef(0)
 
     useFrame((state, delta) => {
-        let { player } = useStore.getState()
-        let d = 15
+        let { player, state: gameState } = useStore.getState()
+        // from 15 ahead of the player until 5 behind
+        let inRange = player.position.z > z - 15 && player.position.z < z + 5
 
-        if (z - d < player.position.z && health.value > 0) {
+        if (gameState === State.READY && inRange && health.value > 0) {
             if (time.current > nextShotAt.current) {
                 turretRef.current?.shoot()
 

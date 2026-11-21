@@ -44,7 +44,7 @@ float easeOutCubic(float x) {
 }
 
 float easeOutQuart(float x) {
-  return 1. - pow(1. - x, 2.);
+  return 1. - pow(1. - x, 4.);
 }
 
 float easeOutSine(float x) {

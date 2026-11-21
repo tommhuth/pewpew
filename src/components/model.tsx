@@ -31,8 +31,6 @@ export enum ModelType {
     DRILL_MODULE = "drill_module",
     DRILL_STRUCTURE = "drill_structure",
     DROPSHIP_PACKED = "dropship_packed",
-    DROPSHIP_DOOR_LEFT = "dropship_door_left",
-    DROPSHIP_DOOR_RIGHT = "dropship_door_right",
     DROPSHIP = "dropship",
     ECO_MODULE = "eco_module",
     LANDER_A = "lander_A",
