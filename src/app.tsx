@@ -64,6 +64,4 @@ export default function App() {
             {config.stats && <Perf position="top-right" deepAnalyze />}
         </>
     )
-}
-
-<fog attach={"fog"} args={["#fff", 40, 90]} />
+} 

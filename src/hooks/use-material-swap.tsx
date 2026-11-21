@@ -1,18 +1,23 @@
-import { spacebits, SpacebitsMaterial } from "@components/world/spacebits-material"
-import { getHitMaterial, getSpacebitsMeshes } from "@components/world/spacebits-material-pool"
+import type { SpacebitsMaterial } from "@components/world/spacebits-material"
+import { getHitMaterial, getMeshes, hitMaterial, MaterialPool } from "@components/world/material-pool"
 import { ndelta } from "@lib/helpers/utils"
 import { useFrame } from "@react-three/fiber"
-import { RefObject } from "react"
-import { BufferGeometry, Group, Mesh } from "three"
+import { RefObject, useCallback } from "react"
+import { Group, Mesh } from "three"
 
-export function useSpacebitsMaterialSwap(ref: RefObject<Mesh<BufferGeometry, SpacebitsMaterial> | Group | null>) {
+// fades a flashing target and puts the pool's base material back once done
+// returns hit, flashes the target with the same pool
+export function useMaterialSwap<T extends SpacebitsMaterial>(
+    ref: RefObject<Mesh | Group | null>,
+    pool: MaterialPool<T>
+) {
     useFrame((state, delta) => {
         if (!ref.current) {
             return
         }
 
-        let meshes = getSpacebitsMeshes(ref.current)
-        let material = getHitMaterial(meshes)
+        let meshes = getMeshes(ref.current)
+        let material = getHitMaterial(meshes, pool)
 
         if (!material) {
             return
@@ -25,8 +30,10 @@ export function useSpacebitsMaterialSwap(ref: RefObject<Mesh<BufferGeometry, Spa
             material.uHit.value = 0
 
             for (let i = 0; i < meshes.length; i++) {
-                meshes[i].material = spacebits
+                meshes[i].material = pool.base
             }
         }
     })
+
+    return useCallback(() => hitMaterial(ref.current, pool), [ref, pool])
 }

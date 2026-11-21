@@ -70,7 +70,11 @@ if (isEditorMode) {
     document.getElementById("loading")?.remove()
 
     configure(<Editor />)
-    uiRoot.render(<Suspense><EditorUi /></Suspense>)
+    uiRoot.render(
+        <Suspense>
+            <EditorUi />
+        </Suspense>
+    )
 } else {
     const App = lazy(() => import("./app"))
 

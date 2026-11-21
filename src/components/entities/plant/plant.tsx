@@ -6,11 +6,11 @@ import { useCollisionDetection } from "@src/hooks/use-collision-detection"
 import { Owner } from "@src/types/bullet"
 import { EntityType, PlantEntity } from "@src/types/entity"
 import PlantModel from "./plant-model"
+import { plantPool } from "./plant-material"
 import { getCollisionBox } from "@lib/world/bounding-boxes"
-import { hitSpacebitsMaterial } from "@components/world/spacebits-material-pool"
 import { SpacebitsMaterial } from "@components/world/spacebits-material"
 import { BufferGeometry, Mesh } from "three"
-import { useSpacebitsMaterialSwap } from "@src/hooks/use-spacebits-material-swap"
+import { useMaterialSwap } from "@src/hooks/use-material-swap"
 
 const coll = getCollisionBox("plant", 0)
 
@@ -36,7 +36,7 @@ function Plant({
         }
     }, [grid, id, x, y, z])
 
-    useSpacebitsMaterialSwap(ref)
+    const hit = useMaterialSwap(ref, plantPool)
 
     useCollisionDetection({
         client,
@@ -85,13 +85,13 @@ function Plant({
 
     useEffect(() => {
         return health.onChange(value => {
-            hitSpacebitsMaterial(ref.current)
+            hit()
 
             if (value === 0) {
                 handleDead()
             }
         })
-    }, [health])
+    }, [health, hit])
 
     useEffect(() => {
         return () => grid.remove(client)

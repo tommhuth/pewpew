@@ -4,6 +4,7 @@ import dithering from "@shaders/dither.glsl"
 import { syncLights } from "@components/effects/lights/lights"
 import { lightsChunk, makeLightsUniform } from "@components/effects/lights/light-shader"
 import { damp } from "three/src/math/MathUtils.js"
+import { createMaterialPool } from "@components/world/material-pool"
 
 export const spacebitsTexture = new TextureLoader().load(spacebitsTextureUrl)
 
@@ -19,8 +20,30 @@ function lightsUniformSync() {
 }
 
 requestAnimationFrame(lightsUniformSync)
+
+export const spacebitsChunks = {
+    // extra fragment declarations, uniforms and functions the other chunks need
+    spacebits_pars_fragment: "",
+    // the surface color, picked down a swatch from the texture and darkened by light
+    spacebits_color: /* glsl */`
+        vec2 cell = vMapUv * uSwatches;
+        // where the uv sits down the swatch, low v is the light end
+        float albedo = 1. - fract(cell.y);
+
+        gl_FragColor.rgb = getSwatchColor(map, cell, albedo * shade);
+    `,
+    // flash on hit
+    spacebits_hit: /* glsl */`
+        gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(1.), uHit);
+    `,
+}
+
+export type SpacebitsChunks = Record<keyof typeof spacebitsChunks, string>
+
 export class SpacebitsMaterial extends MeshPhongMaterial {
     uHit = { value: 0 }
+    // subclasses swap entries out to change parts of the shader
+    chunks: SpacebitsChunks = spacebitsChunks
 
     constructor() {
         super({
@@ -34,8 +57,9 @@ export class SpacebitsMaterial extends MeshPhongMaterial {
         this.uHit.value = damp(this.uHit.value, 0, 9, delta)
     }
 
+    // the chunks are all that differ between subclasses, so a subclass cant end up on another ones program
     customProgramCacheKey() {
-        return "spacebits"
+        return "spacebits" + Object.values(this.chunks).join()
     }
 
     onBeforeCompile(shader: WebGLProgramParametersWithUniforms) {
@@ -43,16 +67,11 @@ export class SpacebitsMaterial extends MeshPhongMaterial {
         shader.uniforms.uSwatches = { value: new Vector2(8, 4) }
         // colors picked down each swatch's gradient
         shader.uniforms.uSteps = { value: 4 }
-        // light, albedo divided out, stretched from this range to the full gradient
+        // light, stretched from this range to the full gradient
         shader.uniforms.uLightRange = { value: new Vector2(0, 1.3) }
         shader.uniforms.uDither = { value: 1 }
         shader.uniforms.uHit = this.uHit
         shader.uniforms.uLights = lightsUniform
-        // see through swatch, pixels are dithered out instead of using alpha
-        shader.uniforms.uGlassSwatch = { value: new Vector2(7, 3) }
-        // swatch the glass takes its colors from, blue to dark blue
-        shader.uniforms.uGlassGradient = { value: new Vector2(1, 1) }
-        shader.uniforms.uGlassOpacity = { value: .8 }
 
         shader.vertexShader = shader.vertexShader
             .replace("#include <common>", /* glsl */`
@@ -72,62 +91,47 @@ export class SpacebitsMaterial extends MeshPhongMaterial {
             `)
 
         shader.fragmentShader = shader.fragmentShader
+            .replace("#include <map_fragment>", "")
             .replace("#include <common>", /* glsl */`
                 #include <common>
                 uniform vec2 uSwatches;
                 uniform float uSteps;
                 uniform vec2 uLightRange;
                 uniform float uDither;
+                uniform float uHit;
                 varying vec3 vWorldPosition;
                 varying vec3 vPosition;
-                uniform float uHit;
-                uniform vec2 uGlassSwatch;
-                uniform vec2 uGlassGradient;
-                uniform float uGlassOpacity;
 
                 ${dithering}
                 ${lightsChunk}
+
+                // dithered pick down the gradient of the swatch the cell sits in, value 1 is the light end
+                // takes the texture as map isnt declared yet this high up
+                vec3 getSwatchColor(sampler2D tex, vec2 cell, float value) {
+                    float level = float(ditherStep(gl_FragCoord.xy, value, uSteps, uDither));
+                    // swatches are light to dark top down, flipY is off so the top is the low v
+                    vec2 uv = vec2(cell.x, floor(cell.y) + 1. - (level + .5) / uSteps) / uSwatches;
+
+                    return sRGBTransferOETF(textureLod(tex, uv, 0.)).rgb;
+                }
+
+                #include <spacebits_pars_fragment>
             `)
             .replace("#include <dithering_fragment>", /* glsl */`
                 #include <dithering_fragment>
 
-                vec2 cell = vMapUv * uSwatches;
-                bool glass = floor(cell) == uGlassSwatch;
+                // light hitting the surface 
+                float shade = clamp((luminance(outgoingLight) - uLightRange.x) / (uLightRange.y - uLightRange.x), 0., 1.);
 
-                // glass, drop pixels in a dither pattern to see through, then color it down the glass gradient by v
-                // low v is the top, so it thins out going up
-                if (glass) {
-                    if (ditherStep(gl_FragCoord.xy + 1., fract(cell.y) * uGlassOpacity, 2., 1.) == 0) {
-                        discard;
-                    }
-
-                    cell = uGlassGradient + fract(cell);
-                }
-
-                // light hitting the surface, albedo divided out
-                vec3 lumaWeights = vec3(.2126, .7152, .0722);
-                float light = dot(outgoingLight, lumaWeights) / max(dot(diffuseColor.rgb, lumaWeights), .001);
-                float shade = clamp((light - uLightRange.x) / (uLightRange.y - uLightRange.x), 0., 1.);
-                // where the uv sits down the swatch, low v is the light end
-                float albedo = 1. - fract(cell.y);
-                // glass ignores light, the rest is darkened from its uv position by light
-                float level = float(ditherStep(gl_FragCoord.xy, glass ? albedo : albedo * shade, uSteps, uDither));
-
-                // swatches are light to dark top down, flipY is off so the top is the low v
-                vec2 swatchUv = vec2(cell.x, floor(cell.y) + 1. - (level + .5) / uSteps) / uSwatches;
-
-                gl_FragColor.rgb = sRGBTransferOETF(textureLod(map, swatchUv, 0.)).rgb;
-
-                // flash on hit
-                gl_FragColor.rgb = mix(
-                    gl_FragColor.rgb,
-                    vec3(1.),
-                    uHit
-                );
+                #include <spacebits_color>
+                #include <spacebits_hit>
 
                 applyLights(vWorldPosition);
             `)
+            // resolve our own special chunks
+            .replace(/#include <(spacebits_\w+)>/g, (_, name: keyof SpacebitsChunks) => this.chunks[name])
     }
 }
 
 export const spacebits = new SpacebitsMaterial()
+export const spacebitsPool = createMaterialPool(spacebits, () => new SpacebitsMaterial())

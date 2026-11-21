@@ -68,7 +68,7 @@ function Turret({
             count: 30,
             radius: [radius * .25, radius * 1.5],
             spread: [radius, radius * 3],
-            shockwave: random.float(radius * 6, radius * 8),
+            shockwave: true,
         })
         createParticles({
             position: client.position,

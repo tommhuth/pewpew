@@ -3,13 +3,12 @@ import { useGLTF } from "@react-three/drei"
 import { ThreeElements, useFrame } from "@react-three/fiber"
 import { Group, Mesh, Vector3 } from "three"
 import { damp } from "three/src/math/MathUtils.js"
-import { spacebits } from "@components/world/spacebits-material"
+import { spacebits, spacebitsPool } from "@components/world/spacebits-material"
 import { ndelta } from "@lib/helpers/utils"
 import { Tuple3 } from "@src/types/global"
 import { useGravity } from "@src/hooks/use-gravity"
 import turretModel from "@assets/models/turret.glb"
-import { useSpacebitsMaterialSwap } from "@src/hooks/use-spacebits-material-swap"
-import { hitSpacebitsMaterial } from "@components/world/spacebits-material-pool"
+import { useMaterialSwap } from "@src/hooks/use-material-swap"
 
 type TurretNodes = Record<"turret2_1" | "turret2_2", Mesh>
 
@@ -32,7 +31,7 @@ export default function TurretModel({ ref, falling, ...rest }: TurretModelProps)
     const groupRef = useGravity<Group>(!!falling)
     const barrelRef = useRef<Mesh>(null)
 
-    useSpacebitsMaterialSwap(groupRef)
+    const hit = useMaterialSwap(groupRef, spacebitsPool)
 
     useImperativeHandle(ref, () => ({
         shoot: () => {
@@ -41,12 +40,12 @@ export default function TurretModel({ ref, falling, ...rest }: TurretModelProps)
             }
         },
         flash() {
-            hitSpacebitsMaterial(groupRef.current)
+            hit()
         },
         get position() {
             return groupRef.current?.position
         },
-    }), [])
+    }), [hit])
 
     useFrame((_, delta) => {
         if (!barrelRef.current) {

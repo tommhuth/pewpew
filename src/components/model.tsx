@@ -76,6 +76,10 @@ export enum ModelType {
     WINDTURBINE_TALL = "windturbine_tall",
 }
 
+export function isGlassModel(type: ModelType) {
+    return [ModelType.ECO_MODULE, ModelType.DOME].includes(type)
+}
+
 export const modelGroups: Record<string, (ModelType | EntityType)[]> = {
     "Entities": [
         EntityType.TURRET,

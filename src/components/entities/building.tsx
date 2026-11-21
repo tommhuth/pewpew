@@ -1,7 +1,7 @@
 import { memo, useEffect, useEffectEvent, useMemo } from "react"
 import { useFrame } from "@react-three/fiber"
 import { BufferGeometry, Mesh } from "three"
-import Model, { ModelType } from "@components/model"
+import Model, { isGlassModel, ModelType } from "@components/model"
 import Hitbox from "@components/hitbox"
 import { createExplosion } from "@components/effects/explosions"
 import { createParticles, CreateParticlesParams } from "@components/effects/particle/particle-mesh"
@@ -13,10 +13,10 @@ import { Owner } from "@src/types/bullet"
 import { BuildingEntity, EntityType } from "@src/types/entity"
 import { Tuple3 } from "@src/types/global"
 import random from "@huth/random"
-import { SpacebitsMaterial } from "@components/world/spacebits-material"
+import { SpacebitsMaterial, spacebitsPool } from "@components/world/spacebits-material"
 import { getCollisionBox } from "@lib/world/bounding-boxes"
-import { hitSpacebitsMaterial } from "@components/world/spacebits-material-pool"
-import { useSpacebitsMaterialSwap } from "@src/hooks/use-spacebits-material-swap"
+import { useMaterialSwap } from "@src/hooks/use-material-swap"
+import { glassPool } from "@components/world/glass-material"
 
 const particleColor = "#eaecf2"
 
@@ -62,35 +62,21 @@ function Building({
         return grid.createClient([x + ox, y + oy, z + oz], box.size, { id, type: EntityType.BUILDING })
     }, [grid, id, x, y, z, box])
 
-    useSpacebitsMaterialSwap(ref)
+    const hit = useMaterialSwap(ref, isGlassModel(model) ? glassPool : spacebitsPool)
 
     useCollisionDetection({
         client,
         bullet: ({ bullet, point, normal }) => {
-            let shared = {
-                radius: [.05, .15],
-                stagger: [0, 0],
-                color: particleColor,
-                restitution: [.4, .8]
-            } satisfies Partial<CreateParticlesParams>
-
             createParticles({
                 position: point,
                 offset: [[-.1, .1], [0, box.size[1]], [0, 0]],
                 normal,
                 speed: [1, 5],
                 count: [2, 4],
-                ...shared
-            })
-
-            createParticles({
-                position: [x, y, z],
-                offset: [[-.5, .5], [0, box.size[1]], [-.5, .5]],
-                normal: [0, 0, 0],
-                spread: [[-1, 1], [0, .5]],
-                speed: [9, 15],
-                count: [3, 5],
-                ...shared
+                radius: [.05, .15],
+                stagger: [0, 0],
+                color: particleColor,
+                restitution: [.4, .8]
             })
 
             if (bullet.owner === Owner.PLAYER) {
@@ -141,13 +127,13 @@ function Building({
 
     useEffect(() => {
         return health.onChange(value => {
-            hitSpacebitsMaterial(ref.current)
+            hit()
 
             if (value === 0) {
                 handleDead()
             }
         })
-    }, [health])
+    }, [health, hit])
 
     useEffect(() => {
         return () => grid.remove(client)

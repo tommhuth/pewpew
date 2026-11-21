@@ -24,7 +24,7 @@ interface CreateExplosionParams {
     radius: Tuple2 // fireball start radius, spread from first to last fireball
     growth?: Tuple2 // fireball max radius as a multiple of its start radius
     spread: [xz: number, y: number] // fireball offset from position, xz either side, y upwards
-    shockwave?: number // radius, always spawns one when given, otherwise 65% chance at radius[1] * 5
+    shockwave?: boolean
     delay?: number
 }
 
@@ -34,7 +34,7 @@ export function createExplosion({
     radius,
     growth = [1, 3.5],
     spread,
-    shockwave,
+    shockwave = random.boolean(.75),
     delay = 0,
 }: CreateExplosionParams) {
     return setTimeout(() => {
@@ -46,9 +46,7 @@ export function createExplosion({
             lifetime: random.integer(baseLifetime * .75, baseLifetime),
             time: 0,
             mounted: false,
-            shockwave: shockwave !== undefined
-                ? createShockwave(shockwave)
-                : random.boolean(.65) ? createShockwave(radius[1] * 5) : null,
+            shockwave: shockwave ? createShockwave(radius[1] * 5) : null,
             fireballs: createFireballs({
                 position,
                 count,

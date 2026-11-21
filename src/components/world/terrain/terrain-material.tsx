@@ -83,7 +83,11 @@ export default function TerrainMaterial(props: TerrainMaterialProps) {
                         * (1. - clamp(abs(vGridPosition.x) / 6., 0., 1.))
                 );
                 gl_FragColor.rgb *= 1. - line * .1;
-                gl_FragColor.rgb = mix(gl_FragColor.rgb , vec3(0.), smoothstep(0., -6., vGridPosition.y));
+                gl_FragColor.rgb = mix(
+                    gl_FragColor.rgb ,
+                    vec3(0.),
+                    smoothstep(0., -6., vGridPosition.y)
+                );
 
                 float shade = map(luma(gl_FragColor.rgb), uLumaRange.x, uLumaRange.y, 0., 1.);
 

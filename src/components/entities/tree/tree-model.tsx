@@ -3,13 +3,12 @@ import { useGLTF } from "@react-three/drei"
 import { ThreeElements, useFrame } from "@react-three/fiber"
 import { Group, Mesh } from "three"
 import { damp } from "three/src/math/MathUtils.js"
-import { spacebits } from "@components/world/spacebits-material"
+import { spacebits, spacebitsPool } from "@components/world/spacebits-material"
 import { ndelta } from "@lib/helpers/utils"
 import treesModel from "@assets/models/trees.glb"
 import random from "@huth/random"
 import { Tuple3 } from "@src/types/global"
-import { useSpacebitsMaterialSwap } from "@src/hooks/use-spacebits-material-swap"
-import { hitSpacebitsMaterial } from "@components/world/spacebits-material-pool"
+import { useMaterialSwap } from "@src/hooks/use-material-swap"
 
 export enum TreeType {
     TYPE3_01 = "Tree_Type3_01_Model",
@@ -50,7 +49,7 @@ export default function TreeModel({ ref, variant, position, ...rest }: TreeModel
     const { nodes } = useGLTF(treesModel) as unknown as { nodes: Record<TreeType, Mesh> }
     const tiltRef = useRef<Group>(null)
 
-    useSpacebitsMaterialSwap(tiltRef)
+    const hit = useMaterialSwap(tiltRef, spacebitsPool)
 
     useImperativeHandle(ref, () => ({
         hit: ([nx, , nz], amount = .15) => {
@@ -62,9 +61,9 @@ export default function TreeModel({ ref, variant, position, ...rest }: TreeModel
             }
         },
         flash: () => {
-            hitSpacebitsMaterial(tiltRef.current)
+            hit()
         },
-    }), [])
+    }), [hit])
 
     useFrame((_, delta) => {
         let mesh = tiltRef.current
