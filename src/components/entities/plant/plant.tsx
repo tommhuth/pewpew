@@ -6,12 +6,8 @@ import { useCollisionDetection } from "@src/hooks/use-collision-detection"
 import { useGridClient } from "@src/hooks/use-grid-client"
 import { Owner } from "@src/types/bullet"
 import { EntityType, PlantEntity } from "@src/types/entity"
-import PlantModel from "./plant-model"
-import { plantPool } from "./plant-material"
+import PlantModel, { PlantModelRef } from "./plant-model"
 import { getCollisionBox } from "@lib/world/bounding-boxes"
-import { SpacebitsMaterial } from "@components/world/spacebits-material"
-import { BufferGeometry, Mesh } from "three"
-import { useMaterialSwap } from "@src/hooks/use-material-swap"
 
 const coll = getCollisionBox("plant", 0)
 
@@ -24,15 +20,13 @@ function Plant({
     rotation,
     position: [x, y, z],
 }: PlantEntity) {
-    const ref = useRef<Mesh<BufferGeometry, SpacebitsMaterial>>(null)
+    const ref = useRef<PlantModelRef>(null)
     const damagedBy = useMemo(() => new Set<string>(), [])
     const client = useGridClient(
         [x, y + coll.offset[1], z],
         coll.size,
         { id, type: EntityType.PLANT }
     )
-
-    const hit = useMaterialSwap(ref, plantPool)
 
     useCollisionDetection({
         client,
@@ -43,6 +37,7 @@ function Plant({
             }
 
             damagedBy.add(bullet.id)
+            ref.current?.hit(normal)
             createLeaves({
                 position: point,
                 size: [.25, .25, .25],
@@ -81,13 +76,13 @@ function Plant({
 
     useEffect(() => {
         return health.onChange(value => {
-            hit()
+            ref.current?.flash()
 
             if (value === 0) {
                 handleDead()
             }
         })
-    }, [health, hit])
+    }, [health])
 
     return (
         <>

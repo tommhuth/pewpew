@@ -1,14 +1,12 @@
 import { Ref, useImperativeHandle, useRef } from "react"
 import { useGLTF } from "@react-three/drei"
-import { ThreeElements, useFrame } from "@react-three/fiber"
+import { ThreeElements } from "@react-three/fiber"
 import { Group, Mesh } from "three"
-import { damp } from "three/src/math/MathUtils.js"
 import { spacebits, spacebitsPool } from "@components/world/spacebits-material"
-import { ndelta } from "@lib/helpers/utils"
 import treesModel from "@assets/models/trees.glb"
-import random from "@huth/random"
 import { Tuple3 } from "@src/types/global"
 import { useMaterialSwap } from "@src/hooks/use-material-swap"
+import { useBend } from "@src/hooks/use-bend"
 
 export enum TreeType {
     TYPE3_01 = "Tree_Type3_01_Model",
@@ -49,32 +47,13 @@ export default function TreeModel({ ref, variant, position, ...rest }: TreeModel
     const { nodes } = useGLTF(treesModel) as unknown as { nodes: Record<TreeType, Mesh> }
     const tiltRef = useRef<Group>(null)
 
-    const hit = useMaterialSwap(tiltRef, spacebitsPool)
+    const flash = useMaterialSwap(tiltRef, spacebitsPool)
+    const bend = useBend(tiltRef)
 
     useImperativeHandle(ref, () => ({
-        hit: ([nx, , nz], amount = .15) => {
-            if (tiltRef.current) {
-                let a = random.float(amount * .5, amount)
-
-                tiltRef.current.rotation.x = -nz * a
-                tiltRef.current.rotation.z = nx * a
-            }
-        },
-        flash: () => {
-            hit()
-        },
-    }), [hit])
-
-    useFrame((_, delta) => {
-        let mesh = tiltRef.current
-
-        if (!mesh) {
-            return
-        }
-
-        mesh.rotation.x = damp(mesh.rotation.x, 0, 2.5, ndelta(delta))
-        mesh.rotation.z = damp(mesh.rotation.z, 0, 2.5, ndelta(delta))
-    })
+        hit: bend,
+        flash,
+    }), [bend, flash])
 
     return (
         <group
