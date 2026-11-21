@@ -9,6 +9,7 @@ import { createDecal } from "@components/effects/decal/decal-mesh"
 import { removeEntities, useStore } from "@lib/store"
 import { getCollisionBox } from "@lib/world/bounding-boxes"
 import { useCollisionDetection } from "@src/hooks/use-collision-detection"
+import { useGridClient } from "@src/hooks/use-grid-client"
 import { Owner } from "@src/types/bullet"
 import { EntityType, TurretEntity } from "@src/types/entity"
 import { ndelta } from "@lib/helpers/utils"
@@ -27,18 +28,12 @@ function Turret({
 }: TurretEntity) {
     const grid = useStore(i => i.world.grid)
     const turretRef = useRef<TurretRef>(null)
-    const { box, client } = useMemo(() => {
-        const box = getCollisionBox(EntityType.TURRET, rotation)
-        const [ox, oy, oz] = box.offset
-
-        return {
-            box,
-            client: grid.createClient([x + ox, y + oy, z + oz], box.size, {
-                id,
-                type: EntityType.TURRET
-            })
-        }
-    }, [rotation, grid, id, x, y, z])
+    const box = useMemo(() => getCollisionBox(EntityType.TURRET, rotation), [rotation])
+    const client = useGridClient(
+        [x + box.offset[0], y + box.offset[1], z + box.offset[2]],
+        box.size,
+        { id, type: EntityType.TURRET }
+    )
 
     useCollisionDetection({
         client,
@@ -97,12 +92,6 @@ function Turret({
             handleDead()
         }
     }), [health])
-
-    useEffect(() => {
-        return () => {
-            grid.remove(client)
-        }
-    }, [grid, client])
 
     useFrame(() => {
         const position = turretRef.current?.position

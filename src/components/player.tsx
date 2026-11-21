@@ -1,5 +1,5 @@
 import { useFrame } from "@react-three/fiber"
-import { useEffect, useLayoutEffect, useMemo, useRef } from "react"
+import { useLayoutEffect, useRef } from "react"
 import { damp } from "three/src/math/MathUtils.js"
 import { damageEntity, setPlayerObject, State, useStore } from "@lib/store"
 import {
@@ -22,6 +22,7 @@ import { Owner } from "@src/types/bullet"
 import { createBullet } from "@components/bullets"
 import Hitbox from "@components/hitbox"
 import { useCollisionDetection } from "@src/hooks/use-collision-detection"
+import { useGridClient } from "@src/hooks/use-grid-client"
 import { CollisionType } from "@src/types/collision"
 import { WorldPart } from "@src/types/world"
 import { getWorldTerrainHeightAt } from "@lib/world/terrain"
@@ -48,9 +49,7 @@ export default function Player() {
     const nextShotAt = useRef(0)
     const debugRef = useRef<LineSegments>(null)
     const grid = useStore(i => i.world.grid)
-    const client = useMemo(() => {
-        return grid.createClient([...PLAYER_START], PLAYER_SIZE, { id: "player", type: CollisionType.PLAYER })
-    }, [grid])
+    const client = useGridClient(PLAYER_START, PLAYER_SIZE, { id: "player", type: CollisionType.PLAYER })
 
     useControls()
 
@@ -62,10 +61,6 @@ export default function Player() {
         object.position.set(...PLAYER_START)
         targetPosition.copy(object.position)
     }, [object, targetPosition])
-
-    useEffect(() => {
-        return () => grid.remove(client)
-    }, [grid, client])
 
     useFrame((_, delta) => {
         const { player, state, world } = useStore.getState()

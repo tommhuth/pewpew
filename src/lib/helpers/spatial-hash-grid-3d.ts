@@ -85,7 +85,7 @@ export class SpatialHashGrid3D {
         return cell
     }
 
-    private insert(client: Client) {
+    public insert(client: Client) {
         this.computeBounds(client.position, client.size, client)
 
         for (let x = client.minX; x <= client.maxX; x++) {
@@ -143,8 +143,6 @@ export class SpatialHashGrid3D {
             maxZ: 0,
             lastQueryId: 0,
         }
-
-        this.insert(client)
 
         return client
     }

@@ -9,6 +9,7 @@ import { createDecal } from "@components/effects/decal/decal-mesh"
 import { removeEntities, setEntitiesFalling, useStore } from "@lib/store"
 import { useCollisionDetection } from "@src/hooks/use-collision-detection"
 import { useGravity } from "@src/hooks/use-gravity"
+import { useGridClient } from "@src/hooks/use-grid-client"
 import { Owner } from "@src/types/bullet"
 import { BuildingEntity, EntityType } from "@src/types/entity"
 import { Tuple3 } from "@src/types/global"
@@ -56,12 +57,11 @@ function Building({
     const ref = useGravity<Mesh<BufferGeometry, SpacebitsMaterial>>(!!falling)
     const grid = useStore(i => i.world.grid)
     const box = useMemo(() => getCollisionBox(model, rotation), [model, rotation])
-    const client = useMemo(() => {
-        const [ox, oy, oz] = box.offset
-
-        return grid.createClient([x + ox, y + oy, z + oz], box.size, { id, type: EntityType.BUILDING })
-    }, [grid, id, x, y, z, box])
-
+    const client = useGridClient(
+        [x + box.offset[0], y + box.offset[1], z + box.offset[2]],
+        box.size,
+        { id, type: EntityType.BUILDING }
+    )
     const hit = useMaterialSwap(ref, isGlassModel(model) ? glassPool : spacebitsPool)
 
     useCollisionDetection({
@@ -134,10 +134,6 @@ function Building({
             }
         })
     }, [health, hit])
-
-    useEffect(() => {
-        return () => grid.remove(client)
-    }, [grid, client])
 
     useFrame((state, delta) => {
         let mesh = ref.current

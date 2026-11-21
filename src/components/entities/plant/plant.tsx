@@ -1,8 +1,9 @@
 import { memo, useEffect, useEffectEvent, useMemo, useRef } from "react"
 import Hitbox from "@components/hitbox"
 import { createLeaves } from "@components/effects/leaf/leaf-mesh"
-import { removeEntities, useStore } from "@lib/store"
+import { removeEntities } from "@lib/store"
 import { useCollisionDetection } from "@src/hooks/use-collision-detection"
+import { useGridClient } from "@src/hooks/use-grid-client"
 import { Owner } from "@src/types/bullet"
 import { EntityType, PlantEntity } from "@src/types/entity"
 import PlantModel from "./plant-model"
@@ -23,18 +24,13 @@ function Plant({
     rotation,
     position: [x, y, z],
 }: PlantEntity) {
-    const grid = useStore(i => i.world.grid)
     const ref = useRef<Mesh<BufferGeometry, SpacebitsMaterial>>(null)
-    const { client, damagedBy } = useMemo(() => {
-        return {
-            damagedBy: new Set<string>(),
-            client: grid.createClient(
-                [x, y + coll.offset[1], z],
-                coll.size,
-                { id, type: EntityType.PLANT }
-            ),
-        }
-    }, [grid, id, x, y, z])
+    const damagedBy = useMemo(() => new Set<string>(), [])
+    const client = useGridClient(
+        [x, y + coll.offset[1], z],
+        coll.size,
+        { id, type: EntityType.PLANT }
+    )
 
     const hit = useMaterialSwap(ref, plantPool)
 
@@ -92,10 +88,6 @@ function Plant({
             }
         })
     }, [health, hit])
-
-    useEffect(() => {
-        return () => grid.remove(client)
-    }, [grid, client])
 
     return (
         <>

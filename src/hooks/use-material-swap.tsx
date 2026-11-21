@@ -5,8 +5,6 @@ import { useFrame } from "@react-three/fiber"
 import { RefObject, useCallback } from "react"
 import { Group, Mesh } from "three"
 
-// fades a flashing target and puts the pool's base material back once done
-// returns hit, flashes the target with the same pool
 export function useMaterialSwap<T extends SpacebitsMaterial>(
     ref: RefObject<Mesh | Group | null>,
     pool: MaterialPool<T>

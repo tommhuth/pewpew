@@ -3,8 +3,9 @@ import TreeModel, { TreeModelRef } from "./tree-model"
 import Hitbox from "@components/hitbox"
 import { createParticles, CreateParticlesParams } from "@components/effects/particle/particle-mesh"
 import { createLeaves } from "@components/effects/leaf/leaf-mesh"
-import { removeEntities, useStore } from "@lib/store"
+import { removeEntities } from "@lib/store"
 import { useCollisionDetection } from "@src/hooks/use-collision-detection"
+import { useGridClient } from "@src/hooks/use-grid-client"
 import { Owner } from "@src/types/bullet"
 import { EntityType, TreeEntity } from "@src/types/entity"
 import { Tuple3 } from "@src/types/global"
@@ -21,23 +22,19 @@ function Tree({
     rotation,
     position: [x, y, z],
 }: TreeEntity) {
-    const grid = useStore(i => i.world.grid)
     const treeModelRef = useRef<TreeModelRef>(null)
-    const { trunk, crown, damagedBy } = useMemo(() => {
-        return {
-            damagedBy: new Set<string>(),
-            trunk: grid.createClient(
-                [x, y + trunkSize[1] / 2, z],
-                trunkSize,
-                { id, type: EntityType.TREE }
-            ),
-            crown: grid.createClient(
-                [x, y + trunkSize[1] + crownSize[1] / 2, z],
-                crownSize,
-                { id, type: EntityType.TREE }
-            )
-        }
-    }, [grid, id, x, y, z])
+    const damagedBy = useMemo(() => new Set<string>(), [])
+    const data = useMemo(() => ({ id, type: EntityType.TREE }), [id])
+    const trunk = useGridClient(
+        [x, y + trunkSize[1] / 2, z],
+        trunkSize,
+        data
+    )
+    const crown = useGridClient(
+        [x, y + trunkSize[1] + crownSize[1] / 2, z],
+        crownSize,
+        data
+    )
 
     // player collision only, bullets pass through
     useCollisionDetection({
@@ -118,14 +115,6 @@ function Tree({
             handleDead()
         }
     }), [health])
-
-    useEffect(() => {
-        return () => grid.remove(trunk)
-    }, [grid, trunk])
-
-    useEffect(() => {
-        return () => grid.remove(crown)
-    }, [grid, crown])
 
     return (
         <>
