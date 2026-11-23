@@ -188,13 +188,16 @@ export class TerrainMaterial extends MeshPhongMaterial {
                     ExplosionShockwave wave = uExplosionShockwaves[i];
 
                     float dist = length(vGridPosition - wave.position);
-                    float band = 1.5;
-                    float circ = smoothstep(wave.radius - band, wave.radius, dist) * step(dist, wave.radius);
-                    float faded = circ * smoothstep(0., .5, wave.opacity);
+                    float band = 1.25;
+                    float circ = smoothstep(wave.radius - band, wave.radius, dist) 
+                        * step(dist, wave.radius);
+                    float faded = circ 
+                        * smoothstep(0., .5, wave.opacity)
+                        * mix(noise(vGridPosition.xyz * 1.), 1., circ);
                     int dithered = ditherStep(gl_FragCoord.xy, faded, 2., 1.);
 
                     if (dithered == 1){ 
-                        gl_FragColor.rgb = vec3(1.);
+                        gl_FragColor.rgb += vec3(.2);
                         break;
                     }
                 }
