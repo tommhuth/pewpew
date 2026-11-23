@@ -13,7 +13,7 @@ import {
     PLAYER_TERRAIN_BUFFER,
 } from "@lib/const"
 import { clamp, ndelta } from "@lib/helpers/utils"
-import { spacebits } from "@components/world/spacebits-material"
+import { spacebits } from "@components/entities/spacebits-material"
 import { useGLTF } from "@react-three/drei"
 import { LineSegments, Mesh, Vector3 } from "three"
 import playerModel from "@assets/models/player.glb"
@@ -74,7 +74,7 @@ export default function Player() {
         const y = clamp(targetPosition.y, EDGE_MIN.y, EDGE_MAX.y)
 
         object.position.x = damp(object.position.x, targetPosition.x, 4, nd)
-        object.position.z += player.speed * nd //* 0
+        object.position.z += player.speed * nd
 
         // never dip into the terrain
         const floor = getTerrainHeight(world.parts, object.position) + PLAYER_SIZE[1] / 2 + PLAYER_TERRAIN_BUFFER

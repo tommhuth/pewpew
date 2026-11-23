@@ -4,7 +4,7 @@ import dithering from "@shaders/dither.glsl"
 import { syncLights } from "@components/effects/lights/lights"
 import { lightsChunk, makeLightsUniform } from "@components/effects/lights/light-shader"
 import { damp } from "three/src/math/MathUtils.js"
-import { createMaterialPool } from "@components/world/material-pool"
+import { createMaterialPool } from "@components/entities/material-pool"
 
 export const spacebitsTexture = new TextureLoader().load(spacebitsTextureUrl)
 

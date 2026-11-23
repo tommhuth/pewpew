@@ -1,6 +1,6 @@
 import { DoubleSide } from "three"
-import { SpacebitsMaterial } from "@components/world/spacebits-material"
-import { createMaterialPool } from "@components/world/material-pool"
+import { SpacebitsMaterial } from "@components/entities/spacebits-material"
+import { createMaterialPool } from "@components/entities/material-pool"
 
 export class PlantMaterial extends SpacebitsMaterial {
     side = DoubleSide

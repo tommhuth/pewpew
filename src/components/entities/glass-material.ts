@@ -1,5 +1,5 @@
 import { Vector2, WebGLProgramParametersWithUniforms } from "three"
-import { spacebitsChunks, SpacebitsChunks, SpacebitsMaterial } from "@components/world/spacebits-material"
+import { spacebitsChunks, SpacebitsChunks, SpacebitsMaterial } from "@components/entities/spacebits-material"
 import { createMaterialPool } from "./material-pool"
 
 // spacebits with a see through swatch, pixels are dithered out instead of using alpha

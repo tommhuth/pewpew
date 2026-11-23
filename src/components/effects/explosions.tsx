@@ -13,6 +13,7 @@ import ShockwaveMesh, { createShockwave, updateShockwave } from "./shockwave/sho
 import ParticleMesh from "./particle/particle-mesh"
 import LeafMesh from "./leaf/leaf-mesh"
 import DecalMesh from "./decal/decal-mesh"
+import { createTerrainShockwave } from "@components/world/terrain/terrain-material"
 
 
 // active explosions, nothing renders off the list
@@ -39,6 +40,8 @@ export function createExplosion({
 }: CreateExplosionParams) {
     return setTimeout(() => {
         const baseLifetime = random.integer(1400, 2000)
+
+        createTerrainShockwave(position, random.float(...radius))
 
         explosions.push({
             id: random.id(),

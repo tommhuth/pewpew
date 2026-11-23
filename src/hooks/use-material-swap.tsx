@@ -1,5 +1,5 @@
-import type { SpacebitsMaterial } from "@components/world/spacebits-material"
-import { getHitMaterial, getMeshes, hitMaterial, MaterialPool } from "@components/world/material-pool"
+import type { SpacebitsMaterial } from "@components/entities/spacebits-material"
+import { getHitMaterial, getMeshes, hitMaterial, MaterialPool } from "@components/entities/material-pool"
 import { ndelta } from "@lib/helpers/utils"
 import { useFrame } from "@react-three/fiber"
 import { RefObject, useCallback } from "react"

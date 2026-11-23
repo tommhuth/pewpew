@@ -3,7 +3,7 @@ import { Mesh, Vector3Like } from "three"
 import { ThreeElements, ThreeEvent } from "@react-three/fiber"
 import terrainModel from "@assets/models/terrain.glb"
 import { getCellPosition, TerrainType, Terrain } from "@lib/world/terrain"
-import TerrainMaterial from "@components/world/terrain/terrain-material"
+import { terrainMaterial } from "@components/world/terrain/terrain-material"
 
 type TerrainCellProps = { type: TerrainType } & ThreeElements["mesh"]
 
@@ -13,12 +13,11 @@ function TerrainCell({ type, ...rest }: TerrainCellProps) {
     return (
         <mesh
             geometry={nodes[type].geometry}
+            material={terrainMaterial}
             castShadow
             receiveShadow
             {...rest}
-        >
-            <TerrainMaterial />
-        </mesh>
+        />
     )
 }
 

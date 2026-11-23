@@ -1,10 +1,10 @@
 import { useGLTF } from "@react-three/drei"
 import { ThreeElements } from "@react-three/fiber"
 import { Mesh } from "three"
-import { spacebits } from "@components/world/spacebits-material"
+import { spacebits } from "@components/entities/spacebits-material"
 import modelsModel from "@assets/models/models.glb"
 import { EntityType } from "@src/types/entity"
-import { glass } from "./world/glass-material"
+import { glass } from "@components/entities/glass-material"
 
 export enum ModelType {
     BASEMODULE_A = "basemodule_A",

@@ -38,7 +38,7 @@
         "noEmit": true,
         "jsx": "react-jsx",
         "strict": true,
-        "noImplicitAny": false,
+        "noImplicitAny": true,
         "noUnusedLocals": true,
         "noUnusedParameters": false,
         "noFallthroughCasesInSwitch": true

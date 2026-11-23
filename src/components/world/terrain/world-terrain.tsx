@@ -5,7 +5,7 @@ import terrainModel from "@assets/models/terrain.glb"
 import { MAP_DEPTH, getCellPosition, TerrainType, MAP_WIDTH } from "@lib/world/terrain"
 import { useStore } from "@lib/store"
 import { setMatrixAt } from "@lib/helpers/utils"
-import TerrainMaterial from "./terrain-material"
+import { terrainMaterial } from "./terrain-material"
 
 const MAX_PARTS = 12
 const CAPACITY = MAX_PARTS * MAP_WIDTH * MAP_DEPTH
@@ -50,14 +50,12 @@ export default function WorldTerrain() {
                     delete meshes.current[type]
                 }
             }}
-            args={[nodes[type].geometry, undefined, CAPACITY]}
+            args={[nodes[type].geometry, terrainMaterial, CAPACITY]}
             castShadow
             frustumCulled={false}
             renderOrder={-2}
             receiveShadow
-        >
-            <TerrainMaterial />
-        </instancedMesh>
+        />
     ))
 }
 

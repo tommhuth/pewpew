@@ -1,6 +1,6 @@
 import { useStore } from "@lib/store"
 import { EntityType } from "@src/types/entity"
-import Building from "./building"
+import Building from "./building/building"
 import Turret from "./turret/turret"
 import Tree from "./tree/tree"
 import Plant from "./plant/plant"

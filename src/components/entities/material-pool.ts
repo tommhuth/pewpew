@@ -1,4 +1,4 @@
-import type { SpacebitsMaterial } from "@components/world/spacebits-material"
+import type { SpacebitsMaterial } from "@components/entities/spacebits-material"
 import LoopCounter from "@lib/helpers/loop-counter"
 import { Group, Mesh } from "three"
 
