@@ -32,7 +32,7 @@ export const PLAYER_TERRAIN_BUFFER = .3
 export const WORLD_START_Z = -MAP_DEPTH * MAP_CELL_SIZE * 2
 
 // shared unit box, scale it per use
-export const box = new BoxGeometry(1, 1, 1, 1, 1, 1)
+export const boxGeometry = new BoxGeometry(1, 1, 1, 1, 1, 1)
 
 export const BULLET_SIZE = 1.25
 export const BULLET_SPEED = 40

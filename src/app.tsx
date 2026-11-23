@@ -12,6 +12,9 @@ import Player from "@components/player"
 import World from "@components/world/world"
 import Bullets from "@components/bullets"
 import Explosions from "@components/effects/explosions"
+import { plantMaterial } from "@components/entities/plant/plant-material"
+import { glassMaterial } from "@components/entities/glass-material"
+import { boxGeometry } from "@lib/const"
 
 extend(extensions)
 
@@ -52,7 +55,22 @@ export default function App() {
 
     return (
         <>
+            {loading && [plantMaterial, glassMaterial].map(material => {
+                return (
+                    <mesh
+                        key={material.uuid}
+                        material={material}
+                        castShadow
+                        receiveShadow
+                        frustumCulled={false}
+                        geometry={boxGeometry}
+                        position={[0, -1, 0]}
+                    />
+                )
+            })}
+
             <color attach={"background"} args={["#fff"]} />
+
             <Camera />
             <Lights />
 
@@ -64,4 +82,4 @@ export default function App() {
             {config.stats && <Perf position="top-right" deepAnalyze />}
         </>
     )
-} 
+}  

@@ -104,6 +104,8 @@ export function removeWorldPart(id: string) {
     })
 }
 
+const queue: Entity[] = []
+
 export function addEntities(entities: Entity[]) {
     const world = useStore.getState().world
 
@@ -130,6 +132,12 @@ export function removeEntities(ids: string[]) {
 export function removePartEntities(partId: string) {
     const world = useStore.getState().world
 
+    for (let i = queue.length - 1; i >= 0; i--) {
+        if (queue[i].partId === partId) {
+            queue.splice(i, 1)
+        }
+    }
+
     useStore.setState({
         world: {
             ...world,
@@ -137,9 +145,6 @@ export function removePartEntities(partId: string) {
         }
     })
 }
-
-
-const queue: Entity[] = []
 
 export function queueEntities(entities: Entity[]) {
     queue.push(...entities)

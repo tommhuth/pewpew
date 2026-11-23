@@ -35,13 +35,13 @@ const shockwaveIndex = new LoopCounter(shockwaveCount)
 
 export function createTerrainShockwave(position: Tuple3, radius: number) {
     let wave = shockwavesUniform.value[shockwaveIndex.next()]
-    let t = random.integer(800, 1600)
+    let time = random.integer(400, 600)
 
     wave.position.set(...position)
-    wave.radius = radius
-    wave.targetRadius = radius * 13
-    wave.time = t
-    wave.lifetime = t
+    wave.radius = radius * .25
+    wave.targetRadius = radius
+    wave.time = time
+    wave.lifetime = time
 }
 
 const shockwavesUniform: ExplosionShockwaveUniform = {
@@ -66,7 +66,7 @@ function tick(time: number) {
     for (let i = 0; i < shockwavesUniform.value.length; i++) {
         let wave = shockwavesUniform.value[i]
 
-        wave.radius = damp(wave.radius, wave.targetRadius, 1, delta)
+        wave.radius = damp(wave.radius, wave.targetRadius, 4, delta)
         wave.time = Math.max(wave.time - delta * 1000, 0)
         wave.opacity = wave.time / wave.lifetime
     }
@@ -188,10 +188,10 @@ export class TerrainMaterial extends MeshPhongMaterial {
                     ExplosionShockwave wave = uExplosionShockwaves[i];
 
                     float dist = length(vGridPosition - wave.position);
-                    float band = 2.5;
+                    float band = 1.5;
                     float circ = smoothstep(wave.radius - band, wave.radius, dist) * step(dist, wave.radius);
-                    float faded = circ * smoothstep(wave.opacity, .0, .35);
-                    int dithered = ditherStep(gl_FragCoord.xy, faded, 2., .5);
+                    float faded = circ * smoothstep(0., .5, wave.opacity);
+                    int dithered = ditherStep(gl_FragCoord.xy, faded, 2., 1.);
 
                     if (dithered == 1){ 
                         gl_FragColor.rgb = vec3(1.);

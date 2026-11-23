@@ -6,5 +6,5 @@ export class PlantMaterial extends SpacebitsMaterial {
     side = DoubleSide
 }
 
-export const plant = new PlantMaterial()
-export const plantPool = createMaterialPool(plant, () => new PlantMaterial(), 2)
+export const plantMaterial = new PlantMaterial()
+export const plantMaterialPool = createMaterialPool(plantMaterial, () => new PlantMaterial(), 2)

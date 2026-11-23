@@ -69,6 +69,8 @@ export function setMatrixAt({
     }
 
     instance.setMatrixAt(index, _matrix.compose(_position, _quaternion, _scale))
+    // only upload the changed slot, three merges adjacent ranges
+    instance.instanceMatrix.addUpdateRange(index * 16, 16)
     instance.instanceMatrix.needsUpdate = true
 }
 
@@ -88,6 +90,7 @@ export function setColorAt(instance: InstancedMesh, index: number, color: ColorR
     instance.setColorAt(index, _color.set(color))
 
     if (instance.instanceColor) {
+        instance.instanceColor.addUpdateRange(index * 3, 3)
         instance.instanceColor.needsUpdate = true
     } else {
         console.warn("Instance is not initialized with instanceColor: setColorAt will do nothing.")
@@ -103,6 +106,7 @@ export function setBufferAttribute(
     const attribute = geometry.getAttribute(name) as BufferAttribute
 
     attribute.set(Array.isArray(value) ? value : [value], index * attribute.itemSize)
+    attribute.addUpdateRange(index * attribute.itemSize, attribute.itemSize)
     attribute.needsUpdate = true
 }
 

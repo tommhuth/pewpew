@@ -4,7 +4,6 @@ import { createMaterialPool } from "./material-pool"
 
 // spacebits with a see through swatch, pixels are dithered out instead of using alpha
 export class GlassMaterial extends SpacebitsMaterial {
-    transparent = true
     chunks: SpacebitsChunks = {
         ...spacebitsChunks,
         spacebits_pars_fragment: /* glsl */`
@@ -43,5 +42,5 @@ export class GlassMaterial extends SpacebitsMaterial {
     }
 }
 
-export const glass = new GlassMaterial()
-export const glassPool = createMaterialPool(glass, () => new GlassMaterial(), 4)
+export const glassMaterial = new GlassMaterial()
+export const glassMaterialPool = createMaterialPool(glassMaterial, () => new GlassMaterial(), 4)

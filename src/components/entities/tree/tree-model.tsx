@@ -2,7 +2,7 @@ import { Ref, useImperativeHandle, useRef } from "react"
 import { useGLTF } from "@react-three/drei"
 import { ThreeElements } from "@react-three/fiber"
 import { Group, Mesh } from "three"
-import { spacebits, spacebitsPool } from "@components/entities/spacebits-material"
+import { spacebitsMaterial, spacebitsMaterialPool } from "@components/entities/spacebits-material"
 import treesModel from "@assets/models/trees.glb"
 import { Tuple3 } from "@src/types/global"
 import { useMaterialSwap } from "@src/hooks/use-material-swap"
@@ -47,7 +47,7 @@ export default function TreeModel({ ref, variant, position, ...rest }: TreeModel
     const { nodes } = useGLTF(treesModel) as unknown as { nodes: Record<TreeType, Mesh> }
     const tiltRef = useRef<Group>(null)
 
-    const flash = useMaterialSwap(tiltRef, spacebitsPool)
+    const flash = useMaterialSwap(tiltRef, spacebitsMaterialPool)
     const bend = useBend(tiltRef)
 
     useImperativeHandle(ref, () => ({
@@ -62,7 +62,7 @@ export default function TreeModel({ ref, variant, position, ...rest }: TreeModel
         >
             <mesh
                 geometry={nodes[variant].geometry}
-                material={spacebits}
+                material={spacebitsMaterial}
                 castShadow
                 receiveShadow
                 {...rest}

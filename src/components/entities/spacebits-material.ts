@@ -133,5 +133,5 @@ export class SpacebitsMaterial extends MeshPhongMaterial {
     }
 }
 
-export const spacebits = new SpacebitsMaterial()
-export const spacebitsPool = createMaterialPool(spacebits, () => new SpacebitsMaterial())
+export const spacebitsMaterial = new SpacebitsMaterial()
+export const spacebitsMaterialPool = createMaterialPool(spacebitsMaterial, () => new SpacebitsMaterial())

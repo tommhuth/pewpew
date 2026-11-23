@@ -14,10 +14,10 @@ import { Owner } from "@src/types/bullet"
 import { BuildingEntity, EntityType } from "@src/types/entity"
 import { Tuple3 } from "@src/types/global"
 import random from "@huth/random"
-import { SpacebitsMaterial, spacebitsPool } from "@components/entities/spacebits-material"
+import { SpacebitsMaterial, spacebitsMaterialPool } from "@components/entities/spacebits-material"
 import { getCollisionBox } from "@lib/world/bounding-boxes"
 import { useMaterialSwap } from "@src/hooks/use-material-swap"
-import { glassPool } from "@components/entities/glass-material"
+import { glassMaterialPool } from "@components/entities/glass-material"
 
 const particleColor = "#eaecf2"
 
@@ -62,7 +62,7 @@ function Building({
         box.size,
         { id, type: EntityType.BUILDING }
     )
-    const hit = useMaterialSwap(ref, isGlassModel(model) ? glassPool : spacebitsPool)
+    const hit = useMaterialSwap(ref, isGlassModel(model) ? glassMaterialPool : spacebitsMaterialPool)
 
     useCollisionDetection({
         client,

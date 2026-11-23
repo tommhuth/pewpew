@@ -3,7 +3,7 @@ import { useTransitionedState } from "@src/hooks/use-transitioned-state"
 import { InstancedMesh } from "three"
 import random from "@huth/random"
 import { useStore } from "@lib/store"
-import { ndelta } from "@lib/helpers/utils"
+import { ndelta, setMatrixNullAt } from "@lib/helpers/utils"
 import { FIREBALL_COUNT, SHOCKWAVE_COUNT } from "@lib/const"
 import { useInstanceClear } from "@src/hooks/use-instance-clear"
 import { Explosion } from "@src/types/explosion"
@@ -41,7 +41,7 @@ export function createExplosion({
     return setTimeout(() => {
         const baseLifetime = random.integer(1400, 2000)
 
-        createTerrainShockwave(position, random.float(...radius))
+        createTerrainShockwave(position, random.float(...radius) * 5)
 
         explosions.push({
             id: random.id(),
@@ -86,6 +86,15 @@ export default function Explosions() {
             const outside = explosion.position[2] < player.object.position.z - diagonal
 
             if (outside || explosion.time > explosion.lifetime) {
+                // hide the slots, finished ones fully discard but still rasterize
+                for (const fireball of explosion.fireballs) {
+                    setMatrixNullAt(fireballInstance, fireball.index)
+                }
+
+                if (explosion.shockwave) {
+                    setMatrixNullAt(shockwaveInstance, explosion.shockwave.index)
+                }
+
                 explosions.splice(i, 1)
                 continue
             }
@@ -95,13 +104,23 @@ export default function Explosions() {
             }
 
             for (const fireball of explosion.fireballs) {
-                updateFireball(fireballInstance, fireball)
+                if (fireball.time > fireball.lifetime) {
+                    setMatrixNullAt(fireballInstance, fireball.index)
+                } else {
+                    updateFireball(fireballInstance, fireball)
+                }
+
                 fireball.time += t
             }
 
             if (explosion.shockwave) {
-                updateShockwave(shockwaveInstance, explosion.shockwave, explosion.position)
-                explosion.shockwave.time += t
+                if (explosion.shockwave.time > explosion.shockwave.lifetime) {
+                    setMatrixNullAt(shockwaveInstance, explosion.shockwave.index)
+                    explosion.shockwave = null
+                } else {
+                    updateShockwave(shockwaveInstance, explosion.shockwave, explosion.position)
+                    explosion.shockwave.time += t
+                }
             }
 
             explosion.time += t

@@ -3,7 +3,7 @@ import { useGLTF } from "@react-three/drei"
 import { ThreeElements, useFrame } from "@react-three/fiber"
 import { Group, Mesh, Vector3 } from "three"
 import { damp } from "three/src/math/MathUtils.js"
-import { spacebits, spacebitsPool } from "@components/entities/spacebits-material"
+import { spacebitsMaterial, spacebitsMaterialPool } from "@components/entities/spacebits-material"
 import { ndelta } from "@lib/helpers/utils"
 import { Tuple3 } from "@src/types/global"
 import { useGravity } from "@src/hooks/use-gravity"
@@ -31,7 +31,7 @@ export default function TurretModel({ ref, falling, ...rest }: TurretModelProps)
     const groupRef = useGravity<Group>(!!falling)
     const barrelRef = useRef<Mesh>(null)
 
-    const hit = useMaterialSwap(groupRef, spacebitsPool)
+    const hit = useMaterialSwap(groupRef, spacebitsMaterialPool)
 
     useImperativeHandle(ref, () => ({
         shoot: () => {
@@ -62,14 +62,14 @@ export default function TurretModel({ ref, falling, ...rest }: TurretModelProps)
         >
             <mesh
                 geometry={nodes.turret2_1.geometry}
-                material={spacebits}
+                material={spacebitsMaterial}
                 castShadow
                 receiveShadow
             />
             <mesh
                 ref={barrelRef}
                 geometry={nodes.turret2_2.geometry}
-                material={spacebits}
+                material={spacebitsMaterial}
                 castShadow
                 receiveShadow
             />

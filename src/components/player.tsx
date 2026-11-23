@@ -13,7 +13,7 @@ import {
     PLAYER_TERRAIN_BUFFER,
 } from "@lib/const"
 import { clamp, ndelta } from "@lib/helpers/utils"
-import { spacebits } from "@components/entities/spacebits-material"
+import { spacebitsMaterial } from "@components/entities/spacebits-material"
 import { useGLTF } from "@react-three/drei"
 import { LineSegments, Mesh, Vector3 } from "three"
 import playerModel from "@assets/models/player.glb"
@@ -132,7 +132,7 @@ export default function Player() {
                     castShadow
                     receiveShadow
                     geometry={nodes.player.geometry}
-                    material={spacebits}
+                    material={spacebitsMaterial}
                     scale={.5}
                 />
             </group>

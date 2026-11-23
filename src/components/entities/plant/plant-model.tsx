@@ -3,7 +3,7 @@ import { useGLTF } from "@react-three/drei"
 import { ThreeElements } from "@react-three/fiber"
 import { Group, Mesh } from "three"
 import plantModel from "@assets/models/plant.glb"
-import { plant, plantPool } from "./plant-material"
+import { plantMaterial, plantMaterialPool } from "./plant-material"
 import { Tuple3 } from "@src/types/global"
 import { useMaterialSwap } from "@src/hooks/use-material-swap"
 import { useBend } from "@src/hooks/use-bend"
@@ -23,7 +23,7 @@ export default function PlantModel({ ref, position, ...rest }: PlantModelProps) 
     const { nodes } = useGLTF(plantModel) as unknown as { nodes: Record<"plant", Mesh> }
     const tiltRef = useRef<Group>(null)
 
-    const flash = useMaterialSwap(tiltRef, plantPool)
+    const flash = useMaterialSwap(tiltRef, plantMaterialPool)
     const bend = useBend(tiltRef)
 
     useImperativeHandle(ref, () => ({
@@ -38,7 +38,7 @@ export default function PlantModel({ ref, position, ...rest }: PlantModelProps) 
         >
             <mesh
                 geometry={nodes.plant.geometry}
-                material={plant}
+                material={plantMaterial}
                 castShadow
                 receiveShadow
                 dispose={null}

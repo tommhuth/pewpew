@@ -169,7 +169,6 @@ export default function ParticleMesh() {
                 velocity[1] *= -particle.restitution
             }
 
-            setColorAt(particleInstance, particle.index, particle.color)
             setMatrixAt({
                 instance: particleInstance,
                 index: particle.index,

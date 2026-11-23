@@ -1,12 +1,12 @@
 import { Ref } from "react"
 import { EdgesGeometry, LineBasicMaterial, LineSegments } from "three"
 import { useStore } from "@lib/store"
-import { box } from "@lib/const"
+import { boxGeometry } from "@lib/const"
 import { Tuple3 } from "@src/types/global"
 
 // collision box outline, toggled from the debug panel
 // never rotated, collisions are axis aligned
-const geometry = new EdgesGeometry(box)
+const geometry = new EdgesGeometry(boxGeometry)
 const material = new LineBasicMaterial({ color: "#0f0" })
 
 interface HitboxProps {
