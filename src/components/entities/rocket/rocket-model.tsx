@@ -1,19 +1,21 @@
 import { Ref, useImperativeHandle, useRef } from "react"
 import { useGLTF } from "@react-three/drei"
-import { ThreeElements, useFrame } from "@react-three/fiber"
-import { Mesh } from "three"
+import { ThreeElements } from "@react-three/fiber"
+import { Mesh, SphereGeometry } from "three"
 import { spacebitsMaterial, spacebitsMaterialPool } from "@components/entities/spacebits-material"
 import { useMaterialSwap } from "@src/hooks/use-material-swap"
 import rocketModel from "@assets/models/rocket.glb"
 import { useGravity } from "@src/hooks/use-gravity"
-import { ndelta } from "@lib/helpers/utils"
 import { Tuple3 } from "@src/types/global"
-import { ExhaustMaterial } from "./exhaust-material"
+import { exhaustMaterial } from "./exhaust-material"
 
 type RocketNodes = Record<"rocket", Mesh>
 
 // mesh length, origin is roughly in the middle
 export const rocketHeight = 2.4
+
+// shared by every rocket
+const exhaustGeometry = new SphereGeometry(1, 8, 8)
 
 export type RocketModelRef = {
     flash: () => void
@@ -36,7 +38,6 @@ export default function RocketModel({ ref, dead = false, position = [0, 0, 0], .
     const rocketRef = useGravity<Mesh>(dead, 3)
     const flash = useMaterialSwap(rocketRef, spacebitsMaterialPool)
     const exhaustRef = useRef<Mesh>(null)
-    const exhaustMaterialRef = useRef<ExhaustMaterial>(null)
 
     useImperativeHandle(ref, () => ({
         get altitude() {
@@ -60,12 +61,6 @@ export default function RocketModel({ ref, dead = false, position = [0, 0, 0], .
         },
     }), [flash, baseY])
 
-    useFrame((_, delta) => {
-        if (exhaustMaterialRef.current) {
-            exhaustMaterialRef.current.uniforms.uTime.value += ndelta(delta)
-        }
-    })
-
     return (
         <mesh
             ref={rocketRef}
@@ -80,10 +75,9 @@ export default function RocketModel({ ref, dead = false, position = [0, 0, 0], .
                 ref={exhaustRef}
                 position-y={-rocketHeight * .75}
                 scale={[.375, .625, .375]}
-            >
-                <sphereGeometry args={[1, 8, 8]} />
-                <exhaustMaterial ref={exhaustMaterialRef} />
-            </mesh>
+                geometry={exhaustGeometry}
+                material={exhaustMaterial}
+            />
         </mesh>
     )
 }

@@ -108,7 +108,7 @@ const fragmentShader = /* glsl */`
         palette[1] = vec3(.87, .89, .95);  
         palette[2] = vec3(1.); 
 
-        float palletteValue = mix(1., smoothstep(.2, .7, sunLit - edge * .25), normal.y);
+        float palletteValue = mix(1., smoothstep(.1, .7, sunLit - edge * .25), normal.y);
         int stepValue = ditherStep(gl_FragCoord.xy, palletteValue, float(palette.length()), .6);
       
         gl_FragColor.rgb = palette[stepValue];

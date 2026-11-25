@@ -11,8 +11,16 @@ import { WorldPart } from "@src/types/world"
 import { terrainMaterial } from "./terrain-material"
 
 const MAX_PARTS = 12
-const CAPACITY = MAX_PARTS * MAP_WIDTH * MAP_DEPTH
 const types = Object.values(TerrainType)
+// most cells of a type per part, base types can fill a whole part
+const cellsPerPart: Partial<Record<TerrainType, number>> = {
+    [TerrainType.HOLE]: 4,
+    [TerrainType.TALL_HOLE]: 4,
+}
+
+function getCapacity(type: TerrainType) {
+    return MAX_PARTS * (cellsPerPart[type] ?? MAP_WIDTH * MAP_DEPTH)
+}
 
 type TerrainMeshProps = {
     type: TerrainType
@@ -22,8 +30,9 @@ type TerrainMeshProps = {
 
 function TerrainMesh({ type, geometry, parts }: TerrainMeshProps) {
     const [instance, setInstance] = useTransitionedState<InstancedMesh | null>(null)
+    const capacity = getCapacity(type)
 
-    useInstanceClear(instance, CAPACITY)
+    useInstanceClear(instance, capacity)
 
     useEffect(() => {
         if (!instance) {
@@ -37,7 +46,7 @@ function TerrainMesh({ type, geometry, parts }: TerrainMeshProps) {
                 for (let x = 0; x < part.terrain[z].length; x++) {
                     const cell = part.terrain[z][x]
 
-                    if (cell.type !== type || index >= CAPACITY) {
+                    if (cell.type !== type || index >= capacity) {
                         continue
                     }
 
@@ -50,12 +59,15 @@ function TerrainMesh({ type, geometry, parts }: TerrainMeshProps) {
                 }
             }
         }
-    }, [instance, parts, type])
+
+        // only draw the placed cells, same terrain program as the other types so 0 is fine
+        instance.count = index
+    }, [instance, parts, type, capacity])
 
     return (
         <instancedMesh
             ref={setInstance}
-            args={[geometry, terrainMaterial, CAPACITY]}
+            args={[geometry, terrainMaterial, capacity]}
             castShadow
             frustumCulled={false}
             renderOrder={-2}

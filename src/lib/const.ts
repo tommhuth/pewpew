@@ -45,5 +45,5 @@ export const FIREBALL_COUNT = 600
 export const SHOCKWAVE_COUNT = 25
 export const PARTICLE_COUNT = 900
 export const DECAL_COUNT = 30
-export const SMOKE_COUNT = 2500
+export const SMOKE_COUNT = 1500
 export const LEAF_COUNT = 350

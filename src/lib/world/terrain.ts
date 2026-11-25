@@ -65,7 +65,8 @@ function toCellLocal(position: Vector3Like, ix: number, iz: number, startZ: numb
 export function getTerrainHeightAt(
     terrain: Terrain,
     position: Vector3Like,
-    startZ: number
+    startZ: number,
+    ignoreHole = false
 ): number {
     let ix = Math.floor(position.x / MAP_CELL_SIZE + MAP_WIDTH / 2)
     let iz = Math.floor((position.z - startZ) / MAP_CELL_SIZE)
@@ -95,8 +96,8 @@ export function getTerrainHeightAt(
         const top = cell.type === TerrainType.TALL_HOLE ? 1 : 0
         const distance = Math.hypot(u, v)
 
-        if (distance < TERRAIN_HOLE_RADIUS) {
-            return position.y - 2
+        if (distance < TERRAIN_HOLE_RADIUS && !ignoreHole) {
+            return top - 2
         } else if (distance < TERRAIN_HOLE_TOP_RADIUS) {
             // straight slope down the chamfer
             return top - TERRAIN_HOLE_CHAMFER
@@ -110,12 +111,12 @@ export function getTerrainHeightAt(
 }
 
 // world terrain height at a position
-export function getWorldTerrainHeightAt(parts: WorldPart[], position: Vector3Like) {
+export function getWorldTerrainHeightAt(parts: WorldPart[], position: Vector3Like, ignoreHole = false) {
     for (let i = 0, n = parts.length; i < n; i++) {
         const part = parts[i]
 
         if (position.z >= part.position.z && position.z < part.position.z + part.size[1]) {
-            return part.position.y + getTerrainHeightAt(part.terrain, position, part.position.z)
+            return part.position.y + getTerrainHeightAt(part.terrain, position, part.position.z, ignoreHole)
         }
     }
 

@@ -95,6 +95,7 @@ function Rocket({
 
             if (bullet.owner === Owner.PLAYER) {
                 health.decrease(35)
+                modelRef.current?.flash()
             }
         },
     })
@@ -141,7 +142,7 @@ function Rocket({
         client.position[1] = y + data.y
         grid.updateClient(client)
 
-        if (y + data.y < 11) {
+        if (y + data.y < 11 && y + data.y > 0) {
             data.smokeTime += d * 1000
 
             // as many puffs as fit in the elapsed time, remainder carries over

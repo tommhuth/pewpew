@@ -2,6 +2,7 @@ import { Color, ShaderMaterial } from "three"
 import utils from "@shaders/utils.glsl"
 import dithering from "@shaders/dither.glsl"
 import noise from "@shaders/noise.glsl"
+import { ndelta } from "@lib/helpers/utils"
 
 // dark to light, picked from the fireball palette
 const palette = [
@@ -78,4 +79,16 @@ export class ExhaustMaterial extends ShaderMaterial {
     }
 }
 
+// shared by every rocket, ticks its own time
 export const exhaustMaterial = new ExhaustMaterial()
+
+let lastTime = performance.now()
+
+function tick(time: number) {
+    exhaustMaterial.uniforms.uTime.value += ndelta((time - lastTime) / 1000)
+    lastTime = time
+
+    requestAnimationFrame(tick)
+}
+
+requestAnimationFrame(tick)

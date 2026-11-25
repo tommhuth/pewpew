@@ -5,7 +5,7 @@ import random from "@huth/random"
 import { SMOKE_COUNT, WORLD_LEFT_EDGE, WORLD_RIGHT_EDGE } from "@lib/const"
 import { useStore } from "@lib/store"
 import { depthIgnoreLayers } from "@components/effects/depth/depth-layers"
-import { clamp, map, ndelta, setMatrixAt } from "@lib/helpers/utils"
+import { clamp, map, ndelta, setMatrixAt, setMatrixNullAt } from "@lib/helpers/utils"
 import { getWorldTerrainHeightAt } from "@lib/world/terrain"
 import LoopCounter from "@lib/helpers/loop-counter"
 import { useInstanceClear } from "@src/hooks/use-instance-clear"
@@ -93,21 +93,26 @@ export default function SmokeMesh() {
 
         const nd = ndelta(delta)
         const diagonal = 12
+        const restMargin = .05
+        let alive = 0
+        let lastIndex = -1
 
         material.uniforms.uTime.value += nd
 
-        for (let i = smokes.length - 1; i >= 0; i--) {
+        // oldest first, so a newer puff sharing a slot overwrites a removed or older one
+        for (let i = 0; i < smokes.length; i++) {
             const smoke = smokes[i]
             const { position, velocity } = smoke
+            const groundAt = getWorldTerrainHeightAt(world.parts, _position.set(...position), true)
+            const endPosition = groundAt - smoke.maxRadius
 
-            if (position[2] < player.object.position.z - diagonal) {
-                smokes.splice(i, 1)
+            // behind the camera, or sunk into its rest spot (damp never quite gets there)
+            if (position[2] < player.object.position.z - diagonal || position[1] - endPosition < restMargin) {
+                setMatrixNullAt(smokeInstance, smoke.index)
                 continue
             }
 
-            const groundAt = Math.max(0, getWorldTerrainHeightAt(world.parts, _position.set(...position)))
-            // relative to the ground so tall terrain spreads and grows like low terrain
-            const nearGround = map(position[1] - groundAt, 0, .5, 1, 0)
+            const nearGround = map(position[1], groundAt, groundAt + .5, 1, 0)
 
             position[0] += velocity[0] * nd * nearGround
             position[2] += velocity[2] * nd * nearGround
@@ -116,7 +121,7 @@ export default function SmokeMesh() {
 
             if (position[1] <= groundAt) {
                 velocity[0] = damp(velocity[0], 0, smoke.damping, nd)
-                position[1] = damp(position[1], groundAt - smoke.maxRadius, smoke.damping * 1.2, nd)
+                position[1] = damp(position[1], endPosition, smoke.damping * 1.2, nd)
                 velocity[2] = damp(velocity[2], 0, smoke.damping, nd)
             } else {
                 position[1] = Math.max(position[1] + velocity[1] * nd, groundAt)
@@ -132,6 +137,18 @@ export default function SmokeMesh() {
                 position,
                 scale: smoke.radius,
             })
+
+            // compact in place, keeps spawn order
+            smokes[alive++] = smoke
+            lastIndex = Math.max(lastIndex, smoke.index)
+        }
+
+        smokes.length = alive
+        smokeInstance.count = lastIndex + 1
+
+        if (alive === 0) {
+            // start from the bottom again so the drawn range stays small
+            smokeIndex.reset()
         }
     })
 
@@ -144,7 +161,7 @@ export default function SmokeMesh() {
             castShadow
             receiveShadow
         >
-            <sphereGeometry args={[1, 12, 12]}>
+            <sphereGeometry args={[1, 8, 8]}>
                 <instancedBufferAttribute
                     attach="attributes-aTime"
                     args={[times, 1]}
