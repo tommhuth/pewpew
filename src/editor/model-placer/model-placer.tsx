@@ -13,11 +13,12 @@ import {
     useEditorStore,
 } from "../store"
 import { EditorMode, EditorPlacement } from "../editor-types"
-import { defaultPlantKind, defaultTreeKind, defaultTurretKind } from "../editor-const"
+import { defaultPlantKind, defaultRocketKind, defaultTreeKind, defaultTurretKind } from "../editor-const"
 import { ModelSelect } from "../model-select/model-select"
 import { VectorInput } from "../vector-input/vector-input"
 import { SelectionBox } from "../selection-box/selection-box"
 import PlantModel from "@components/entities/plant/plant-model"
+import RocketModel from "@components/entities/rocket/rocket-model"
 import { RangeInput } from "../range-input/range-input"
 
 const noPlacements: EditorPlacement[] = []
@@ -33,6 +34,8 @@ function renderEntity(placement: EditorPlacement) {
             return <TreeModel variant={placement.variant} rotation-y={placement.rotation} />
         case EntityType.PLANT:
             return <PlantModel rotation-y={placement.rotation} scale={placement.scale} />
+        case EntityType.ROCKET:
+            return <RocketModel rotation-y={placement.rotation} />
         default:
             return <Model type={placement.type} rotation-y={placement.rotation} />
     }
@@ -46,6 +49,8 @@ function makePlacementData(type: ModelType | EntityType) {
             return defaultTreeKind
         case EntityType.PLANT:
             return defaultPlantKind
+        case EntityType.ROCKET:
+            return defaultRocketKind
         default:
             return { type: type as ModelType }
     }

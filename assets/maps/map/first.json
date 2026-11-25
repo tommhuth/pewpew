@@ -62,7 +62,7 @@
                 "rotation": 0
             },
             {
-                "type": "tall",
+                "type": "tall_hole",
                 "rotation": 1
             },
             {
@@ -148,7 +148,7 @@
                 "rotation": 0
             },
             {
-                "type": "tall",
+                "type": "tall_hole",
                 "rotation": 0
             },
             {
@@ -415,6 +415,26 @@
                 -5,
                 2.25,
                 5.5
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "rocket",
+            "id": "7d2abe8a-829f-440b-9d60-33e6033b0474",
+            "position": [
+                -1,
+                -0.25,
+                5
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "rocket",
+            "id": "05f06b38-15f0-461d-b584-eaeecb61e817",
+            "position": [
+                3.25,
+                -0.5,
+                11.25
             ],
             "rotation": 0
         }

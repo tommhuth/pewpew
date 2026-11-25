@@ -4,6 +4,7 @@ import Building from "./building/building"
 import Turret from "./turret/turret"
 import Tree from "./tree/tree"
 import Plant from "./plant/plant"
+import Rocket from "./rocket/rocket"
 
 export default function Entities() {
     const entities = useStore(i => i.world.entities)
@@ -18,6 +19,8 @@ export default function Entities() {
                 return <Tree key={entity.id} {...entity} />
             case EntityType.PLANT:
                 return <Plant key={entity.id} {...entity} />
+            case EntityType.ROCKET:
+                return <Rocket key={entity.id} {...entity} />
         }
     })
 }

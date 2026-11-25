@@ -82,6 +82,7 @@ export function isGlassModel(type: ModelType) {
 export const modelGroups: Record<string, (ModelType | EntityType)[]> = {
     "Entities": [
         EntityType.TURRET,
+        EntityType.ROCKET,
     ],
     "Base": [
         ModelType.BASEMODULE_A,

@@ -17,3 +17,7 @@ export const defaultPlantKind: PlacementKind = {
     type: EntityType.PLANT,
     scale: 1
 }
+
+export const defaultRocketKind: PlacementKind = {
+    type: EntityType.ROCKET,
+}

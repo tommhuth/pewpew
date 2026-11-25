@@ -8,6 +8,7 @@ export const EntityType = {
     TURRET: "turret",
     TREE: "tree",
     PLANT: "plant",
+    ROCKET: "rocket",
 } as const
 
 export type EntityType = typeof EntityType[keyof typeof EntityType]
@@ -43,8 +44,12 @@ interface PlantPlacement extends BasePlacement {
     scale: number
 }
 
+interface RocketPlacement extends BasePlacement {
+    type: typeof EntityType.ROCKET
+}
+
 // placed by a world part, position is part local
-export type EntityPlacement = BuildingPlacement | TurretPlacement | TreePlacement | PlantPlacement
+export type EntityPlacement = BuildingPlacement | TurretPlacement | TreePlacement | PlantPlacement | RocketPlacement
 
 interface BaseEntity {
     id: string
@@ -79,4 +84,8 @@ export interface PlantEntity extends BaseEntity {
     scale: number
 }
 
-export type Entity = BuildingEntity | TurretEntity | TreeEntity | PlantEntity
+export interface RocketEntity extends BaseEntity {
+    type: typeof EntityType.ROCKET
+}
+
+export type Entity = BuildingEntity | TurretEntity | TreeEntity | PlantEntity | RocketEntity

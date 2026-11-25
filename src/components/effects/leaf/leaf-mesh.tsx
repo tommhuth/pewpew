@@ -7,21 +7,28 @@ import { addScaled, ndelta, scaleXZ, setMatrixAt } from "@lib/helpers/utils"
 import { getWorldTerrainHeightAt } from "@lib/world/terrain"
 import LoopCounter from "@lib/helpers/loop-counter"
 import { useInstanceClear } from "@src/hooks/use-instance-clear"
-import { Leaf } from "@src/types/explosion"
 import { Tuple2, Tuple3 } from "@src/types/global"
 import { useFrame } from "@react-three/fiber"
 import { useLights } from "@components/effects/lights/lights"
 import type { LeafMaterial } from "./leaf-material"
+
+export interface Leaf {
+    position: Tuple3
+    velocity: Tuple3
+    scale: number
+    index: number
+    phase: number
+}
 
 export const leaves: Leaf[] = []
 
 const leafIndex = new LoopCounter(LEAF_COUNT)
 
 export interface CreateLeavesParams {
-    position: Tuple3 // center of the spawn box
-    size?: Tuple3 // spawn box
-    spread?: Tuple3 // extra jitter on top of size
-    velocity?: Tuple3 // each leaf gets 50-100% of this
+    position: Tuple3
+    size?: Tuple3
+    spread?: Tuple3
+    velocity?: Tuple3
     count?: Tuple2 | number
     scale?: Tuple2
 }

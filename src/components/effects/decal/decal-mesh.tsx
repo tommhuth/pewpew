@@ -10,8 +10,17 @@ import { useInstanceClear } from "@src/hooks/use-instance-clear"
 import { useLights } from "@components/effects/lights/lights"
 import { useDepth } from "@components/effects/depth/use-depth"
 import { DecalMaterial } from "./decal-material"
-import { Decal } from "@src/types/explosion"
 import { Tuple3 } from "@src/types/global"
+
+// scorch mark, flat on the ground
+export interface Decal {
+    position: Tuple3
+    time: number
+    lifetime: number
+    rotation: number
+    scale: number
+    index: number
+}
 
 export const decals: Decal[] = []
 

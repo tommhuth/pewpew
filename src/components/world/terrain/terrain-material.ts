@@ -13,7 +13,7 @@ import { ndelta } from "@lib/helpers/utils"
 import random from "@huth/random"
 
 const palette = [
-    "#5e6a82",
+    "#959eb1",
     "#ccd0d9",
     "#f1f2f6",
     "#fbfbfd",

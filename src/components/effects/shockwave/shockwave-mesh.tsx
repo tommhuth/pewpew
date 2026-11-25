@@ -9,8 +9,14 @@ import { easeOutCubic } from "@lib/helpers/shaping"
 import LoopCounter from "@lib/helpers/loop-counter"
 import { useDepth } from "@components/effects/depth/use-depth"
 import { ShockwaveMaterial } from "./shockwave-material"
-import { Shockwave } from "@src/types/explosion"
 import { Tuple3 } from "@src/types/global"
+
+export interface Shockwave {
+    radius: number
+    lifetime: number
+    time: number
+    index: number
+}
 
 const geometry = new SphereGeometry(1, 10, 10)
 

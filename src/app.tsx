@@ -15,6 +15,7 @@ import Explosions from "@components/effects/explosions"
 import { plantMaterial } from "@components/entities/plant/plant-material"
 import { glassMaterial } from "@components/entities/glass-material"
 import { boxGeometry } from "@lib/const"
+import { exhaustMaterial } from "@components/entities/rocket/exhaust-material"
 
 extend(extensions)
 
@@ -55,7 +56,7 @@ export default function App() {
 
     return (
         <>
-            {loading && [plantMaterial, glassMaterial].map(material => {
+            {loading && [plantMaterial, exhaustMaterial, glassMaterial].map(material => {
                 return (
                     <mesh
                         key={material.uuid}

@@ -6,14 +6,24 @@ import { useStore } from "@lib/store"
 import { ndelta, setMatrixNullAt } from "@lib/helpers/utils"
 import { FIREBALL_COUNT, SHOCKWAVE_COUNT } from "@lib/const"
 import { useInstanceClear } from "@src/hooks/use-instance-clear"
-import { Explosion } from "@src/types/explosion"
 import { Tuple2, Tuple3 } from "@src/types/global"
-import FireballMesh, { createFireballs, updateFireball } from "./fireball/fireball-mesh"
-import ShockwaveMesh, { createShockwave, updateShockwave } from "./shockwave/shockwave-mesh"
+import FireballMesh, { createFireballs, Fireball, updateFireball } from "./fireball/fireball-mesh"
+import ShockwaveMesh, { createShockwave, Shockwave, updateShockwave } from "./shockwave/shockwave-mesh"
 import ParticleMesh from "./particle/particle-mesh"
 import LeafMesh from "./leaf/leaf-mesh"
 import DecalMesh from "./decal/decal-mesh"
+import SmokeMesh from "./smoke/smoke-mesh"
 import { createTerrainShockwave } from "@components/world/terrain/terrain-material"
+
+export interface Explosion {
+    id: string
+    position: Tuple3
+    lifetime: number
+    time: number
+    mounted: boolean
+    shockwave: Shockwave | null
+    fireballs: Fireball[]
+}
 
 
 // active explosions, nothing renders off the list
@@ -134,6 +144,7 @@ export default function Explosions() {
             <ParticleMesh />
             <LeafMesh />
             <DecalMesh />
+            <SmokeMesh />
         </>
     )
 }

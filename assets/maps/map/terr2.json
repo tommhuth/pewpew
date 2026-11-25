@@ -44,7 +44,7 @@
                 "rotation": 0
             },
             {
-                "type": "low",
+                "type": "hole",
                 "rotation": 0
             },
             {
@@ -88,7 +88,7 @@
                 "rotation": 2
             },
             {
-                "type": "low",
+                "type": "hole",
                 "rotation": 0
             },
             {
@@ -228,9 +228,9 @@
             "type": "rocks_A",
             "id": "b2a97eac-5d6b-47fe-932a-20e65ff3bec6",
             "position": [
-                3,
+                3.25,
                 -9.096276518610083e-16,
-                4
+                4.25
             ],
             "rotation": 1.9198621771937625
         },
@@ -248,9 +248,9 @@
             "type": "rock_B",
             "id": "45256320-e5cc-400b-9f27-f92474f1a426",
             "position": [
-                3.75,
+                4,
                 -5.642876225852944e-16,
-                3.25
+                3
             ],
             "rotation": 0
         },
@@ -365,6 +365,26 @@
                 3.5,
                 -2.1171479815015956e-15,
                 9.5
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "rocket",
+            "id": "bf28ff82-24f3-4265-ba73-8a576f49c36a",
+            "position": [
+                -0.75,
+                -1.5,
+                7.25
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "rocket",
+            "id": "14ceb2bd-ff7d-4b4a-9195-53df713659ed",
+            "position": [
+                3.25,
+                -0.75,
+                3.25
             ],
             "rotation": 0
         }

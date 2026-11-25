@@ -7,6 +7,14 @@ export const MAP_WIDTH = 6
 export const MAP_DEPTH = 7
 export const MAP_CELL_SIZE = 2
 export const OUTSIDE_TERRAIN_HEIGHT = -35
+// hole pieces, must match the hole meshes in terrain.glb
+// shaft radius in cell local space, -1 to 1
+export const TERRAIN_HOLE_RADIUS = .58
+// chamfered rim, widens from the shaft to this radius over the chamfer depth
+// kept under 1 so the rim stays inside the cell
+export const TERRAIN_HOLE_TOP_RADIUS = .68
+// chamfer depth, 30 deg from horizontal
+export const TERRAIN_HOLE_CHAMFER = (TERRAIN_HOLE_TOP_RADIUS - TERRAIN_HOLE_RADIUS) * Math.tan(Math.PI / 6)
 
 export enum TerrainType {
     SLOPE = "slope",
@@ -14,6 +22,8 @@ export enum TerrainType {
     SLOPE_INNER_CORNER = "slope_inner_corner",
     TALL = "tall",
     LOW = "low",
+    HOLE = "hole",
+    TALL_HOLE = "tall_hole",
 }
 
 export interface TerrainCell {
@@ -80,6 +90,20 @@ export function getTerrainHeightAt(
     } else if (cell.type === TerrainType.SLOPE_INNER_CORNER) {
         // rounded, eases up from the low -x +z corner
         return smoothstep(Math.hypot(u + 1, v - 1), 0, 2)
+    } else if (cell.type === TerrainType.HOLE || cell.type === TerrainType.TALL_HOLE) {
+        // low or tall, with a chamfered bottomless circular hole in the middle
+        const top = cell.type === TerrainType.TALL_HOLE ? 1 : 0
+        const distance = Math.hypot(u, v)
+
+        if (distance < TERRAIN_HOLE_RADIUS) {
+            return position.y - 2
+        } else if (distance < TERRAIN_HOLE_TOP_RADIUS) {
+            // straight slope down the chamfer
+            return top - TERRAIN_HOLE_CHAMFER
+                * (TERRAIN_HOLE_TOP_RADIUS - distance) / (TERRAIN_HOLE_TOP_RADIUS - TERRAIN_HOLE_RADIUS)
+        }
+
+        return top
     }
 
     return 0

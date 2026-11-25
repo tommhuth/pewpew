@@ -7,12 +7,26 @@ import { addScaled, dampFactor, ndelta, scaleXZ, setColorAt, setMatrixAt } from 
 import { getTerrainHeightAt, OUTSIDE_TERRAIN_HEIGHT } from "@lib/world/terrain"
 import LoopCounter from "@lib/helpers/loop-counter"
 import { useInstanceClear } from "@src/hooks/use-instance-clear"
-import { Particle } from "@src/types/explosion"
 import { Tuple2, Tuple3 } from "@src/types/global"
 import { WorldPart } from "@src/types/world"
 import { useFrame } from "@react-three/fiber"
 import { useLights } from "@components/effects/lights/lights"
 import type { ParticleMaterial } from "./particle-material"
+
+export interface Particle {
+    position: Tuple3
+    velocity: Tuple3
+    acceleration: Tuple3
+    rotation: Tuple3
+    friction: number
+    restitution: number
+    radius: number
+    color: ColorRepresentation
+    index: number
+    // ms, negative delays the start
+    time: number
+    mounted: boolean
+}
 
 export const particles: Particle[] = []
 

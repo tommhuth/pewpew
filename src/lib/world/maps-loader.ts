@@ -58,6 +58,7 @@ export const parsedMaps = Object.values(storedMaps).map(({ terrain, placements }
                 switch (placement.type) {
 
                     case EntityType.PLANT:
+                    case EntityType.ROCKET:
                         return {
                             ...placement,
                             health: 100

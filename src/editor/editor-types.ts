@@ -24,6 +24,7 @@ export type PlacementKind =
     | { type: typeof EntityType.TURRET }
     | { type: typeof EntityType.TREE, variant: TreeType }
     | { type: typeof EntityType.PLANT, scale: number }
+    | { type: typeof EntityType.ROCKET }
 
 export type EditorPlacement = PlacementTransform & PlacementKind
 

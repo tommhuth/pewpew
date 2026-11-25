@@ -10,12 +10,13 @@ import { DecalMaterial } from "@components/effects/decal/decal-material"
 import { SmokeMaterial } from "@components/effects/smoke/smoke-material"
 import { ParticleMaterial } from "@components/effects/particle/particle-material"
 import { LeafMaterial } from "@components/effects/leaf/leaf-material"
+import { ExhaustMaterial } from "@components/entities/rocket/exhaust-material"
 
 export default {
     Group, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial,
     Mesh, BoxGeometry, AmbientLight, DirectionalLight, LightProbe, HemisphereLight,
     SpacebitsMaterial, FireballMaterial, ShockwaveMaterial, DecalMaterial, SmokeMaterial,
-    ParticleMaterial, LeafMaterial,
+    ParticleMaterial, LeafMaterial, ExhaustMaterial,
 }
 
 declare module "@react-three/fiber" {
@@ -27,5 +28,6 @@ declare module "@react-three/fiber" {
         smokeMaterial: ThreeElement<typeof SmokeMaterial>
         particleMaterial: ThreeElement<typeof ParticleMaterial>
         leafMaterial: ThreeElement<typeof LeafMaterial>
+        exhaustMaterial: ThreeElement<typeof ExhaustMaterial>
     }
 }

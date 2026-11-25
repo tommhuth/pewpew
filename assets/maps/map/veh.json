@@ -10,7 +10,7 @@
                 "rotation": 2
             },
             {
-                "type": "low",
+                "type": "hole",
                 "rotation": 0
             },
             {
@@ -62,15 +62,15 @@
                 "rotation": 0
             },
             {
-                "type": "slope_outer_corner",
+                "type": "low",
                 "rotation": 3
             },
             {
-                "type": "slope_outer_corner",
+                "type": "low",
                 "rotation": 2
             },
             {
-                "type": "low",
+                "type": "hole",
                 "rotation": 0
             },
             {
@@ -88,11 +88,11 @@
                 "rotation": 2
             },
             {
-                "type": "slope_outer_corner",
+                "type": "low",
                 "rotation": 0
             },
             {
-                "type": "slope_outer_corner",
+                "type": "low",
                 "rotation": 1
             },
             {
@@ -302,6 +302,26 @@
                 -0.75,
                 3.112941304088245e-15,
                 2
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "rocket",
+            "id": "2b30c893-71c7-45db-aadb-edf858fd22af",
+            "position": [
+                -1,
+                -0.75,
+                1
+            ],
+            "rotation": 0
+        },
+        {
+            "type": "rocket",
+            "id": "c4220d89-ab35-43f1-861b-8327cfa34896",
+            "position": [
+                3,
+                -4.653392670694828e-15,
+                5
             ],
             "rotation": 0
         }

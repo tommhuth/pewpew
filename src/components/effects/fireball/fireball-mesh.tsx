@@ -9,8 +9,17 @@ import { easeOutQuart, piecewiseLerp } from "@lib/helpers/shaping"
 import LoopCounter from "@lib/helpers/loop-counter"
 import { useDepth } from "@components/effects/depth/use-depth"
 import { FireballMaterial } from "./fireball-material"
-import { Fireball } from "@src/types/explosion"
 import { Tuple2, Tuple3 } from "@src/types/global"
+
+// times and lifetimes are ms, negative time delays the start
+export interface Fireball {
+    position: Tuple3
+    index: number
+    startRadius: number
+    maxRadius: number
+    lifetime: number
+    time: number
+}
 
 const times = new Float32Array(FIREBALL_COUNT)
 

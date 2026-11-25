@@ -3,7 +3,7 @@ import { TreeType } from "@components/entities/tree/tree-model"
 import { EntityType } from "@src/types/entity"
 import { Tuple3 } from "@src/types/global"
 
-export type BoundingBoxKey = ModelType | TreeType | typeof EntityType.TURRET | typeof EntityType.PLANT
+export type BoundingBoxKey = ModelType | TreeType | typeof EntityType.TURRET | typeof EntityType.PLANT | typeof EntityType.ROCKET
 
 export interface BoundingBox {
     min: Tuple3
@@ -99,6 +99,7 @@ export const boundingBoxes: Partial<Record<BoundingBoxKey, [min: Tuple3, max: Tu
     [TreeType.TYPE7_04]: [[-.25, -.14, -1], [1.51, 2.89, .99]],
     [EntityType.TURRET]: [[-.92, 0, -.44], [1.55, .84, .46]],
     [EntityType.PLANT]: [[-1.05, -.08, -.82], [.95, 1.02, .83]],
+    [EntityType.ROCKET]: [[-.32, -1.13, -.17], [.32, 1.27, .17]],
 }
 
 export function getBoundingBox(key: BoundingBoxKey): BoundingBox | undefined {
