@@ -9,21 +9,14 @@ import { lightsChunk, makeLightsUniform } from "@components/effects/lights/light
 const vertexShader = /* glsl */`
     #include <common>
     #include <shadowmap_pars_vertex>
-
-    attribute float aTime;
-    attribute vec3 aColor;
-
-    varying float vTime;
-    varying vec3 vColor;
+ 
     varying vec3 vWorldPosition;
     varying vec3 vNormal;
     flat varying float vInstanceId;
 
     void main() {
         vec4 worldPosition = modelMatrix * instanceMatrix * vec4(position, 1.);
-
-        vTime = aTime;
-        vColor = aColor;
+ 
         vWorldPosition = worldPosition.xyz;
         // view space, uniform instance scale so no per-axis correction needed
         vNormal = normalize(normalMatrix * mat3(instanceMatrix) * normal);
@@ -50,9 +43,7 @@ const fragmentShader = /* glsl */`
     uniform float uCameraNear;
     uniform float uCameraFar;
     uniform vec2 uResolution;
-
-    varying float vTime;
-    varying vec3 vColor;
+ 
     varying vec3 vWorldPosition;
     varying vec3 vNormal;
     flat varying float vInstanceId;
@@ -156,22 +147,3 @@ export class SmokeMaterial extends ShaderMaterial {
         })
     }
 }
-
-
-/*
-float n = smoothstep(.2, .6, noise(vWorldPosition * 1. + vec3(uTime, 0., uTime *.5)));
-float b = mix(n * facing, 1., pow(facing, 8.));
-
-float r = length(normal.xy);
-float soft = .4 * n + .2;
-float radius = map(smoothstep(.4, 1., vTime), 0., 1., -soft, 1. + soft);
-float circle =  smoothstep(radius - soft, radius + soft, r);
-
-float intr = getFragmentDepth(vWorldPosition, uDepthTexture, gl_FragCoord.xy / uResolution, viewMatrix, uCameraNear, uCameraFar);
-float l = b
-    * circle
-    * clamp(abs(intr / 1.), 0., 1.)
-    * map(noise(vWorldPosition * 1.3 + uTime), 0., 1., .5, 1.);
-*/
-
-// the shadow light in lights.tsx, world space, pointing towards the sun

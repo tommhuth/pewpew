@@ -66,7 +66,7 @@ function Rocket({
         // height above the placed position
         y: 0,
         speed: random.float(1, 2),
-        takeoffDistance: random.float(15, 25),
+        takeoffDistance: random.float(15, 22),
         launched: false,
         smokeTime: 0,
         nextSmokeAt: 0,

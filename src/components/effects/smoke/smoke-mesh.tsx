@@ -5,9 +5,9 @@ import random from "@huth/random"
 import { SMOKE_COUNT, WORLD_LEFT_EDGE, WORLD_RIGHT_EDGE } from "@lib/const"
 import { useStore } from "@lib/store"
 import { depthIgnoreLayers } from "@components/effects/depth/depth-layers"
-import { clamp, map, ndelta, setMatrixAt, setMatrixNullAt } from "@lib/helpers/utils"
-import { getWorldTerrainHeightAt } from "@lib/world/terrain"
+import { clamp, map, ndelta, setMatrixAt } from "@lib/helpers/utils"
 import LoopCounter from "@lib/helpers/loop-counter"
+import { getWorldTerrainHeightAt } from "@lib/world/terrain"
 import { useInstanceClear } from "@src/hooks/use-instance-clear"
 import { Tuple2, Tuple3 } from "@src/types/global"
 import { useDepth } from "@components/effects/depth/use-depth"
@@ -53,8 +53,7 @@ export function createSmoke({
 
     for (let i = 0; i < amount; i++) {
         const angle = random.float(0, Math.PI * 2)
-
-        smokes.push({
+        const smoke: Smoke = {
             index: smokeIndex.next(),
             position: [
                 position[0] + random.float(...offset[0]),
@@ -69,11 +68,12 @@ export function createSmoke({
             radius: random.float(...radius),
             maxRadius: random.float(...maxRadius),
             damping: random.boolean(.1) ? 2 : random.float(.1, .4),
-        })
+        }
+
+        smokes.push(smoke)
     }
 }
 
-const times = new Float32Array(SMOKE_COUNT)
 const _position = new Vector3()
 
 export default function SmokeMesh() {
@@ -94,21 +94,21 @@ export default function SmokeMesh() {
         const nd = ndelta(delta)
         const diagonal = 12
         const restMargin = .05
-        let alive = 0
-        let lastIndex = -1
 
         material.uniforms.uTime.value += nd
 
-        // oldest first, so a newer puff sharing a slot overwrites a removed or older one
-        for (let i = 0; i < smokes.length; i++) {
+        for (let i = smokes.length - 1; i >= 0; i--) {
             const smoke = smokes[i]
             const { position, velocity } = smoke
+
             const groundAt = getWorldTerrainHeightAt(world.parts, _position.set(...position), true)
             const endPosition = groundAt - smoke.maxRadius
 
             // behind the camera, or sunk into its rest spot (damp never quite gets there)
+            // like particles, the instance is left where it is until the slot is reused,
+            // it's out of sight or buried, and a dead puff never touches a slot someone else owns
             if (position[2] < player.object.position.z - diagonal || position[1] - endPosition < restMargin) {
-                setMatrixNullAt(smokeInstance, smoke.index)
+                smokes.splice(i, 1)
                 continue
             }
 
@@ -137,18 +137,6 @@ export default function SmokeMesh() {
                 position,
                 scale: smoke.radius,
             })
-
-            // compact in place, keeps spawn order
-            smokes[alive++] = smoke
-            lastIndex = Math.max(lastIndex, smoke.index)
-        }
-
-        smokes.length = alive
-        smokeInstance.count = lastIndex + 1
-
-        if (alive === 0) {
-            // start from the bottom again so the drawn range stays small
-            smokeIndex.reset()
         }
     })
 
@@ -161,12 +149,7 @@ export default function SmokeMesh() {
             castShadow
             receiveShadow
         >
-            <sphereGeometry args={[1, 8, 8]}>
-                <instancedBufferAttribute
-                    attach="attributes-aTime"
-                    args={[times, 1]}
-                />
-            </sphereGeometry>
+            <sphereGeometry args={[1, 8, 8]} />
             <smokeMaterial ref={setMaterial} />
         </instancedMesh>
     )

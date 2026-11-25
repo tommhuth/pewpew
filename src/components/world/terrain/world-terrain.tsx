@@ -14,8 +14,8 @@ const MAX_PARTS = 12
 const types = Object.values(TerrainType)
 // most cells of a type per part, base types can fill a whole part
 const cellsPerPart: Partial<Record<TerrainType, number>> = {
-    [TerrainType.HOLE]: 4,
-    [TerrainType.TALL_HOLE]: 4,
+    [TerrainType.HOLE]: 10,
+    [TerrainType.TALL_HOLE]: 10,
 }
 
 function getCapacity(type: TerrainType) {
@@ -59,9 +59,6 @@ function TerrainMesh({ type, geometry, parts }: TerrainMeshProps) {
                 }
             }
         }
-
-        // only draw the placed cells, same terrain program as the other types so 0 is fine
-        instance.count = index
     }, [instance, parts, type, capacity])
 
     return (
