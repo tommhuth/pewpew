@@ -15,7 +15,7 @@ import { Owner } from "@src/types/bullet"
 import { EntityType, RocketEntity } from "@src/types/entity"
 import { Tuple3 } from "@src/types/global"
 import { useTransitionedState } from "@src/hooks/use-transitioned-state"
-import { getTerrainHeightAt, getWorldTerrainHeightAt } from "@lib/world/terrain"
+import { getWorldTerrainHeightAt } from "@lib/world/terrain"
 
 const size: Tuple3 = [2, 1.75, 1]
 const particleColor = "#ed9d79"
@@ -57,7 +57,6 @@ function explode([x, y, z]: Tuple3) {
 function Rocket({
     id,
     health,
-    partId,
     rotation,
     position: [x, y, z],
 }: RocketEntity) {
