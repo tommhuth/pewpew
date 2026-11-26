@@ -6,6 +6,8 @@ import {
     InstancedMesh,
     InstancedBufferAttribute,
     SphereGeometry,
+    AxesHelper,
+    PlaneGeometry,
 } from "three"
 import { SpacebitsMaterial } from "@components/entities/spacebits-material"
 import { FireballMaterial } from "@components/effects/fireball/fireball-material"
@@ -18,9 +20,10 @@ import { ExhaustMaterial } from "@components/entities/rocket/exhaust-material"
 
 export default {
     Group, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial, SphereGeometry,
-    Mesh, BoxGeometry, AmbientLight, DirectionalLight, LightProbe, HemisphereLight,
+    Mesh, BoxGeometry, AmbientLight, DirectionalLight, LightProbe, HemisphereLight, AxesHelper,
     SpacebitsMaterial, FireballMaterial, ShockwaveMaterial, DecalMaterial, SmokeMaterial,
-    ParticleMaterial, LeafMaterial, ExhaustMaterial, Color, InstancedMesh, InstancedBufferAttribute
+    ParticleMaterial, LeafMaterial, ExhaustMaterial, Color, InstancedMesh, InstancedBufferAttribute,
+    PlaneGeometry
 }
 
 declare module "@react-three/fiber" {
