@@ -15,6 +15,7 @@ import { Owner } from "@src/types/bullet"
 import { EntityType, RocketEntity } from "@src/types/entity"
 import { Tuple3 } from "@src/types/global"
 import { useTransitionedState } from "@src/hooks/use-transitioned-state"
+import { getTerrainHeightAt, getWorldTerrainHeightAt } from "@lib/world/terrain"
 
 const size: Tuple3 = [2, 1.75, 1]
 const particleColor = "#ed9d79"
@@ -56,6 +57,7 @@ function explode([x, y, z]: Tuple3) {
 function Rocket({
     id,
     health,
+    partId,
     rotation,
     position: [x, y, z],
 }: RocketEntity) {
@@ -117,7 +119,7 @@ function Rocket({
 
     useFrame((_, delta) => {
         const model = modelRef.current
-        const { player } = useStore.getState()
+        const { player, world } = useStore.getState()
 
         if (!model || health.value === 0) {
             return
@@ -132,6 +134,7 @@ function Rocket({
             return removeEntities([id])
         }
 
+        const floor = getWorldTerrainHeightAt(world.parts, { x, y, z }, true)
         const d = ndelta(delta)
 
         data.launched = true
@@ -142,7 +145,7 @@ function Rocket({
         client.position[1] = y + data.y
         grid.updateClient(client)
 
-        if (y + data.y < 11 && y + data.y > 0) {
+        if (y + data.y < 11 && y + data.y > floor + 2.85) {
             data.smokeTime += d * 1000
 
             // as many puffs as fit in the elapsed time, remainder carries over
