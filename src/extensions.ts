@@ -2,6 +2,10 @@ import type { ThreeElement } from "@react-three/fiber"
 import {
     Group, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial,
     Mesh, BoxGeometry, AmbientLight, DirectionalLight, LightProbe, HemisphereLight,
+    Color,
+    InstancedMesh,
+    InstancedBufferAttribute,
+    SphereGeometry,
 } from "three"
 import { SpacebitsMaterial } from "@components/entities/spacebits-material"
 import { FireballMaterial } from "@components/effects/fireball/fireball-material"
@@ -13,10 +17,10 @@ import { LeafMaterial } from "@components/effects/leaf/leaf-material"
 import { ExhaustMaterial } from "@components/entities/rocket/exhaust-material"
 
 export default {
-    Group, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial,
+    Group, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial, SphereGeometry,
     Mesh, BoxGeometry, AmbientLight, DirectionalLight, LightProbe, HemisphereLight,
     SpacebitsMaterial, FireballMaterial, ShockwaveMaterial, DecalMaterial, SmokeMaterial,
-    ParticleMaterial, LeafMaterial, ExhaustMaterial,
+    ParticleMaterial, LeafMaterial, ExhaustMaterial, Color, InstancedMesh, InstancedBufferAttribute
 }
 
 declare module "@react-three/fiber" {
