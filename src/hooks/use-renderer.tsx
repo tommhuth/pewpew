@@ -57,5 +57,5 @@ export default function useRenderer() {
         gl.setRenderTarget(null)
         gl.shadowMap.needsUpdate = true
         gl.render(scene, camera)
-    }, { phase: "render" })
+    }, 1)
 }

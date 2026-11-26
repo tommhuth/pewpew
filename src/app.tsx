@@ -1,6 +1,5 @@
 import { extend } from "@react-three/fiber"
-import { Perf } from "r3f-perf"
-import { useEffect } from "react"
+import { lazy, Suspense, useEffect } from "react"
 import config from "@lib/config"
 import { setState, State, useStore } from "@lib/store"
 import useFramerateReady from "@src/hooks/use-framerate-ready"
@@ -18,6 +17,8 @@ import { boxGeometry } from "@lib/const"
 import { exhaustMaterial } from "@components/entities/rocket/exhaust-material"
 
 extend(extensions)
+
+const Perf = lazy(() => import("r3f-perf").then(({ Perf }) => ({ default: Perf })))
 
 const revealTimeout = 2_500
 
@@ -80,7 +81,11 @@ export default function App() {
             <Bullets />
             <Explosions />
 
-            {config.stats && <Perf position="top-right" deepAnalyze />}
+            {config.stats && (
+                <Suspense fallback={null}>
+                    <Perf position="top-right" deepAnalyze />
+                </Suspense>
+            )}
         </>
     )
 }  
