@@ -427,6 +427,36 @@
                 11.25
             ],
             "rotation": 0
+        },
+        {
+            "type": "containers_D",
+            "id": "08251f4e-7fee-46eb-a808-59b57715f994",
+            "position": [
+                2.25,
+                1,
+                12
+            ],
+            "rotation": 0.5235987755982988
+        },
+        {
+            "type": "cargo_A",
+            "id": "e5ce993c-73e2-41ec-8d21-4e932a335ab4",
+            "position": [
+                4.25,
+                1,
+                11.5
+            ],
+            "rotation": 0.3490658503988659
+        },
+        {
+            "type": "roofmodule_cargo_A",
+            "id": "742e716b-c272-41ae-b707-76d960ab4509",
+            "position": [
+                1.25,
+                1,
+                11
+            ],
+            "rotation": 0
         }
     ]
 }

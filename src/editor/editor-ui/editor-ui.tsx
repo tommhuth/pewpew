@@ -10,6 +10,7 @@ import {
 import { EditorMode } from "../editor-types"
 import { terrains } from "../terrain/terrain-loader"
 import { save } from "../save"
+import PlacementPanel from "../model-placer/placement-panel"
 
 export default function EditorUi() {
     const brush = useEditorStore(i => i.brush)
@@ -20,7 +21,10 @@ export default function EditorUi() {
 
     return (
         <>
-            <div className="fixed bottom-4 left-4 right-4 z-50 flex flex-wrap gap-2 text-sm text-white pointer-events-auto">
+            <div className="fixed bottom-0 bg-[#000000aa] left-0 p-4 right-0 z-50 flex flex-wrap gap-2 text-sm text-white pointer-events-auto">
+                {/* sits on top of this bar, whatever height it wraps to */}
+                <PlacementPanel className="absolute left-4 bottom-full mb-4" />
+
                 {Object.values(EditorMode).map(i => (
                     <button
                         key={i}
@@ -31,23 +35,26 @@ export default function EditorUi() {
                     </button>
                 ))}
 
-
                 <span className="w-4 ml-auto" />
 
-                {mode === EditorMode.TERRAIN && Object.values(TerrainType).map(type => (
-                    <button
-                        key={type}
-                        className={`px-2 py-1 border ${brush === type ? "bg-white text-black" : "border-white/50"}`}
-                        onClick={() => setBrush(type)}
-                    >
-                        {type.toUpperCase()}
-                    </button>
-                ))}
+                {mode === EditorMode.TERRAIN && (
+                    <div className="flex flex-wrap gap-2  ">
+                        {Object.values(TerrainType).map(type => (
+                            <button
+                                key={type}
+                                className={`px-2 py-1 border ${brush === type ? "bg-white text-black" : "border-white/50"}`}
+                                onClick={() => setBrush(type)}
+                            >
+                                {type.toUpperCase()}
+                            </button>
+                        ))}
+                    </div>
+                )}
             </div>
 
-            <div className="fixed top-4 left-4 right-4 z-50 flex gap-2 text-sm text-white pointer-events-auto">
+            <div className="fixed  bg-[#000000aa] left-0 p-4 right-0 top-0 z-50 flex gap-2 text-sm text-white pointer-events-auto">
                 <label className="mr-auto flex gap-2 place-items-center">
-                    Terrain
+                    <span className="sr-only">Terrain</span>
                     <select
                         className="px-2 py-1 border border-white/50 bg-black"
                         value={terrainPreset}
@@ -66,7 +73,7 @@ export default function EditorUi() {
                 </label>
 
                 <label className="flex gap-2 place-items-center">
-                    Map
+                    <span className="sr-only">Map</span>
                     <select
                         className="px-2 py-1 border border-white/50 bg-black"
                         value={map ?? ""}
