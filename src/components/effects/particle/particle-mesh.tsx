@@ -12,7 +12,7 @@ import { WorldPart } from "@src/types/world"
 import { useFrame } from "@react-three/fiber"
 import { useLights } from "@components/effects/lights/lights"
 import type { ParticleMaterial } from "./particle-material"
-import { wait } from "@src/timeout"
+import { wait } from "@lib/timeout"
 
 export interface Particle {
     position: Tuple3

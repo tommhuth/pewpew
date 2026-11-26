@@ -14,7 +14,7 @@ import { Owner } from "@src/types/bullet"
 import { EntityType, TurretEntity } from "@src/types/entity"
 import { ndelta } from "@lib/helpers/utils"
 import { createBullet } from "@components/bullets"
-import { timeout } from "@src/timeout"
+import { timeout } from "@lib/timeout"
 
 const particleColor = "#ed9d79"
 

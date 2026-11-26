@@ -18,7 +18,7 @@ import { SpacebitsMaterial, spacebitsMaterialPool } from "@components/entities/s
 import { getCollisionBox } from "@lib/world/bounding-boxes"
 import { useMaterialSwap } from "@src/hooks/use-material-swap"
 import { glassMaterialPool } from "@components/entities/glass-material"
-import { timeout } from "@src/timeout"
+import { timeout } from "@lib/timeout"
 
 const particleColor = "#eaecf2"
 

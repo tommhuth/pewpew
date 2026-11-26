@@ -16,7 +16,7 @@ import { EntityType, RocketEntity } from "@src/types/entity"
 import { Tuple3 } from "@src/types/global"
 import { useTransitionedState } from "@src/hooks/use-transitioned-state"
 import { getWorldTerrainHeightAt } from "@lib/world/terrain"
-import { timeout } from "@src/timeout"
+import { timeout } from "@lib/timeout"
 
 const size: Tuple3 = [2, 1.75, 1]
 const particleColor = "#ed9d79"

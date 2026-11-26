@@ -14,7 +14,7 @@ import LeafMesh from "./leaf/leaf-mesh"
 import DecalMesh from "./decal/decal-mesh"
 import SmokeMesh from "./smoke/smoke-mesh"
 import { createTerrainShockwave } from "@components/world/terrain/terrain-material"
-import { wait } from "@src/timeout"
+import { wait } from "@lib/timeout"
 
 export interface Explosion {
     id: string

@@ -1,6 +1,7 @@
 export default class Health {
     public value: number
     private callback: ((value: number) => void) | null = null
+    private missed = false
 
     constructor(value: number) {
         this.value = value
@@ -13,17 +14,25 @@ export default class Health {
         }
 
         this.value = Math.max(this.value - amount, 0)
-        this.callback?.(this.value)
+
+        if (this.callback) {
+            this.callback(this.value)
+        } else {
+            this.missed = true
+        }
 
         return this.value === 0
     }
 
     // one listener, returns the unsubscribe so it can be returned straight from a useEffect
-    // fires right away with the current value, damage can land before the effect has run
+    // damage can land before the effect has run, so replay it once on subscribe if it did
     onChange(callback: (value: number) => void) {
         this.callback = callback
 
-        callback(this.value)
+        if (this.missed) {
+            this.missed = false
+            callback(this.value)
+        }
 
         return () => {
             if (this.callback === callback) {
