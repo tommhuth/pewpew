@@ -16,6 +16,7 @@ import { EntityType, RocketEntity } from "@src/types/entity"
 import { Tuple3 } from "@src/types/global"
 import { useTransitionedState } from "@src/hooks/use-transitioned-state"
 import { getWorldTerrainHeightAt } from "@lib/world/terrain"
+import { timeout } from "@src/timeout"
 
 const size: Tuple3 = [2, 1.75, 1]
 const particleColor = "#ed9d79"
@@ -103,9 +104,9 @@ function Rocket({
 
     const handleDead = useEffectEvent(() => {
         explode([x, y + data.y, z])
-        setTimeout(() => modelRef.current?.hideRocket(), 1100)
         setDead(true)
         grid.remove(client)
+        timeout(() => modelRef.current?.hideRocket(), 1100)
     })
 
     useEffect(() => health.onChange(value => {

@@ -9,8 +9,11 @@ export function map(x: number, a1: number, a2: number, b1: number, b2: number) {
     return mapLinear(clamp(x, min, max), a1, a2, b1, b2)
 }
 
+// anything less than this gets clamped
+export const LOWEST_FRAMERATE = 15
+
 export function ndelta(delta: number) {
-    const nDelta = clamp(delta, 0, 1 / 15)
+    const nDelta = clamp(delta, 0, 1 / LOWEST_FRAMERATE)
 
     return nDelta
 }
@@ -24,9 +27,6 @@ const _quaternion = new Quaternion()
 const _position = new Vector3(0, 0, 0)
 const _scale = new Vector3(1, 1, 1)
 const _euler = new Euler()
-
-// defaults live out here so an omitted argument does not allocate a fresh tuple
-// on every call. read only, never written to
 const _defaultPosition: Tuple3 = [0, 0, 0]
 const _defaultRotation: Tuple3 = [0, 0, 0]
 const _defaultScale: Tuple3 = [1, 1, 1]

@@ -5,7 +5,6 @@ import { Group, Mesh, Vector3 } from "three"
 import { damp } from "three/src/math/MathUtils.js"
 import { spacebitsMaterial, spacebitsMaterialPool } from "@components/entities/spacebits-material"
 import { ndelta } from "@lib/helpers/utils"
-import { Tuple3 } from "@src/types/global"
 import { useGravity } from "@src/hooks/use-gravity"
 import turretModel from "@assets/models/turret.glb"
 import { useMaterialSwap } from "@src/hooks/use-material-swap"
@@ -18,8 +17,6 @@ export type TurretRef = {
     flash: () => void
     position: Vector3 | undefined
 }
-
-const muzzlePosition: Tuple3 = [1.5, .5, 0]
 
 type TurretModelProps = {
     ref?: Ref<TurretRef>

@@ -14,6 +14,7 @@ import LeafMesh from "./leaf/leaf-mesh"
 import DecalMesh from "./decal/decal-mesh"
 import SmokeMesh from "./smoke/smoke-mesh"
 import { createTerrainShockwave } from "@components/world/terrain/terrain-material"
+import { wait } from "@src/timeout"
 
 export interface Explosion {
     id: string
@@ -39,7 +40,7 @@ interface CreateExplosionParams {
     delay?: number
 }
 
-export function createExplosion({
+export async function createExplosion({
     position,
     count = 12,
     radius,
@@ -48,28 +49,28 @@ export function createExplosion({
     shockwave = random.boolean(.75),
     delay = 0,
 }: CreateExplosionParams) {
-    return setTimeout(() => {
-        const baseLifetime = random.integer(1400, 2000)
+    await wait(delay)
 
-        createTerrainShockwave(position, random.float(...radius) * 5)
+    const baseLifetime = random.integer(1400, 2000)
 
-        explosions.push({
-            id: random.id(),
+    createTerrainShockwave(position, random.float(...radius) * 5)
+
+    explosions.push({
+        id: random.id(),
+        position: [...position],
+        lifetime: random.integer(baseLifetime * .75, baseLifetime),
+        time: 0,
+        mounted: false,
+        shockwave: shockwave ? createShockwave(radius[1] * 5) : null,
+        fireballs: createFireballs({
             position: [...position],
-            lifetime: random.integer(baseLifetime * .75, baseLifetime),
-            time: 0,
-            mounted: false,
-            shockwave: shockwave ? createShockwave(radius[1] * 5) : null,
-            fireballs: createFireballs({
-                position: [...position],
-                count,
-                radius,
-                growth,
-                spread,
-                lifetime: [baseLifetime * .375, baseLifetime],
-            }),
-        })
-    }, delay)
+            count,
+            radius,
+            growth,
+            spread,
+            lifetime: [baseLifetime * .375, baseLifetime],
+        }),
+    })
 }
 
 export default function Explosions() {

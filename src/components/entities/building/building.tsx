@@ -4,7 +4,7 @@ import { BufferGeometry, Mesh } from "three"
 import Model, { isGlassModel, ModelType } from "@components/model"
 import Hitbox from "@components/hitbox"
 import { createExplosion } from "@components/effects/explosions"
-import { createParticles, CreateParticlesParams } from "@components/effects/particle/particle-mesh"
+import { createParticles } from "@components/effects/particle/particle-mesh"
 import { createDecal } from "@components/effects/decal/decal-mesh"
 import { removeEntities, setEntitiesFalling, useStore } from "@lib/store"
 import { useCollisionDetection } from "@src/hooks/use-collision-detection"
@@ -18,6 +18,7 @@ import { SpacebitsMaterial, spacebitsMaterialPool } from "@components/entities/s
 import { getCollisionBox } from "@lib/world/bounding-boxes"
 import { useMaterialSwap } from "@src/hooks/use-material-swap"
 import { glassMaterialPool } from "@components/entities/glass-material"
+import { timeout } from "@src/timeout"
 
 const particleColor = "#eaecf2"
 
@@ -97,9 +98,7 @@ function Building({
             createDecal(position)
         }
 
-        setTimeout(() => {
-            removeEntities([id])
-        }, 200)
+        timeout(() => removeEntities([id]), 200)
 
         // falling ones were set off by a cascade from below that already covers everything above
         if (!falling && group?.length) {
@@ -114,13 +113,8 @@ function Building({
             for (let i = index + 1; i < groupItems.length; i++) {
                 let duration = i - index
 
-                setTimeout(() => {
-                    setEntitiesFalling([groupItems[i].id])
-                }, random.integer(100, 170) * duration)
-
-                setTimeout(() => {
-                    groupItems[i].health.decrease(100)
-                }, random.integer(250, 450) * duration)
+                timeout(() => setEntitiesFalling([groupItems[i].id]), random.integer(100, 170) * duration)
+                timeout(() => groupItems[i].health.decrease(100), random.integer(250, 450) * duration)
             }
         }
     })

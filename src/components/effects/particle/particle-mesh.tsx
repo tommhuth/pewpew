@@ -12,6 +12,7 @@ import { WorldPart } from "@src/types/world"
 import { useFrame } from "@react-three/fiber"
 import { useLights } from "@components/effects/lights/lights"
 import type { ParticleMaterial } from "./particle-material"
+import { wait } from "@src/timeout"
 
 export interface Particle {
     position: Tuple3
@@ -50,7 +51,7 @@ export interface CreateParticlesParams {
 
 const _direction = new Vector3()
 
-export function createParticles({
+export async function createParticles({
     position,
     offset = [[-1, 1], [-1, 1], [-1, 1]],
     normal = [0, 1, 0],
@@ -65,43 +66,43 @@ export function createParticles({
     delay = 0,
     gravity = [0, -random.integer(20, 25), 0],
 }: CreateParticlesParams) {
-    return setTimeout(() => {
-        const amount = Array.isArray(count) ? random.integer(...count) : count
+    await wait(delay)
 
-        for (let i = 0; i < amount; i++) {
-            _direction.set(
-                normal[0] + random.float(...spread[0]),
-                normal[1] + random.float(...spread[1]),
-                normal[2] + random.float(...spread[0]),
-            ).normalize()
+    const amount = Array.isArray(count) ? random.integer(...count) : count
 
-            particles.push({
-                index: particleIndex.next(),
-                position: [
-                    position[0] + random.float(...offset[0]),
-                    position[1] + random.float(...offset[1]),
-                    position[2] + random.float(...offset[2]),
-                ],
-                velocity: [
-                    _direction.x * random.float(...speed),
-                    _direction.y * random.float(...speed),
-                    _direction.z * random.float(...speed),
-                ],
-                acceleration: gravity,
-                rotation: [
-                    random.float(0, Math.PI * 2),
-                    random.float(0, Math.PI * 2),
-                    random.float(0, Math.PI * 2),
-                ],
-                friction: typeof friction === "number" ? friction : random.float(...friction),
-                restitution: random.float(...restitution),
-                radius: typeof radius === "number" ? radius : radius[0] + (radius[1] - radius[0]) * (amount > 1 ? i / (amount - 1) : 0),
-                color: Array.isArray(color) ? random.pick(...color) : color,
-                time: random.integer(...stagger),
-                mounted: false,
-            })
-        }
-    }, delay)
+    for (let i = 0; i < amount; i++) {
+        _direction.set(
+            normal[0] + random.float(...spread[0]),
+            normal[1] + random.float(...spread[1]),
+            normal[2] + random.float(...spread[0]),
+        ).normalize()
+
+        particles.push({
+            index: particleIndex.next(),
+            position: [
+                position[0] + random.float(...offset[0]),
+                position[1] + random.float(...offset[1]),
+                position[2] + random.float(...offset[2]),
+            ],
+            velocity: [
+                _direction.x * random.float(...speed),
+                _direction.y * random.float(...speed),
+                _direction.z * random.float(...speed),
+            ],
+            acceleration: gravity,
+            rotation: [
+                random.float(0, Math.PI * 2),
+                random.float(0, Math.PI * 2),
+                random.float(0, Math.PI * 2),
+            ],
+            friction: typeof friction === "number" ? friction : random.float(...friction),
+            restitution: random.float(...restitution),
+            radius: typeof radius === "number" ? radius : radius[0] + (radius[1] - radius[0]) * (amount > 1 ? i / (amount - 1) : 0),
+            color: Array.isArray(color) ? random.pick(...color) : color,
+            time: random.integer(...stagger),
+            mounted: false,
+        })
+    }
 }
 
 const geometry = new SphereGeometry(1, 3, 4)
