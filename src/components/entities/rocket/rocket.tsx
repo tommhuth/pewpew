@@ -148,7 +148,7 @@ function Rocket({
             // as many puffs as fit in the elapsed time, remainder carries over
             while (data.smokeTime >= data.nextSmokeAt) {
                 data.smokeTime -= data.nextSmokeAt
-                data.nextSmokeAt = 14
+                data.nextSmokeAt = 16
 
                 createSmoke({ position: [x, y + data.y - nozzleOffset, z] })
             }

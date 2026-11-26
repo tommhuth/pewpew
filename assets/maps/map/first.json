@@ -62,7 +62,7 @@
                 "rotation": 0
             },
             {
-                "type": "tall_hole",
+                "type": "tall",
                 "rotation": 1
             },
             {
@@ -391,9 +391,9 @@
             "type": "dome",
             "id": "92f98f2b-d36c-4b3c-bc8b-ab4a963cf154",
             "position": [
-                -3.75,
+                -3.5,
                 2,
-                3
+                3.25
             ],
             "rotation": 0
         },
@@ -415,16 +415,6 @@
                 -5,
                 2.25,
                 5.5
-            ],
-            "rotation": 0
-        },
-        {
-            "type": "rocket",
-            "id": "7d2abe8a-829f-440b-9d60-33e6033b0474",
-            "position": [
-                -1,
-                -0.25,
-                5
             ],
             "rotation": 0
         },

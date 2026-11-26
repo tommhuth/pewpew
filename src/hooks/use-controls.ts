@@ -106,7 +106,7 @@ export function useControls() {
                     previous = [currentX, 0, currentZ]
                 }
 
-                targetPosition.x += (currentX - previous[0]) * 1.2
+                targetPosition.x += (currentX - previous[0]) * 2
                 targetPosition.y += (currentZ - previous[2])
                 previous = [currentX, 0, currentZ]
             } else if (pointerType === "mouse") {

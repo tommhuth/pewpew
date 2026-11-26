@@ -49,7 +49,10 @@ export default function Player() {
     const nextShotAt = useRef(0)
     const debugRef = useRef<LineSegments>(null)
     const grid = useStore(i => i.world.grid)
-    const client = useGridClient(PLAYER_START, PLAYER_SIZE, { id: "player", type: CollisionType.PLAYER })
+    const client = useGridClient(PLAYER_START, PLAYER_SIZE, {
+        id: "player",
+        type: CollisionType.PLAYER
+    })
 
     useControls()
 

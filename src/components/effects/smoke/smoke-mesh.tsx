@@ -34,7 +34,6 @@ export interface CreateSmokeParams {
     count?: Tuple2 | number
     radius?: Tuple2 // start radius
     maxRadius?: Tuple2
-    grow?: Tuple2 // extra growth rate while spreading on the ground
     speed?: Tuple2 // falling speed
     spread?: Tuple2 // outwards speed along the ground
     damping?: number // ms spreading on the ground
@@ -104,10 +103,8 @@ export default function SmokeMesh() {
             const groundAt = getWorldTerrainHeightAt(world.parts, _position.set(...position), true)
             const endPosition = groundAt - smoke.maxRadius
 
-            // behind the camera, or sunk into its rest spot (damp never quite gets there)
-            // like particles, the instance is left where it is until the slot is reused,
-            // it's out of sight or buried, and a dead puff never touches a slot someone else owns
             if (position[2] < player.object.position.z - diagonal || position[1] - endPosition < restMargin) {
+                // dead
                 smokes.splice(i, 1)
                 continue
             }
