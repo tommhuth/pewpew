@@ -25,7 +25,7 @@ import { useCollisionDetection } from "@src/hooks/use-collision-detection"
 import { useGridClient } from "@src/hooks/use-grid-client"
 import { CollisionType } from "@src/types/collision"
 import { WorldPart } from "@src/types/world"
-import { getWorldTerrainHeightAt } from "@lib/world/terrain"
+import { getTerrainHeightAt } from "@lib/world/terrain"
 
 const _sample = { x: 0, y: 0, z: 0 }
 
@@ -36,7 +36,7 @@ function getTerrainHeight(parts: WorldPart[], position: Vector3) {
     for (let i = 0; i < 4; i++) {
         _sample.x = position.x + (i & 1 ? .5 : -.5) * PLAYER_SIZE[0]
         _sample.z = position.z + (i & 2 ? .5 : -.5) * PLAYER_SIZE[2]
-        height = Math.max(height, getWorldTerrainHeightAt(parts, _sample))
+        height = Math.max(height, getTerrainHeightAt(parts, _sample))
     }
 
     return height

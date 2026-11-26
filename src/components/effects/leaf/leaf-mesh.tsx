@@ -4,7 +4,7 @@ import random from "@huth/random"
 import { LEAF_COUNT } from "@lib/const"
 import { useStore } from "@lib/store"
 import { addScaled, ndelta, scaleXZ, setMatrixAt } from "@lib/helpers/utils"
-import { getWorldTerrainHeightAt } from "@lib/world/terrain"
+import { getTerrainHeightAt } from "@lib/world/terrain"
 import LoopCounter from "@lib/helpers/loop-counter"
 import { useInstanceClear } from "@src/hooks/use-instance-clear"
 import { Tuple2, Tuple3 } from "@src/types/global"
@@ -131,7 +131,7 @@ export default function LeafMesh() {
             scaleXZ(velocity, damping)
 
             // landed, the instance is left where it is until the slot is reused
-            if (position[1] <= getWorldTerrainHeightAt(world.parts, _position.set(...position))) {
+            if (position[1] <= getTerrainHeightAt(world.parts, _position.set(...position))) {
                 leaves.splice(i, 1)
                 continue
             }

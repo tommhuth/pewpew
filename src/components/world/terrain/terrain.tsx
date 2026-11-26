@@ -73,7 +73,7 @@ function TerrainMesh({ type, geometry, parts }: TerrainMeshProps) {
     )
 }
 
-export default function WorldTerrain() {
+export default function Terrain() {
     const { nodes } = useGLTF(terrainModel) as unknown as { nodes: Record<TerrainType, Mesh> }
     const parts = useStore(i => i.world.parts)
 

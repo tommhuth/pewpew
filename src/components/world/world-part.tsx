@@ -3,14 +3,14 @@ import { useFrame } from "@react-three/fiber"
 import { memo, useEffect } from "react"
 import { queueEntities, removePartEntities, removeWorldPart, useStore } from "@lib/store"
 import Health from "@lib/helpers/health"
-import { WorldPart } from "@src/types/world"
+import { WorldPart as WorldPartProps } from "@src/types/world"
 
-function WorldSection({
+function WorldPart({
     id,
     position,
     size,
     placements,
-}: WorldPart) {
+}: WorldPartProps) {
     useEffect(() => {
         queueEntities(placements.map((placement) => ({
             ...placement,
@@ -42,4 +42,4 @@ function WorldSection({
     return null
 }
 
-export default memo(WorldSection)
+export default memo(WorldPart)

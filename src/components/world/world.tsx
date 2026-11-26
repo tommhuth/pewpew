@@ -1,9 +1,9 @@
 import { useFrame } from "@react-three/fiber"
 import { useLayoutEffect } from "react"
 import { addWorldPart, flushEntityQueue, useStore } from "@lib/store"
-import WorldSection from "./world-section"
+import WorldPart from "./world-part"
 import Entities from "@components/entities/entities"
-import WorldTerrain from "./terrain/world-terrain"
+import Terrain from "./terrain/terrain"
 
 export default function World() {
     const parts = useStore(i => i.world.parts)
@@ -34,8 +34,8 @@ export default function World() {
 
     return (
         <>
-            {parts.map(part => <WorldSection key={part.id} {...part} />)}
-            <WorldTerrain />
+            {parts.map(part => <WorldPart key={part.id} {...part} />)}
+            <Terrain />
             <Entities />
         </>
     )

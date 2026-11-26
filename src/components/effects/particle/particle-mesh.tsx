@@ -4,7 +4,7 @@ import random from "@huth/random"
 import { PARTICLE_COUNT } from "@lib/const"
 import { useStore } from "@lib/store"
 import { addScaled, dampFactor, ndelta, scaleXZ, setColorAt, setMatrixAt } from "@lib/helpers/utils"
-import { getTerrainHeightAt, OUTSIDE_TERRAIN_HEIGHT } from "@lib/world/terrain"
+import { getPartTerrainHeightAt, OUTSIDE_TERRAIN_HEIGHT } from "@lib/world/terrain"
 import LoopCounter from "@lib/helpers/loop-counter"
 import { useInstanceClear } from "@src/hooks/use-instance-clear"
 import { Tuple2, Tuple3 } from "@src/types/global"
@@ -116,7 +116,7 @@ function getTerrainHeight(position: Tuple3, parts: WorldPart[]) {
         const part = parts[i]
 
         if (position[2] >= part.position.z && position[2] < part.position.z + part.size[1]) {
-            return part.position.y + getTerrainHeightAt(part.terrain, _terrainPosition, part.position.z)
+            return part.position.y + getPartTerrainHeightAt(part.terrain, _terrainPosition, part.position.z)
         }
     }
 

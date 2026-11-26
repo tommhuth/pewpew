@@ -7,7 +7,7 @@ import { useStore } from "@lib/store"
 import { depthIgnoreLayers } from "@components/effects/depth/depth-layers"
 import { clamp, map, ndelta, setMatrixAt } from "@lib/helpers/utils"
 import LoopCounter from "@lib/helpers/loop-counter"
-import { getWorldTerrainHeightAt } from "@lib/world/terrain"
+import { getTerrainHeightAt } from "@lib/world/terrain"
 import { useInstanceClear } from "@src/hooks/use-instance-clear"
 import { Tuple2, Tuple3 } from "@src/types/global"
 import { useDepth } from "@components/effects/depth/use-depth"
@@ -100,7 +100,7 @@ export default function SmokeMesh() {
             const smoke = smokes[i]
             const { position, velocity } = smoke
 
-            const groundAt = getWorldTerrainHeightAt(world.parts, _position.set(...position), true)
+            const groundAt = getTerrainHeightAt(world.parts, _position.set(...position), true)
             const endPosition = groundAt - smoke.maxRadius
 
             if (position[2] < player.object.position.z - diagonal || position[1] - endPosition < restMargin) {

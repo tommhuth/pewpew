@@ -62,7 +62,7 @@ function toCellLocal(position: Vector3Like, ix: number, iz: number, startZ: numb
     return [u, v] as const
 }
 
-export function getTerrainHeightAt(
+export function getPartTerrainHeightAt(
     terrain: Terrain,
     position: Vector3Like,
     startZ: number,
@@ -111,12 +111,12 @@ export function getTerrainHeightAt(
 }
 
 // world terrain height at a position
-export function getWorldTerrainHeightAt(parts: WorldPart[], position: Vector3Like, ignoreHole = false) {
+export function getTerrainHeightAt(parts: WorldPart[], position: Vector3Like, ignoreHole = false) {
     for (let i = 0, n = parts.length; i < n; i++) {
         const part = parts[i]
 
         if (position.z >= part.position.z && position.z < part.position.z + part.size[1]) {
-            return part.position.y + getTerrainHeightAt(part.terrain, position, part.position.z, ignoreHole)
+            return part.position.y + getPartTerrainHeightAt(part.terrain, position, part.position.z, ignoreHole)
         }
     }
 

@@ -15,7 +15,7 @@ import { Owner } from "@src/types/bullet"
 import { EntityType, RocketEntity } from "@src/types/entity"
 import { Tuple3 } from "@src/types/global"
 import { useTransitionedState } from "@src/hooks/use-transitioned-state"
-import { getWorldTerrainHeightAt } from "@lib/world/terrain"
+import { getTerrainHeightAt } from "@lib/world/terrain"
 import { timeout } from "@lib/timeout"
 
 const size: Tuple3 = [2, 1.75, 1]
@@ -134,7 +134,7 @@ function Rocket({
             return removeEntities([id])
         }
 
-        const floor = getWorldTerrainHeightAt(world.parts, { x, y, z }, true)
+        const floor = getTerrainHeightAt(world.parts, { x, y, z }, true)
         const d = ndelta(delta)
 
         data.launched = true
